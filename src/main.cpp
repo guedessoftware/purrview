@@ -11,6 +11,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QElapsedTimer>
+#include <QFile>
 #include <QFileOpenEvent>
 #include <QGuiApplication>
 #include <QIcon>
@@ -82,11 +83,24 @@ void migrateLegacySettings() {
     currentSettings.setValue(QStringLiteral("identity/impageSettingsImported"), true);
 }
 
+void configureRestrictedQmlRuntime() {
+    if (!qEnvironmentVariableIsEmpty("QV4_FORCE_INTERPRETER")) {
+        return;
+    }
+
+    QFile selinuxEnforcement(QStringLiteral("/sys/fs/selinux/enforce"));
+    if (selinuxEnforcement.open(QIODevice::ReadOnly) &&
+        selinuxEnforcement.readAll().trimmed() == QByteArrayLiteral("1")) {
+        qputenv("QV4_FORCE_INTERPRETER", QByteArrayLiteral("1"));
+    }
+}
+
 } // namespace
 
 int main(int argc, char* argv[]) {
     QElapsedTimer startupTimer;
     startupTimer.start();
+    configureRestrictedQmlRuntime();
     QCoreApplication::setApplicationName(QStringLiteral("PurrView"));
     QCoreApplication::setOrganizationName(QStringLiteral("PurrView"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("io.github.impage"));

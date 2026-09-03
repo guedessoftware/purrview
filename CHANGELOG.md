@@ -5,6 +5,18 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.9] - 2026-09-03
+
+### Fixed
+
+- O componente de rótulo com ícone agora usa um nome exclusivo do PurrView, evitando colisão com o
+  `IconLabel` interno do Qt 6.6 que impedia a abertura do Composer no AlmaLinux.
+- Em sistemas com SELinux enforcing, o runtime QML usa automaticamente o interpretador em vez de
+  tentar criar páginas JIT executáveis, eliminando os avisos repetidos de `mprotect` sem solicitar
+  permissões de segurança adicionais.
+- Os testes gráficos dos pacotes DEB e RPM passam a reprovar também erros de tipo indisponível,
+  propriedades inexistentes e componentes QML não reconhecidos.
+
 ## [0.8.8] - 2026-09-03
 
 ### Fixed
@@ -318,7 +330,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.8...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.9...HEAD
+[0.8.9]: https://github.com/guedessoftware/purrview/compare/v0.8.8...v0.8.9
 [0.8.8]: https://github.com/guedessoftware/purrview/compare/v0.8.7...v0.8.8
 [0.8.7]: https://github.com/guedessoftware/purrview/compare/v0.8.6...v0.8.7
 [0.8.6]: https://github.com/guedessoftware/purrview/compare/v0.8.5...v0.8.6

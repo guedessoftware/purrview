@@ -353,7 +353,7 @@ Item {
                 implicitWidth: 200
                 implicitHeight: 42
                 font.weight: Font.DemiBold
-                contentItem: IconLabel {
+                contentItem: PurrIconLabel {
                     anchors.centerIn: parent
                     iconName: "add-image"
                     iconSize: 19
@@ -380,7 +380,7 @@ Item {
                 action: clearAction
                 text: qsTr("Limpar")
                 implicitHeight: 42
-                contentItem: IconLabel {
+                contentItem: PurrIconLabel {
                     anchors.centerIn: parent
                     iconName: "trash"
                     text: clearButton.text
@@ -564,7 +564,7 @@ Item {
                 action: viewerAction
                 text: qsTr("Visualizar")
                 implicitHeight: 42
-                contentItem: IconLabel {
+                contentItem: PurrIconLabel {
                     anchors.centerIn: parent
                     iconName: "eye"
                     text: viewerButton.text
@@ -585,7 +585,7 @@ Item {
                 leftPadding: 20
                 rightPadding: 20
                 font.weight: Font.Bold
-                contentItem: IconLabel {
+                contentItem: PurrIconLabel {
                     anchors.centerIn: parent
                     iconName: "printer"
                     text: printButton.text

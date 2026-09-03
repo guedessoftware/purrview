@@ -50,7 +50,7 @@ ScrollView {
         width: root.availableWidth
         spacing: 0
 
-        IconLabel {
+        PurrIconLabel {
             Layout.fillWidth: true
             Layout.leftMargin: 22
             Layout.rightMargin: 22
@@ -75,7 +75,7 @@ ScrollView {
             Layout.margins: 22
             spacing: 10
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "paper"
                 text: qsTr("Tamanho do papel")
                 color: UiTheme.brandPurple
@@ -94,7 +94,7 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "orientation"
                 text: qsTr("Orientação")
                 color: UiTheme.brandPurple
@@ -127,7 +127,7 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "grid"
                 text: qsTr("Modelos de grade")
                 color: UiTheme.brandCyan
@@ -188,7 +188,7 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "grid"
                 text: qsTr("Grade")
                 color: UiTheme.brandCyan
@@ -235,7 +235,7 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "image"
                 text: qsTr("Encaixe das imagens")
                 color: UiTheme.brandPink
@@ -262,7 +262,7 @@ ScrollView {
             Layout.margins: 22
             spacing: 8
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "margins"
                 text: qsTr("Margens")
                 color: UiTheme.brandCyan
@@ -330,7 +330,7 @@ ScrollView {
                 Layout.preferredHeight: 6
             }
 
-            IconLabel {
+            PurrIconLabel {
                 iconName: "spacing"
                 text: qsTr("Espaçamento")
                 color: UiTheme.brandPink

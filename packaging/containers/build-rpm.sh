@@ -46,7 +46,7 @@ smoke_test_qml() {
     set -e
 
     if [[ "${status}" -ne 124 ]] || \
-        grep -Eq 'Cannot instantiate bound component|QQmlApplicationEngine failed' "${log_file}"; then
+        grep -Eqi 'Cannot instantiate bound component|QQmlApplicationEngine failed|Type [^ ]+ unavailable|Cannot assign to non-existent property|is not a type' "${log_file}"; then
         cat "${log_file}" >&2
         printf 'PurrView %s QML smoke test failed with status %s.\n' \
             "${mode}" "${status}" >&2
