@@ -1,0 +1,67 @@
+app-id: io.github.impage.Impage
+runtime: org.kde.Platform
+runtime-version: '6.8'
+sdk: org.kde.Sdk
+command: purrview
+rename-icon: purrview
+
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --socket=cups
+  - --filesystem=xdg-pictures:rw
+  - --filesystem=xdg-download:rw
+
+cleanup:
+  - /include
+  - /lib/cmake
+  - /lib/pkgconfig
+  - /share/man
+
+modules:
+  - name: inih
+    buildsystem: meson
+    config-opts:
+      - -Ddefault_library=shared
+      - -Dwith_INIReader=true
+    sources:
+      - type: archive
+        url: https://github.com/benhoyt/inih/archive/refs/tags/r62.tar.gz
+        sha256: 9c15fa751bb8093d042dae1b9f125eb45198c32c6704cd5481ccde460d4f8151
+
+  - name: exiv2
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DEXIV2_BUILD_DOC=OFF
+      - -DEXIV2_BUILD_EXIV2_COMMAND=OFF
+      - -DEXIV2_BUILD_SAMPLES=OFF
+      - -DEXIV2_BUILD_UNIT_TESTS=OFF
+      - -DEXIV2_ENABLE_BMFF=ON
+    sources:
+      - type: archive
+        url: https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.8.tar.gz
+        sha256: ea51b0609f58a9afa063b60daa1539948b62247721e154f4fff0ad3aec9f9756
+
+  - name: impage
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_TESTING=OFF
+      - -DIMPAGE_WITH_EXIV2=ON
+    build-options:
+      env:
+        SOURCE_DATE_EPOCH: '1788393600'
+      cxxflags: -ffile-prefix-map=/run/build/impage=.
+    sources:
+      - type: dir
+        path: ../..
+        skip:
+          - .git
+          - .flatpak-builder
+          - build
+          - build-*
+          - dist

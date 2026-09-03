@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PurrView
+Name[pt_BR]=PurrView
+Comment=View images with PurrView
+Comment[pt_BR]=Visualize imagens com o PurrView
+Exec=purrview --viewer %F
+TryExec=purrview
+Icon=purrview
+Terminal=false
+Categories=Graphics;Photography;Viewer;
+MimeType=image/png;image/jpeg;image/webp;image/bmp;image/gif;image/tiff;image/avif;image/heif;image/heic;image/x-icns;
+Keywords=images;viewer;photos;
+Keywords[pt_BR]=imagens;visualizador;fotos;
+StartupNotify=true
+StartupWMClass=PurrView

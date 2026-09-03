@@ -1,0 +1,17 @@
+/build/
+build-*/
+/CMakeFiles/
+/CMakeCache.txt
+/CTestTestfile.cmake
+/DartConfiguration.tcl
+/Makefile
+/Testing/
+/cmake_install.cmake
+/compile_commands.json
+/install_manifest.txt
+/.qmlls.ini
+/.qt/
+/.flatpak-builder/
+/dist/
+/.cache/
+*.user

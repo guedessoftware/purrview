@@ -1,0 +1,93 @@
+name: Native CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  native:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ matrix.container }}
+    env:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu 26.04 LTS
+            container: ubuntu:26.04
+            install: >-
+              apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y
+              build-essential cmake ninja-build pkg-config git qt6-base-dev qt6-declarative-dev
+              qt6-image-formats-plugins libcups2-dev libxkbcommon-dev libexiv2-dev appstream
+              desktop-file-utils
+          - name: Debian 13
+            container: debian:13-slim
+            install: >-
+              apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y
+              build-essential cmake ninja-build pkg-config git qt6-base-dev qt6-declarative-dev
+              qt6-image-formats-plugins libcups2-dev libxkbcommon-dev libexiv2-dev appstream
+              desktop-file-utils
+          - name: Fedora 44
+            container: fedora:44
+            install: >-
+              dnf install -y gcc-c++ cmake ninja-build pkgconf-pkg-config git
+              qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtimageformats exiv2-devel
+              cups-devel libxkbcommon-devel appstream desktop-file-utils
+          - name: Arch Linux
+            container: archlinux:base-devel
+            install: >-
+              pacman -Syu --noconfirm --needed cmake ninja pkgconf git qt6-base qt6-declarative
+              qt6-imageformats cups libxkbcommon exiv2 appstream desktop-file-utils
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Install dependencies
+        shell: bash
+        run: ${{ matrix.install }}
+
+      - name: Configure
+        run: cmake --preset release
+
+      - name: Build
+        run: cmake --build --preset release
+
+      - name: Test
+        run: ctest --preset release
+
+      - name: QML lint
+        run: cmake --build build/release --target impage_qmllint
+
+      - name: Validate release metadata
+        shell: bash
+        run: |
+          ./build/release/impage --version
+          appstreamcli validate --no-net build/release/generated/io.github.impage.Impage.metainfo.xml
+          desktop-file-validate resources/linux/io.github.impage.Impage.desktop
+          desktop-file-validate resources/linux/io.github.impage.Impage.Viewer.desktop
+
+      - name: Headless QML smoke test
+        shell: bash
+        run: |
+          set +e
+          QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software \
+            timeout --signal=TERM 3s ./build/release/impage
+          status=$?
+          set -e
+          [[ "${status}" -eq 124 || "${status}" -eq 143 ]]
+
+      - name: Bootstrap lifecycle
+        shell: bash
+        run: |
+          bootstrap_home="${RUNNER_TEMP}/impage-bootstrap-home"
+          mkdir -p "${bootstrap_home}"
+          HOME="${bootstrap_home}" scripts/install-impage.sh --check --non-interactive
+          HOME="${bootstrap_home}" scripts/install-impage.sh --user --non-interactive
+          HOME="${bootstrap_home}" "${bootstrap_home}/.local/bin/impage" --version
+          HOME="${bootstrap_home}" scripts/install-impage.sh --user --upgrade --non-interactive
+          HOME="${bootstrap_home}" scripts/install-impage.sh --user --uninstall --non-interactive
+          test ! -e "${bootstrap_home}/.local/opt/impage"

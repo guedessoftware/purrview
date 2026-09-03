@@ -1,0 +1,32 @@
+pkgname=purrview
+pkgver=@VERSION@
+pkgrel=1
+pkgdesc='Image viewer and printable page composer'
+arch=('x86_64')
+url='https://github.com/guedessoftware/purrview'
+license=('GPL-3.0-only')
+depends=('qt6-base' 'qt6-declarative' 'qt6-svg' 'exiv2')
+optdepends=('qt6-imageformats: additional image codecs'
+            'kimageformats: AVIF, HEIF and additional KDE image codecs'
+            'qt6-wayland: native Wayland platform integration')
+makedepends=('cmake' 'ninja')
+options=('strip' '!debug')
+source=("PurrView-${pkgver}-source.tar.xz")
+sha256sums=('@SOURCE_SHA256@')
+
+build() {
+    cmake -S "PurrView-${pkgver}" -B build -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_TESTING=ON \
+        -DIMPAGE_WITH_EXIV2=ON
+    cmake --build build
+}
+
+check() {
+    ctest --test-dir build --output-on-failure
+}
+
+package() {
+    DESTDIR="${pkgdir}" cmake --install build
+}

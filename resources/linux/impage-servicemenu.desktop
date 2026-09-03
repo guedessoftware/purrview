@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Service
+Name=PurrView image actions
+MimeType=image/png;image/jpeg;image/webp;image/bmp;image/gif;image/tiff;image/avif;image/heif;image/heic;image/x-icns;
+Actions=composeInImpage;
+
+[Desktop Action composeInImpage]
+Name=Compose in PurrView
+Name[pt_BR]=Montar no PurrView
+Icon=purrview
+Exec=purrview --compose %F

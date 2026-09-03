@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PurrView
+Name[pt_BR]=PurrView
+Comment=View images and compose pages ready for printing
+Comment[pt_BR]=Visualize imagens e componha páginas prontas para impressão
+Exec=purrview %F
+TryExec=purrview
+Icon=purrview
+Terminal=false
+Categories=Graphics;Photography;
+MimeType=image/png;image/jpeg;image/webp;image/bmp;image/gif;image/tiff;image/avif;image/heif;image/heic;image/x-icns;
+Keywords=images;viewer;photos;print;page;layout;
+Keywords[pt_BR]=imagens;visualizador;fotos;impressão;página;diagramação;
+StartupNotify=true
+StartupWMClass=PurrView

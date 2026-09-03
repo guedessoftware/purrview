@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 PurrView contributors -->
+<component type="desktop-application">
+  <id>io.github.impage.Impage</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <developer id="com.guedessoftware">
+    <name>PurrView contributors</name>
+  </developer>
+  <name>PurrView</name>
+  <name xml:lang="pt-BR">PurrView</name>
+  <summary>View images and compose printable pages</summary>
+  <summary xml:lang="pt-BR">Visualize imagens e monte páginas para impressão</summary>
+  <description>
+    <p>PurrView combines a fast image viewer with a polished page composer for arranging photos before printing.</p>
+    <p xml:lang="pt-BR">O PurrView reúne um visualizador de imagens e um compositor de páginas refinado para organizar fotos antes da impressão.</p>
+  </description>
+  <launchable type="desktop-id">io.github.impage.Impage.desktop</launchable>
+  <url type="homepage">https://github.com/guedessoftware/purrview</url>
+  <url type="bugtracker">https://github.com/guedessoftware/purrview/issues</url>
+  <provides>
+    <binary>purrview</binary>
+    <binary>impage</binary>
+    <mediatype>image/png</mediatype>
+    <mediatype>image/jpeg</mediatype>
+    <mediatype>image/webp</mediatype>
+    <mediatype>image/bmp</mediatype>
+    <mediatype>image/gif</mediatype>
+    <mediatype>image/tiff</mediatype>
+    <mediatype>image/avif</mediatype>
+    <mediatype>image/heif</mediatype>
+    <mediatype>image/heic</mediatype>
+    <mediatype>image/x-icns</mediatype>
+  </provides>
+  <categories>
+    <category>Graphics</category>
+    <category>Photography</category>
+  </categories>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="@IMPAGE_VERSION@" date="@IMPAGE_RELEASE_DATE@">
+      <description>
+        <p>@IMPAGE_RELEASE_SUMMARY@</p>
+      </description>
+    </release>
+    <release version="0.8.2" date="2026-09-03">
+      <description>
+        <p>Polish the About dialog with a custom header, clearer hierarchy and consistent PurrView controls.</p>
+      </description>
+    </release>
+    <release version="0.8.1" date="2026-09-03">
+      <description>
+        <p>Add an About dialog with runtime details and adopt the final PurrView GitHub address.</p>
+      </description>
+    </release>
+    <release version="0.8.0" date="2026-09-03">
+      <description>
+        <p>Add reproducible DEB, RPM, Arch and Flatpak packages built and validated in isolated target environments.</p>
+      </description>
+    </release>
+    <release version="0.7.1" date="2026-09-02">
+      <description>
+        <p>Integrate PurrView branding into the floating Viewer toolbar and add an auto-hiding translucent filmstrip.</p>
+      </description>
+    </release>
+    <release version="0.7.0" date="2026-09-02">
+      <description>
+        <p>Bring the PurrView identity to the Viewer with branded glass controls and metadata panel.</p>
+      </description>
+    </release>
+    <release version="0.6.1" date="2026-09-02">
+      <description>
+        <p>Fix PurrView icon discovery in KDE menus, launchers and task managers.</p>
+      </description>
+    </release>
+    <release version="0.6.0" date="2026-09-02">
+      <description>
+        <p>Introduce the PurrView identity, new cat logo and a polished Composer workspace.</p>
+      </description>
+    </release>
+    <release version="0.5.7" date="2026-09-02">
+      <description>
+        <p>Refine Composer selection and enable reliable reordering from thumbnails or page cells.</p>
+      </description>
+    </release>
+    <release version="0.5.6" date="2026-09-02">
+      <description>
+        <p>Add non-destructive selection, reordering, duplication and removal in Composer.</p>
+      </description>
+    </release>
+    <release version="0.5.5" date="2026-09-02">
+      <description>
+        <p>Add paper sizes, grid presets and a one-image-friendly 1 x 1 layout.</p>
+      </description>
+    </release>
+    <release version="0.5.4" date="2026-09-02">
+      <description>
+        <p>Add AVIF, HEIF, HEIC and ICNS support with a faster bootstrap install.</p>
+      </description>
+    </release>
+    <release version="0.5.3" date="2026-09-02">
+      <description>
+        <p>Refine native window integration and the floating Viewer toolbar.</p>
+      </description>
+    </release>
+    <release version="0.5.2" date="2026-09-02">
+      <description>
+        <p>Fix desktop launchers when graphical sessions omit the user bin directory.</p>
+      </description>
+    </release>
+    <release version="0.5.1" date="2026-09-02">
+      <description>
+        <p>Fix bootstrap validation in localized environments.</p>
+      </description>
+    </release>
+    <release version="0.5.0" date="2026-09-02">
+      <description>
+        <p>First formal Impage baseline with image viewing, page composition and Linux integration.</p>
+      </description>
+    </release>
+  </releases>
+</component>

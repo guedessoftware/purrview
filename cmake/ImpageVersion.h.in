@@ -1,0 +1,3 @@
+#pragma once
+
+#define IMPAGE_VERSION_STRING "@IMPAGE_VERSION@"
