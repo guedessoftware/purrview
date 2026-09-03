@@ -5,6 +5,18 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.11] - 2026-09-03
+
+### Changed
+
+- O botão de entrada do Composer agora usa o texto compacto `Adicionar`, e a limpeza passa a ser
+  representada por um botão quadrado com ícone e dica de uso.
+- As miniaturas da composição ficaram cerca de 10% maiores para acomodar controles contextuais sem
+  comprometer a visualização.
+- Duplicar e remover deixam de ocupar espaço permanente na barra: as ações aparecem nos cantos
+  superiores da miniatura selecionada ou sob o ponteiro e continuam compatíveis com multisseleção.
+- O logotipo e o nome visual do PurrView permanecem inalterados.
+
 ## [0.8.10] - 2026-09-03
 
 ### Changed
@@ -345,7 +357,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.10...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.11...HEAD
+[0.8.11]: https://github.com/guedessoftware/purrview/compare/v0.8.10...v0.8.11
 [0.8.10]: https://github.com/guedessoftware/purrview/compare/v0.8.9...v0.8.10
 [0.8.9]: https://github.com/guedessoftware/purrview/compare/v0.8.8...v0.8.9
 [0.8.8]: https://github.com/guedessoftware/purrview/compare/v0.8.7...v0.8.8

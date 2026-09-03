@@ -240,14 +240,17 @@ Item {
 
         property string iconName: ""
         property bool accent: false
+        property bool iconOnly: false
         property real minimumButtonWidth: 0
 
         Layout.alignment: Qt.AlignVCenter
-        implicitWidth: Math.max(minimumButtonWidth,
-                                contentItem.implicitWidth + leftPadding + rightPadding)
+        implicitWidth: iconOnly ? 42
+                                : Math.max(minimumButtonWidth,
+                                           contentItem.implicitWidth
+                                           + leftPadding + rightPadding)
         implicitHeight: 42
-        leftPadding: 18
-        rightPadding: 18
+        leftPadding: iconOnly ? 12 : 18
+        rightPadding: iconOnly ? 12 : 18
         topPadding: 10
         bottomPadding: 10
         spacing: 9
@@ -255,12 +258,24 @@ Item {
         font.weight: Font.DemiBold
 
         contentItem: Item {
-            implicitWidth: headerContent.implicitWidth
-            implicitHeight: Math.max(20, headerContent.implicitHeight)
+            implicitWidth: headerButton.iconOnly ? 18 : headerContent.implicitWidth
+            implicitHeight: 20
+
+            PurrIcon {
+                anchors.centerIn: parent
+                width: 18
+                height: 18
+                visible: headerButton.iconOnly
+                name: headerButton.iconName
+                color: headerButton.enabled
+                       ? composerPage.themePalette.buttonText
+                       : composerPage.themePalette.placeholderText
+            }
 
             PurrIconLabel {
                 id: headerContent
                 anchors.centerIn: parent
+                visible: !headerButton.iconOnly
                 iconName: headerButton.iconName
                 iconSize: 18
                 spacing: headerButton.spacing
@@ -406,10 +421,10 @@ Item {
             HeaderActionButton {
                 id: addImagesButton
                 action: addImagesAction
-                text: qsTr("Adicionar imagens…")
+                text: qsTr("Adicionar")
                 iconName: "add-image"
                 accent: true
-                minimumButtonWidth: 200
+                minimumButtonWidth: 150
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Adicionar imagens (Ctrl+A ou Ctrl+O)")
             }
@@ -419,6 +434,8 @@ Item {
                 action: clearAction
                 text: qsTr("Limpar")
                 iconName: "trash"
+                iconOnly: true
+                Accessible.name: qsTr("Limpar imagens")
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Limpar imagens (Ctrl+Shift+Delete)")
             }
@@ -470,8 +487,8 @@ Item {
                                            * composerPage.controller.columns))
                     readonly property bool selected: Boolean(modelData.selected)
 
-                    width: 46
-                    height: 46
+                    width: 51
+                    height: 51
                     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                     radius: 4
                     color: pageIndex === composerPage.controller.currentPage
@@ -490,8 +507,8 @@ Item {
                         fillMode: Image.PreserveAspectCrop
                         asynchronous: true
                         cache: true
-                        sourceSize.width: 92
-                        sourceSize.height: 92
+                        sourceSize.width: 102
+                        sourceSize.height: 102
                     }
 
                     MouseArea {
@@ -561,8 +578,110 @@ Item {
                         }
                     }
 
+                    ToolButton {
+                        id: duplicateThumbnailButton
+
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.margins: 3
+                        width: 21
+                        height: 21
+                        z: 3
+                        hoverEnabled: true
+                        visible: thumbnailDelegate.selected
+                                 || thumbnailMouse.containsMouse
+                                 || hovered
+                                 || removeThumbnailButton.hovered
+                        Accessible.name: qsTr("Duplicar imagem")
+                        ToolTip.visible: hovered
+                        ToolTip.text: composerPage.controller.selectedImageCount > 1
+                                      && thumbnailDelegate.selected
+                                      ? qsTr("Duplicar imagens selecionadas")
+                                      : qsTr("Duplicar imagem")
+                        onClicked: {
+                            if (!thumbnailDelegate.selected)
+                                composerPage.controller.selectImage(
+                                            thumbnailDelegate.index, false, false)
+                            composerPage.controller.duplicateSelectedImages()
+                        }
+
+                        contentItem: Item {
+                            PurrIcon {
+                                anchors.centerIn: parent
+                                name: "duplicate"
+                                color: UiTheme.textPrimary
+                                width: 12
+                                height: 12
+                            }
+                        }
+
+                        background: Rectangle {
+                            radius: 6
+                            color: duplicateThumbnailButton.down
+                                   ? UiTheme.floatingSurfacePressed
+                                   : duplicateThumbnailButton.hovered
+                                     ? UiTheme.floatingSurfaceHover
+                                     : UiTheme.floatingSurface
+                            border.color: duplicateThumbnailButton.hovered
+                                          ? UiTheme.brandPurple
+                                          : UiTheme.filmStripBorder
+                        }
+                    }
+
+                    ToolButton {
+                        id: removeThumbnailButton
+
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.margins: 3
+                        width: 21
+                        height: 21
+                        z: 3
+                        hoverEnabled: true
+                        visible: thumbnailDelegate.selected
+                                 || thumbnailMouse.containsMouse
+                                 || hovered
+                                 || duplicateThumbnailButton.hovered
+                        Accessible.name: qsTr("Remover imagem da composição")
+                        ToolTip.visible: hovered
+                        ToolTip.text: composerPage.controller.selectedImageCount > 1
+                                      && thumbnailDelegate.selected
+                                      ? qsTr("Remover imagens selecionadas")
+                                      : qsTr("Remover imagem da composição")
+                        onClicked: {
+                            if (!thumbnailDelegate.selected)
+                                composerPage.controller.selectImage(
+                                            thumbnailDelegate.index, false, false)
+                            composerPage.controller.removeSelectedImages()
+                        }
+
+                        contentItem: Item {
+                            PurrIcon {
+                                anchors.centerIn: parent
+                                name: "trash"
+                                color: UiTheme.danger
+                                width: 12
+                                height: 12
+                            }
+                        }
+
+                        background: Rectangle {
+                            radius: 6
+                            color: removeThumbnailButton.down
+                                   ? UiTheme.floatingSurfacePressed
+                                   : removeThumbnailButton.hovered
+                                     ? UiTheme.floatingSurfaceHover
+                                     : UiTheme.floatingSurface
+                            border.color: removeThumbnailButton.hovered
+                                          ? UiTheme.danger
+                                          : UiTheme.filmStripBorder
+                        }
+                    }
+
                     ToolTip.visible: thumbnailMouse.containsMouse
                                          && !thumbnailMouse.wasDragging
+                                         && !duplicateThumbnailButton.hovered
+                                         && !removeThumbnailButton.hovered
                     ToolTip.text: qsTr("%1 — página %2\nClique: abrir página · Ctrl+clique: selecionar · Arraste: reordenar")
                                   .arg(thumbnailDelegate.modelData.name)
                                   .arg(thumbnailDelegate.pageIndex + 1)
@@ -571,23 +690,6 @@ Item {
                 ScrollBar.horizontal: ScrollBar {
                     policy: ScrollBar.AsNeeded
                 }
-            }
-
-            HeaderActionButton {
-                action: duplicateImagesAction
-                visible: composerPage.controller.selectedImageCount > 0
-                iconName: "duplicate"
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Duplicar selecionadas (Ctrl+D)")
-            }
-
-            HeaderActionButton {
-                action: removeImagesAction
-                visible: composerPage.controller.selectedImageCount > 0
-                text: qsTr("Remover")
-                iconName: "trash"
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Remover selecionadas da composição (Delete)")
             }
 
             HeaderActionButton {
