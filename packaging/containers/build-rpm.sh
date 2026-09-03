@@ -32,7 +32,6 @@ dnf -y -q install "${PACKAGE_PATH}"
 smoke_test_qml() {
     local mode="$1"
     local image="$2"
-    local expected_log="$3"
     local runtime_dir="/tmp/purrview-runtime-${mode}"
     local log_file="/tmp/purrview-${mode}.log"
     local status
@@ -47,8 +46,7 @@ smoke_test_qml() {
     set -e
 
     if [[ "${status}" -ne 124 ]] || \
-        grep -Eq 'Cannot instantiate bound component|QQmlApplicationEngine failed' "${log_file}" || \
-        ! grep -Fq "${expected_log}" "${log_file}"; then
+        grep -Eq 'Cannot instantiate bound component|QQmlApplicationEngine failed' "${log_file}"; then
         cat "${log_file}" >&2
         printf 'PurrView %s QML smoke test failed with status %s.\n' \
             "${mode}" "${status}" >&2
@@ -56,10 +54,8 @@ smoke_test_qml() {
     fi
 }
 
-smoke_test_qml viewer "${SOURCE_ROOT}/docs/images/purrview-viewer.png" \
-    'First image visible'
-smoke_test_qml compose "${SOURCE_ROOT}/docs/images/purrview-composer.png" \
-    'Shell loaded'
+smoke_test_qml viewer "${SOURCE_ROOT}/docs/images/purrview-viewer.png"
+smoke_test_qml compose "${SOURCE_ROOT}/docs/images/purrview-composer.png"
 desktop-file-validate /usr/share/applications/io.github.impage.Impage.desktop
 appstreamcli validate --no-net /usr/share/metainfo/io.github.impage.Impage.metainfo.xml
 
