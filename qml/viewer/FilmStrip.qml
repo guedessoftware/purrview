@@ -49,10 +49,10 @@ Rectangle {
     implicitWidth: naturalWidth
     width: Math.min(naturalWidth, maximumWidth)
     radius: UiTheme.radiusLarge
-    color: stripHover.hovered ? Qt.rgba(0.07, 0.07, 0.09, 0.54)
-                              : Qt.rgba(0.04, 0.04, 0.06, 0.40)
-    border.color: stripHover.hovered ? Qt.rgba(1, 1, 1, 0.28)
-                                     : Qt.rgba(1, 1, 1, 0.18)
+    color: stripHover.hovered ? UiTheme.filmStripSurfaceHover
+                              : UiTheme.filmStripSurface
+    border.color: stripHover.hovered ? UiTheme.filmStripBorderHover
+                                     : UiTheme.filmStripBorder
     clip: true
 
     Behavior on width {

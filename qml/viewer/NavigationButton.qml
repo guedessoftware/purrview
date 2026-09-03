@@ -16,7 +16,7 @@ ToolButton {
 
     contentItem: Label {
         text: control.text
-        color: control.enabled ? UiTheme.textPrimary : UiTheme.disabled
+        color: control.enabled ? UiTheme.navigationText : UiTheme.navigationDisabled
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.pixelSize: 30

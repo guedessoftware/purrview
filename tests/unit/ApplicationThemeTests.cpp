@@ -33,5 +33,15 @@ int main() {
               QColor(QStringLiteral("#777e91")),
           "disabled controls retain sufficient visual hierarchy");
 
+    const QPalette lightPalette = impage::ui::createPurrViewPalette(false);
+    check(lightPalette.color(QPalette::Window) == QColor(QStringLiteral("#f6f7fb")),
+          "light mode uses the PurrView light surface");
+    check(lightPalette.color(QPalette::WindowText) == QColor(QStringLiteral("#171923")),
+          "light mode uses dark readable text");
+    check(lightPalette.color(QPalette::Highlight) == QColor(QStringLiteral("#8750cf")),
+          "light mode keeps a high-contrast brand accent");
+    check(!impage::ui::paletteIsDark(lightPalette), "light palette is detected as light");
+    check(impage::ui::paletteIsDark(palette), "dark palette is detected as dark");
+
     return failures == 0 ? 0 : 1;
 }

@@ -4,6 +4,7 @@
 
 namespace impage::ui {
 
-[[nodiscard]] QPalette createPurrViewPalette();
+[[nodiscard]] bool paletteIsDark(const QPalette& palette);
+[[nodiscard]] QPalette createPurrViewPalette(bool darkMode = true);
 
 } // namespace impage::ui

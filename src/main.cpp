@@ -18,6 +18,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include <QSettings>
+#include <QStyleHints>
 #include <QSysInfo>
 #include <QTextStream>
 #include <QUrl>
@@ -107,7 +108,23 @@ int main(int argc, char* argv[]) {
 
     QQuickStyle::setStyle(QStringLiteral("Fusion"));
     PurrViewApplication application(argc, argv);
-    application.setPalette(impage::ui::createPurrViewPalette());
+    bool darkMode = impage::ui::paletteIsDark(application.palette());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    const Qt::ColorScheme systemScheme = application.styleHints()->colorScheme();
+    if (systemScheme != Qt::ColorScheme::Unknown) {
+        darkMode = systemScheme == Qt::ColorScheme::Dark;
+    }
+#endif
+    application.setPalette(impage::ui::createPurrViewPalette(darkMode));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    QObject::connect(application.styleHints(), &QStyleHints::colorSchemeChanged, &application,
+                     [&application](Qt::ColorScheme scheme) {
+                         if (scheme != Qt::ColorScheme::Unknown) {
+                             application.setPalette(impage::ui::createPurrViewPalette(
+                                 scheme == Qt::ColorScheme::Dark));
+                         }
+                     });
+#endif
     migrateLegacySettings();
     QGuiApplication::setDesktopFileName(QStringLiteral("io.github.impage.Impage"));
     application.setWindowIcon(

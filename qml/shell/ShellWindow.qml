@@ -19,22 +19,22 @@ ApplicationWindow {
     palette.window: UiTheme.backgroundPrimary
     palette.windowText: UiTheme.textPrimary
     palette.base: UiTheme.backgroundSecondary
-    palette.alternateBase: "#202331"
-    palette.toolTipBase: "#252839"
+    palette.alternateBase: UiTheme.alternateBase
+    palette.toolTipBase: UiTheme.toolTipBase
     palette.toolTipText: UiTheme.textPrimary
     palette.text: UiTheme.textPrimary
-    palette.button: "#292c3d"
+    palette.button: UiTheme.buttonSurface
     palette.buttonText: UiTheme.textPrimary
-    palette.brightText: "#ffffff"
+    palette.brightText: UiTheme.brightText
     palette.highlight: UiTheme.brandPurple
-    palette.highlightedText: "#ffffff"
-    palette.link: UiTheme.brandPink
-    palette.linkVisited: "#c991ef"
-    palette.light: "#464a61"
-    palette.midlight: "#393d52"
-    palette.dark: "#0b0c11"
-    palette.mid: "#34384b"
-    palette.shadow: "#05060a"
+    palette.highlightedText: UiTheme.highlightedText
+    palette.link: UiTheme.link
+    palette.linkVisited: UiTheme.linkVisited
+    palette.light: UiTheme.paletteLight
+    palette.midlight: UiTheme.paletteMidlight
+    palette.dark: UiTheme.paletteDark
+    palette.mid: UiTheme.paletteMid
+    palette.shadow: UiTheme.paletteShadow
     palette.placeholderText: UiTheme.textMuted
     color: palette.window
     property string displayedSource: ""

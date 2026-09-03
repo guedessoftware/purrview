@@ -26,7 +26,7 @@ Rectangle {
            ? Qt.rgba(UiTheme.brandPurple.r, UiTheme.brandPurple.g,
                      UiTheme.brandPurple.b, 0.22)
            : thumbnailHover.hovered ? UiTheme.floatingSurfaceHover
-                                    : Qt.rgba(1, 1, 1, 0.055)
+                                    : UiTheme.subtleSurface
     border.width: imageCurrent ? 2 : 1
     border.color: imageCurrent ? UiTheme.brandPink
                                : imageSelected ? UiTheme.brandPurple : UiTheme.borderSubtle

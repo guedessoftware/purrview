@@ -24,7 +24,7 @@ Column {
         gradient: Gradient {
             orientation: Gradient.Horizontal
             GradientStop { position: 0; color: UiTheme.brandBorder }
-            GradientStop { position: 1; color: Qt.rgba(1, 1, 1, 0.04) }
+            GradientStop { position: 1; color: UiTheme.sectionFade }
         }
     }
 

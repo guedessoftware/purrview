@@ -24,7 +24,7 @@ Dialog {
     }
 
     Overlay.modal: Rectangle {
-        color: Qt.rgba(0.025, 0.028, 0.055, 0.72)
+        color: UiTheme.dialogOverlay
     }
 
     background: Rectangle {
@@ -33,8 +33,8 @@ Dialog {
         border.color: Qt.rgba(UiTheme.brandPurple.r, UiTheme.brandPurple.g,
                               UiTheme.brandPurple.b, 0.48)
         gradient: Gradient {
-            GradientStop { position: 0; color: "#1b1d30" }
-            GradientStop { position: 1; color: "#121420" }
+            GradientStop { position: 0; color: UiTheme.dialogSurfaceStart }
+            GradientStop { position: 1; color: UiTheme.dialogSurfaceEnd }
         }
 
         Rectangle {
@@ -92,8 +92,8 @@ Dialog {
 
                 background: Rectangle {
                     radius: width / 2
-                    color: closeButton.down ? Qt.rgba(1, 1, 1, 0.14)
-                                            : closeButton.hovered ? Qt.rgba(1, 1, 1, 0.08)
+                    color: closeButton.down ? UiTheme.quietControlPressed
+                                            : closeButton.hovered ? UiTheme.quietControlHover
                                                                   : "transparent"
                 }
             }
@@ -132,8 +132,8 @@ Dialog {
                     Layout.preferredWidth: 98
                     Layout.preferredHeight: 98
                     radius: 49
-                    color: Qt.rgba(1, 1, 1, 0.045)
-                    border.color: Qt.rgba(1, 1, 1, 0.10)
+                    color: UiTheme.insetSurface
+                    border.color: UiTheme.insetBorder
 
                     Image {
                         anchors.fill: parent
@@ -193,7 +193,7 @@ Dialog {
                 Layout.fillWidth: true
                 implicitHeight: detailsLayout.implicitHeight + 36
                 radius: UiTheme.radiusMedium
-                color: Qt.rgba(1, 1, 1, 0.045)
+                color: UiTheme.insetSurface
                 border.color: UiTheme.borderSubtle
 
                 GridLayout {

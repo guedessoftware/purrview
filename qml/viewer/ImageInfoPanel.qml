@@ -67,7 +67,9 @@ Rectangle {
 
             background: Rectangle {
                 radius: UiTheme.radiusSmall
-                color: closeButton.down ? Qt.rgba(1, 1, 1, 0.18) : (closeButton.hovered ? UiTheme.floatingSurfaceHover : "transparent")
+                color: closeButton.down ? UiTheme.floatingSurfacePressed
+                                        : (closeButton.hovered ? UiTheme.floatingSurfaceHover
+                                                               : "transparent")
             }
 
         }
@@ -77,7 +79,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             height: 1
-            color: Qt.rgba(1, 1, 1, 0.1)
+            color: UiTheme.insetBorder
         }
 
         Rectangle {
@@ -168,7 +170,7 @@ Rectangle {
                                : (openFolderButton.hovered
                                   ? Qt.rgba(UiTheme.brandPurple.r, UiTheme.brandPurple.g,
                                             UiTheme.brandPurple.b, 0.20)
-                                  : Qt.rgba(1, 1, 1, 0.06))
+                                  : UiTheme.idleControlSurface)
                         border.width: 1
                         border.color: openFolderButton.hovered
                                       ? UiTheme.brandPink : UiTheme.brandBorder

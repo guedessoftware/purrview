@@ -5,6 +5,26 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.7] - 2026-09-03
+
+### Added
+
+- Tema claro completo para Composer, Viewer, faixa de miniaturas, painel de informações, menus e
+  diálogos, mantendo a identidade e os destaques coloridos do PurrView.
+- Detecção automática da preferência clara ou escura do sistema pela API de esquema de cores do
+  Qt, com fallback pela paleta nativa em distribuições que ainda usam Qt 6.4.
+
+### Changed
+
+- Em Qt 6.5 ou superior, o PurrView acompanha também mudanças de aparência realizadas no sistema
+  enquanto a aplicação está aberta.
+- Os valores do tema escuro anterior foram preservados sem alterações.
+
+### Tests
+
+- Os testes de tema agora protegem separadamente as paletas escura e clara e a detecção por
+  contraste, evitando regressões entre ambientes GNOME, KDE, RPM, DEB e Flatpak.
+
 ## [0.8.6] - 2026-09-03
 
 ### Fixed
@@ -284,7 +304,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.6...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.7...HEAD
+[0.8.7]: https://github.com/guedessoftware/purrview/compare/v0.8.6...v0.8.7
 [0.8.6]: https://github.com/guedessoftware/purrview/compare/v0.8.5...v0.8.6
 [0.8.5]: https://github.com/guedessoftware/purrview/compare/v0.8.4...v0.8.5
 [0.8.4]: https://github.com/guedessoftware/purrview/compare/v0.8.3...v0.8.4
