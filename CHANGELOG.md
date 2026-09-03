@@ -5,6 +5,15 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.12] - 2026-09-03
+
+### Fixed
+
+- O botão `Imprimir` do Viewer agora tem os mesmos 42 px de altura dos demais controles, com ícone
+  e texto centralizados e padding horizontal uniforme.
+- A largura deixa de ser fixa e passa a acompanhar o conteúdo, enquanto o modo compacto preserva o
+  botão quadrado somente com o ícone.
+
 ## [0.8.11] - 2026-09-03
 
 ### Changed
@@ -357,7 +366,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.11...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.12...HEAD
+[0.8.12]: https://github.com/guedessoftware/purrview/compare/v0.8.11...v0.8.12
 [0.8.11]: https://github.com/guedessoftware/purrview/compare/v0.8.10...v0.8.11
 [0.8.10]: https://github.com/guedessoftware/purrview/compare/v0.8.9...v0.8.10
 [0.8.9]: https://github.com/guedessoftware/purrview/compare/v0.8.8...v0.8.9

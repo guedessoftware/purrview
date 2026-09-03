@@ -188,8 +188,15 @@ Rectangle {
         Button {
             id: printButton
 
-            Layout.preferredWidth: root.compact ? 42 : 108
-            Layout.preferredHeight: 38
+            Layout.preferredWidth: implicitWidth
+            Layout.preferredHeight: 42
+            implicitWidth: root.compact ? 42 : printContent.implicitWidth + 32
+            implicitHeight: 42
+            leftPadding: root.compact ? 12 : 16
+            rightPadding: root.compact ? 12 : 16
+            topPadding: 10
+            bottomPadding: 10
+            hoverEnabled: true
             text: qsTr("Imprimir")
             enabled: root.controller.imageCount > 0
             font.weight: Font.Bold
@@ -198,30 +205,37 @@ Rectangle {
             ToolTip.text: root.controller.printAccessibleName + qsTr(" (Ctrl+P)")
             onClicked: root.printRequested()
 
-            contentItem: Row {
-                anchors.centerIn: parent
-                spacing: root.compact ? 0 : 7
+            contentItem: Item {
+                implicitWidth: printContent.implicitWidth
+                implicitHeight: 20
 
-                PurrIcon {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 18
-                    height: 18
-                    name: "printer"
-                    color: UiTheme.brightText
-                }
+                Row {
+                    id: printContent
 
-                Label {
-                    anchors.verticalCenter: parent.verticalCenter
-                    visible: !root.compact
-                    text: printButton.text
-                    color: UiTheme.brightText
-                    font: printButton.font
+                    anchors.centerIn: parent
+                    spacing: root.compact ? 0 : 8
+
+                    PurrIcon {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 18
+                        height: 18
+                        name: "printer"
+                        color: UiTheme.brightText
+                    }
+
+                    Label {
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: !root.compact
+                        text: printButton.text
+                        color: UiTheme.brightText
+                        font: printButton.font
+                    }
                 }
             }
 
             background: Rectangle {
                 radius: UiTheme.radiusSmall
-                opacity: printButton.enabled ? (printButton.down ? 0.80 : 1) : 0.36
+                opacity: printButton.enabled ? (printButton.down ? 0.80 : 1.0) : 0.36
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
                     GradientStop { position: 0; color: UiTheme.brandPink }
