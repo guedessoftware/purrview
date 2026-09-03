@@ -88,14 +88,14 @@ tar "${COMMON_TAR_ARGS[@]}" --transform "s,^,PurrView-${VERSION_VALUE}-bootstrap
 
 FLATPAK_NAME="PurrView-${VERSION_VALUE}-x86_64.flatpak"
 if command -v flatpak-builder >/dev/null 2>&1 && \
-    flatpak info org.kde.Sdk//6.8 >/dev/null 2>&1; then
+    flatpak info org.kde.Sdk//6.10 >/dev/null 2>&1; then
     flatpak-builder --force-clean --repo="${OUTPUT_DIR}/flatpak-repo" \
         "${SOURCE_ROOT}/.flatpak-builder/release" \
         "${SOURCE_ROOT}/packaging/flatpak/io.github.impage.Impage.yml"
     flatpak build-bundle "${OUTPUT_DIR}/flatpak-repo" "${OUTPUT_DIR}/${FLATPAK_NAME}" \
         io.github.impage.Impage
 elif ((REQUIRE_FLATPAK)); then
-    printf 'Flatpak builder or org.kde.Sdk//6.8 is unavailable.\n' >&2
+    printf 'Flatpak builder or org.kde.Sdk//6.10 is unavailable.\n' >&2
     exit 1
 else
     printf '! Flatpak artifact skipped: builder/runtime unavailable.\n' >&2

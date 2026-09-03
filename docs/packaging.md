@@ -18,7 +18,7 @@ seu destino. O Docker é o mecanismo padrão; outro mecanismo compatível pode s
 | `.deb` | Ubuntu 24.04, Qt 6.4 | Ubuntu 24.04 e derivados binariamente compatíveis, como Mint 22 e Zorin baseado em 24.04 | Qt básico |
 | `.rpm` | AlmaLinux 9 + EPEL/CRB, Qt 6.6 | AlmaLinux, Rocky e RHEL 9 compatíveis; outras distribuições RPM dependem da resolução local de dependências | Qt básico |
 | Arch `.pkg.tar.zst` | Arch Linux atualizado | Arch e derivados sincronizados com seus repositórios | Exiv2 avançado |
-| `.flatpak` | SDK/Runtime KDE 6.8 oficial do Flathub | Distribuições com Flatpak recente | Exiv2 avançado privado no sandbox |
+| `.flatpak` | SDK/Runtime KDE 6.10 oficial do Flathub | Distribuições com Flatpak recente | Exiv2 avançado privado no sandbox |
 | `source` / `bootstrap` | Build Release do host | Demais distribuições Linux com dependências suportadas | Exiv2 quando disponível |
 
 DEB e RPM usam deliberadamente as versões estáveis mais antigas de Qt disponíveis nas bases
@@ -48,7 +48,7 @@ scripts/package-all.sh --skip-host-build
 ```
 
 O Flatpak precisa de `--privileged` para o isolamento interno do `flatpak-builder`. O estado das
-dependências fica em `${XDG_CACHE_HOME:-~/.cache}/purrview/packaging/flatpak-kde-6.8`, fora da
+dependências fica em `${XDG_CACHE_HOME:-~/.cache}/purrview/packaging/flatpak-kde-6.10`, fora da
 árvore-fonte, enquanto todos os artefatos finais ficam em `dist/VERSÃO/`. Nenhum comando cria tag,
 envia commits ou publica pacotes.
 

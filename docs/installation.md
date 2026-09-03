@@ -15,8 +15,11 @@ sudo dnf install ./purrview-X.Y.Z-1.x86_64.rpm
 # Arch Linux e derivados sincronizados
 sudo pacman -U ./purrview-X.Y.Z-1-x86_64.pkg.tar.zst
 
-# Qualquer distribuição com Flatpak
+# Qualquer distribuição com Flatpak (execute no diretório que contém o arquivo)
+flatpak remote-add --user --if-not-exists flathub \
+  https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user ./PurrView-X.Y.Z-x86_64.flatpak
+flatpak run io.github.impage.Impage
 ```
 
 Use o Flatpak quando a distribuição não for compatível com uma das bases nativas. O bootstrap e o
@@ -26,10 +29,19 @@ localmente. A matriz exata está em `docs/packaging.md`.
 ## Flatpak
 
 É o canal com maior alcance entre distribuições porque mantém runtime e atualizações isolados. O
-manifesto ainda não está publicado no Flathub. Para construir localmente:
+aplicativo ainda não está publicado no catálogo do Flathub; o remoto é usado para obter o runtime
+KDE exigido pelo bundle.
+
+Para instalar o pacote `.flatpak` pronto, basta ter o comando `flatpak`. `flatpak-builder` é uma
+ferramenta de desenvolvimento e não participa da instalação. Para construir a partir do código no
+Arch, Garuda ou derivado, instale-a e execute os comandos a partir da raiz do projeto:
 
 ```bash
-flatpak install --user flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
+sudo pacman -S flatpak flatpak-builder
+flatpak remote-add --user --if-not-exists flathub \
+  https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user -y flathub org.kde.Sdk//6.10 org.kde.Platform//6.10
+cd /caminho/para/purrview
 flatpak-builder --user --install --force-clean \
   build-flatpak packaging/flatpak/io.github.impage.Impage.yml
 flatpak run io.github.impage.Impage

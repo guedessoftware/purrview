@@ -106,7 +106,7 @@ done
 if [[ -n "${REQUESTED[flatpak]:-}" ]]; then
     FLATPAK_BUNDLE="${OUTPUT_DIR}/PurrView-${VERSION_VALUE}-x86_64.flatpak"
     if [[ ! -f "${FLATPAK_BUNDLE}" ]]; then
-        FLATPAK_IMAGE="ghcr.io/flathub-infra/flatpak-github-actions:kde-6.8"
+        FLATPAK_IMAGE="ghcr.io/flathub-infra/flatpak-github-actions:kde-6.10"
         if ((REFRESH_IMAGES)); then
             "${CONTAINER_ENGINE}" pull "${FLATPAK_IMAGE}"
         fi
@@ -114,9 +114,9 @@ if [[ -n "${REQUESTED[flatpak]:-}" ]]; then
         # the compatibility boundary; changing the application version alone
         # must not rebuild third-party modules unnecessarily.
         HOST_CACHE_ROOT="${XDG_CACHE_HOME:-${HOME}/.cache}"
-        FLATPAK_WORK="${HOST_CACHE_ROOT}/purrview/packaging/flatpak-kde-6.8"
+        FLATPAK_WORK="${HOST_CACHE_ROOT}/purrview/packaging/flatpak-kde-6.10"
         mkdir -p "${FLATPAK_WORK}"
-        printf '\n==> Building Flatpak with the KDE 6.8 SDK container\n'
+        printf '\n==> Building Flatpak with the KDE 6.10 SDK container\n'
         "${CONTAINER_ENGINE}" run --rm --privileged \
             --entrypoint /bin/bash \
             --volume "${SOURCE_ROOT}:/src:ro" \

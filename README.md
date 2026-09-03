@@ -93,6 +93,16 @@ O fluxo de release gera seis artefatos. Escolha o formato correspondente à sua 
 | Instalação nativa assistida | `PurrView-0.8.3-bootstrap.tar.xz` | Execute `scripts/install-impage.sh --user` |
 | Compilação manual | `PurrView-0.8.3-source.tar.xz` | Consulte [docs/building.md](docs/building.md) |
 
+Na primeira instalação por Flatpak, configure o Flathub antes de abrir o bundle. Não é necessário
+instalar `flatpak-builder` para usar o pacote pronto:
+
+```bash
+flatpak remote-add --user --if-not-exists flathub \
+  https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user ./PurrView-0.8.3-x86_64.flatpak
+flatpak run io.github.impage.Impage
+```
+
 Para uma instalação nativa por usuário diretamente do código-fonte:
 
 ```bash
@@ -203,7 +213,7 @@ scripts/validate-release.sh
 scripts/package-all.sh
 ```
 
-O empacotador usa containers de Ubuntu 24.04, AlmaLinux 9 e Arch Linux, além do SDK KDE 6.8 para o
+O empacotador usa containers de Ubuntu 24.04, AlmaLinux 9 e Arch Linux, além do SDK KDE 6.10 para o
 Flatpak. Cada pacote é compilado, testado, instalado e inspecionado antes de receber seu hash
 SHA-256. Veja a matriz completa em [docs/packaging.md](docs/packaging.md).
 

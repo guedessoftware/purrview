@@ -1,6 +1,6 @@
 # Flatpak
 
-O manifesto usa `org.kde.Platform//6.8` e `org.kde.Sdk//6.8`. A série Qt 6.8 é estável e atende ao
+O manifesto usa `org.kde.Platform//6.10` e `org.kde.Sdk//6.10`. A série Qt 6.10 é estável e atende ao
 Qt 6.4 mínimo do PurrView. `inih` e Exiv2 0.28.8 são construídos no sandbox com fontes e checksums
 fixos; não alteram bibliotecas do sistema hospedeiro.
 
@@ -11,11 +11,26 @@ rede nem acesso geral ao diretório pessoal.
 
 ## Construir
 
+`flatpak-builder` só é necessário para gerar o aplicativo a partir do código. No Arch, Garuda ou
+derivado, instale as ferramentas e execute o build a partir da raiz do repositório:
+
 ```bash
-flatpak install --user flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
+sudo pacman -S flatpak flatpak-builder
+flatpak remote-add --user --if-not-exists flathub \
+  https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user -y flathub org.kde.Sdk//6.10 org.kde.Platform//6.10
+cd /caminho/para/purrview
 flatpak-builder --user --install --force-clean \
   build-flatpak packaging/flatpak/io.github.impage.Impage.yml
 flatpak run io.github.impage.Impage
+```
+
+Para instalar o bundle pronto não use `flatpak-builder`:
+
+```bash
+flatpak remote-add --user --if-not-exists flathub \
+  https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user ./PurrView-X.Y.Z-x86_64.flatpak
 ```
 
 Antes de enviar ao Flathub, substitua a fonte local `dir` por um arquivo da tag oficial com SHA-256.

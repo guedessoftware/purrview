@@ -14,6 +14,10 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 - A matriz da CI instala também os codecs e utilitários verificados pelo ciclo do bootstrap,
   evitando falhas artificiais após o build e os testes já terem passado.
+- As instruções do Flatpak agora configuram o Flathub explicitamente, distinguem a instalação do
+  bundle pronto da compilação com `flatpak-builder` e indicam o diretório correto do projeto.
+- O Flatpak migrou do runtime KDE 6.8 descontinuado para o ramo estável 6.10, mantendo manifesto,
+  CI, containers, documentação e validações de release sincronizados.
 
 ## [0.8.3] - 2026-09-03
 

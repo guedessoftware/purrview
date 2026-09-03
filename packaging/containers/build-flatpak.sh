@@ -24,4 +24,4 @@ ostree refs --repo="${WORK_ROOT}/verify-repo" \
     | grep -Fqx 'app/io.github.impage.Impage/x86_64/master'
 chown --reference="${OUTPUT_ROOT}" "${BUNDLE_PATH}"
 
-printf 'Flatpak bundle validated with KDE runtime 6.8: %s\n' "${BUNDLE_PATH}"
+printf 'Flatpak bundle validated with KDE runtime 6.10: %s\n' "${BUNDLE_PATH}"
