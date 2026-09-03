@@ -8,6 +8,16 @@ Rectangle {
     required property var themePalette
     property real availableWidth: parent ? parent.width : 760
     readonly property bool interacting: stripHover.hovered || thumbnailList.moving
+    readonly property int itemCount: root.controller.folderModel.count
+    readonly property real thumbnailWidth: 76
+    readonly property real horizontalPadding: 20
+    readonly property real naturalWidth: itemCount > 0
+                                         ? itemCount * thumbnailWidth
+                                           + Math.max(0, itemCount - 1) * UiTheme.spacingSm
+                                           + horizontalPadding
+                                         : 0
+    readonly property real maximumWidth: Math.max(horizontalPadding + thumbnailWidth,
+                                                  availableWidth - 96)
 
     function ensureCurrentVisible() {
         const itemIndex = root.controller.folderModel.currentIndex;
@@ -36,14 +46,22 @@ Rectangle {
     Accessible.name: qsTr("Miniaturas da pasta")
     Accessible.description: qsTr("%1 imagens; use as setas para navegar e espaço para selecionar").arg(root.controller.folderModel.count)
     implicitHeight: 98
-    width: Math.min(Math.max(220, availableWidth - 96),
-                    Math.max(220, root.controller.folderModel.count * 88 + 24))
+    implicitWidth: naturalWidth
+    width: Math.min(naturalWidth, maximumWidth)
     radius: UiTheme.radiusLarge
     color: stripHover.hovered ? Qt.rgba(0.07, 0.07, 0.09, 0.54)
                               : Qt.rgba(0.04, 0.04, 0.06, 0.40)
     border.color: stripHover.hovered ? Qt.rgba(1, 1, 1, 0.28)
                                      : Qt.rgba(1, 1, 1, 0.18)
     clip: true
+
+    Behavior on width {
+        NumberAnimation {
+            duration: UiTheme.durationNormal
+            easing.type: Easing.OutCubic
+        }
+    }
+
     Keys.onLeftPressed: function(event) {
         root.controller.state.notifyActivity();
         root.controller.previousImage();

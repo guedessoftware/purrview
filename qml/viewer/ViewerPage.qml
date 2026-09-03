@@ -224,6 +224,7 @@ Item {
         text: "‹"
         accessibleName: qsTr("Imagem anterior")
         themePalette: viewerPage.themePalette
+        visible: viewerPage.controller.folderModel.count > 1
         enabled: viewerPage.controller.canGoPrevious
         onClicked: {
             viewerPage.revealFilmstrip();
@@ -242,6 +243,7 @@ Item {
         text: "›"
         accessibleName: qsTr("Próxima imagem")
         themePalette: viewerPage.themePalette
+        visible: viewerPage.controller.folderModel.count > 1
         enabled: viewerPage.controller.canGoNext
         onClicked: {
             viewerPage.revealFilmstrip();
