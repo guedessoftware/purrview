@@ -7,6 +7,7 @@ ToolButton {
     required property var themePalette
     property string tooltipText: text
     property bool emphasized: false
+    property string iconName: ""
 
     implicitWidth: Math.max(42, contentItem.implicitWidth + 18)
     implicitHeight: 42
@@ -16,13 +17,30 @@ ToolButton {
     ToolTip.text: tooltipText
     ToolTip.delay: 450
 
-    contentItem: Label {
-        text: control.text
-        color: control.enabled ? UiTheme.textPrimary : UiTheme.disabled
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        font.pixelSize: control.emphasized ? 13 : 15
-        font.weight: control.emphasized ? Font.DemiBold : Font.Medium
+    contentItem: Item {
+        implicitWidth: control.iconName.length > 0 ? 18 : textLabel.implicitWidth
+        implicitHeight: 18
+
+        PurrIcon {
+            anchors.centerIn: parent
+            width: 18
+            height: 18
+            visible: control.iconName.length > 0
+            name: control.iconName
+            color: control.enabled ? UiTheme.textPrimary : UiTheme.disabled
+        }
+
+        Label {
+            id: textLabel
+            anchors.fill: parent
+            visible: control.iconName.length === 0
+            text: control.text
+            color: control.enabled ? UiTheme.textPrimary : UiTheme.disabled
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: control.emphasized ? 13 : 15
+            font.weight: control.emphasized ? Font.DemiBold : Font.Medium
+        }
     }
 
     background: Rectangle {

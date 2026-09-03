@@ -176,6 +176,10 @@ set_source_files_properties(qml/components/MetricSpinBox.qml PROPERTIES
     QT_RESOURCE_ALIAS MetricSpinBox.qml)
 set_source_files_properties(qml/components/PagePreview.qml PROPERTIES
     QT_RESOURCE_ALIAS PagePreview.qml)
+set_source_files_properties(qml/components/PurrIcon.qml PROPERTIES
+    QT_RESOURCE_ALIAS PurrIcon.qml)
+set_source_files_properties(qml/components/IconLabel.qml PROPERTIES
+    QT_RESOURCE_ALIAS IconLabel.qml)
 set_source_files_properties(qml/panels/LayoutPanel.qml PROPERTIES
     QT_RESOURCE_ALIAS LayoutPanel.qml)
 set_source_files_properties(qml/viewer/ViewerPage.qml PROPERTIES
@@ -218,6 +222,8 @@ qt_add_qml_module(impage
         qml/composer/ComposerPage.qml
         qml/components/MetricSpinBox.qml
         qml/components/PagePreview.qml
+        qml/components/PurrIcon.qml
+        qml/components/IconLabel.qml
         qml/panels/LayoutPanel.qml
         qml/viewer/ViewerPage.qml
         qml/viewer/ImageCanvas.qml

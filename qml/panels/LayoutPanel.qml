@@ -50,13 +50,15 @@ ScrollView {
         width: root.availableWidth
         spacing: 0
 
-        Label {
+        IconLabel {
             Layout.fillWidth: true
             Layout.leftMargin: 22
             Layout.rightMargin: 22
             Layout.topMargin: 22
             Layout.bottomMargin: 22
-            text: qsTr("▤  Configuração da página")
+            iconName: "page"
+            iconSize: 19
+            text: qsTr("Configuração da página")
             color: root.palette.windowText
             font.pixelSize: 18
             font.weight: Font.Bold
@@ -73,8 +75,9 @@ ScrollView {
             Layout.margins: 22
             spacing: 10
 
-            Label {
-                text: qsTr("▱  Tamanho do papel")
+            IconLabel {
+                iconName: "paper"
+                text: qsTr("Tamanho do papel")
                 color: UiTheme.brandPurple
                 font.weight: Font.DemiBold
             }
@@ -91,8 +94,9 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            Label {
-                text: qsTr("▣  Orientação")
+            IconLabel {
+                iconName: "orientation"
+                text: qsTr("Orientação")
                 color: UiTheme.brandPurple
                 font.weight: Font.DemiBold
             }
@@ -123,8 +127,9 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            Label {
-                text: qsTr("▦  Modelos de grade")
+            IconLabel {
+                iconName: "grid"
+                text: qsTr("Modelos de grade")
                 color: UiTheme.brandCyan
                 font.weight: Font.DemiBold
             }
@@ -183,8 +188,9 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            Label {
-                text: qsTr("▦  Grade")
+            IconLabel {
+                iconName: "grid"
+                text: qsTr("Grade")
                 color: UiTheme.brandCyan
                 font.weight: Font.DemiBold
             }
@@ -229,8 +235,9 @@ ScrollView {
                 Layout.preferredHeight: 4
             }
 
-            Label {
-                text: qsTr("▧  Encaixe das imagens")
+            IconLabel {
+                iconName: "image"
+                text: qsTr("Encaixe das imagens")
                 color: UiTheme.brandPink
                 font.weight: Font.DemiBold
             }
@@ -255,8 +262,9 @@ ScrollView {
             Layout.margins: 22
             spacing: 8
 
-            Label {
-                text: qsTr("▧  Margens")
+            IconLabel {
+                iconName: "margins"
+                text: qsTr("Margens")
                 color: UiTheme.brandCyan
                 font.weight: Font.DemiBold
                 Layout.bottomMargin: 2
@@ -322,8 +330,9 @@ ScrollView {
                 Layout.preferredHeight: 6
             }
 
-            Label {
-                text: qsTr("▱  Espaçamento")
+            IconLabel {
+                iconName: "spacing"
+                text: qsTr("Espaçamento")
                 color: UiTheme.brandPink
                 font.weight: Font.DemiBold
             }

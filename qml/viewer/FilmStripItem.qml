@@ -53,12 +53,22 @@ Rectangle {
         visible: status === Image.Ready
     }
 
+    PurrIcon {
+        anchors.centerIn: parent
+        width: 24
+        height: 24
+        name: "image"
+        color: UiTheme.textSecondary
+        visible: root.imageValid && root.imageThumbnailSource.toString().length === 0
+    }
+
     Label {
         anchors.centerIn: parent
-        text: root.imageValid ? "▧" : "!"
-        color: root.imageValid ? UiTheme.textSecondary : UiTheme.danger
-        font.pixelSize: root.imageValid ? 24 : 20
+        text: "!"
+        color: UiTheme.danger
+        font.pixelSize: 20
         visible: root.imageThumbnailSource.toString().length === 0
+                 && !root.imageValid
     }
 
     Rectangle {

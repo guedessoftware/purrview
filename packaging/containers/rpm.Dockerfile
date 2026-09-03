@@ -17,6 +17,8 @@ RUN dnf -y -q install dnf-plugins-core epel-release \
         qt6-qtimageformats \
         qt6-qtsvg \
         qt6-qtwayland \
+        xorg-x11-server-Xvfb \
+        xorg-x11-xauth \
     && dnf clean all
 
 ENTRYPOINT ["/bin/bash", "/src/packaging/containers/build-rpm.sh"]

@@ -349,16 +349,17 @@ Item {
             Button {
                 id: addImagesButton
                 action: addImagesAction
-                text: qsTr("▧  Adicionar imagens…")
+                text: qsTr("Adicionar imagens…")
                 implicitWidth: 200
                 implicitHeight: 42
                 font.weight: Font.DemiBold
-                contentItem: Text {
+                contentItem: IconLabel {
+                    anchors.centerIn: parent
+                    iconName: "add-image"
+                    iconSize: 19
                     text: addImagesButton.text
                     color: composerPage.themePalette.buttonText
                     font: addImagesButton.font
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
                 }
                 background: Rectangle {
                     radius: 8
@@ -375,9 +376,19 @@ Item {
             }
 
             Button {
+                id: clearButton
                 action: clearAction
-                text: qsTr("⌫  Limpar")
+                text: qsTr("Limpar")
                 implicitHeight: 42
+                contentItem: IconLabel {
+                    anchors.centerIn: parent
+                    iconName: "trash"
+                    text: clearButton.text
+                    color: clearButton.enabled
+                           ? composerPage.themePalette.buttonText
+                           : composerPage.themePalette.placeholderText
+                    font: clearButton.font
+                }
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Limpar imagens (Ctrl+Shift+Delete)")
             }
@@ -549,9 +560,19 @@ Item {
             }
 
             Button {
+                id: viewerButton
                 action: viewerAction
-                text: qsTr("◉  Visualizar")
+                text: qsTr("Visualizar")
                 implicitHeight: 42
+                contentItem: IconLabel {
+                    anchors.centerIn: parent
+                    iconName: "eye"
+                    text: viewerButton.text
+                    color: viewerButton.enabled
+                           ? composerPage.themePalette.buttonText
+                           : composerPage.themePalette.placeholderText
+                    font: viewerButton.font
+                }
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Voltar ao visualizador (Ctrl+Shift+V)")
             }
@@ -559,17 +580,17 @@ Item {
             Button {
                 id: printButton
                 action: printAction
-                text: qsTr("⎙  Imprimir")
+                text: qsTr("Imprimir")
                 implicitHeight: 42
                 leftPadding: 20
                 rightPadding: 20
                 font.weight: Font.Bold
-                contentItem: Text {
+                contentItem: IconLabel {
+                    anchors.centerIn: parent
+                    iconName: "printer"
                     text: printButton.text
-                    color: "#ffffff"
+                    color: UiTheme.brightText
                     font: printButton.font
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
                 }
                 background: Rectangle {
                     radius: 8

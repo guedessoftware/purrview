@@ -76,7 +76,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "▦"
+            iconName: "filmstrip"
             tooltipText: root.controller.state.filmstripVisible ? qsTr("Ocultar miniaturas") : qsTr("Mostrar miniaturas")
             checkable: true
             checked: root.controller.state.filmstripVisible
@@ -144,7 +144,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "↶"
+            iconName: "rotate-left"
             tooltipText: qsTr("Girar para esquerda (Shift+R)")
             enabled: root.controller.imageCount > 0
             onClicked: root.controller.rotateLeft()
@@ -152,7 +152,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "↷"
+            iconName: "rotate-right"
             tooltipText: qsTr("Girar para direita (R)")
             enabled: root.controller.imageCount > 0
             onClicked: root.controller.rotateRight()
@@ -160,7 +160,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "ⓘ"
+            iconName: "info"
             tooltipText: root.controller.state.infoPanelVisible ? qsTr("Ocultar informações (I)") : qsTr("Mostrar informações (I)")
             checkable: true
             checked: root.controller.state.infoPanelVisible
@@ -170,7 +170,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "📌"
+            iconName: "pin"
             tooltipText: root.controller.state.toolbarPinned
                          ? qsTr("Liberar transparência da barra")
                          : qsTr("Fixar barra visível")
@@ -190,7 +190,7 @@ Rectangle {
 
             Layout.preferredWidth: root.compact ? 42 : 108
             Layout.preferredHeight: 38
-            text: root.compact ? "⎙" : qsTr("⎙  Imprimir")
+            text: qsTr("Imprimir")
             enabled: root.controller.imageCount > 0
             font.weight: Font.Bold
             Accessible.name: root.controller.printAccessibleName
@@ -198,12 +198,25 @@ Rectangle {
             ToolTip.text: root.controller.printAccessibleName + qsTr(" (Ctrl+P)")
             onClicked: root.printRequested()
 
-            contentItem: Label {
-                text: printButton.text
-                color: "white"
-                font: printButton.font
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+            contentItem: Row {
+                anchors.centerIn: parent
+                spacing: root.compact ? 0 : 7
+
+                PurrIcon {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 18
+                    height: 18
+                    name: "printer"
+                    color: UiTheme.brightText
+                }
+
+                Label {
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: !root.compact
+                    text: printButton.text
+                    color: UiTheme.brightText
+                    font: printButton.font
+                }
             }
 
             background: Rectangle {
@@ -219,7 +232,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "⋯"
+            iconName: "more"
             tooltipText: qsTr("Mais opções")
             onClicked: overflowMenu.popup()
         }

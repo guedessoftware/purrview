@@ -5,6 +5,20 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.8] - 2026-09-03
+
+### Fixed
+
+- Os ícones das barras do Composer e do Viewer não dependem mais de caracteres Unicode presentes
+  nas fontes do sistema, eliminando quadrados vazios no RPM do AlmaLinux e em instalações mínimas.
+- Os títulos do painel lateral e o placeholder de miniatura usam o mesmo conjunto vetorial interno,
+  mantendo forma, alinhamento e cor nos temas claro e escuro.
+
+### Tests
+
+- O pacote RPM passa a executar testes de inicialização do Viewer e do Composer dentro do
+  AlmaLinux 9 com Xvfb, além da validação já realizada no Ubuntu.
+
 ## [0.8.7] - 2026-09-03
 
 ### Added
@@ -304,7 +318,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.7...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.8...HEAD
+[0.8.8]: https://github.com/guedessoftware/purrview/compare/v0.8.7...v0.8.8
 [0.8.7]: https://github.com/guedessoftware/purrview/compare/v0.8.6...v0.8.7
 [0.8.6]: https://github.com/guedessoftware/purrview/compare/v0.8.5...v0.8.6
 [0.8.5]: https://github.com/guedessoftware/purrview/compare/v0.8.4...v0.8.5
