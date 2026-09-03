@@ -10,6 +10,11 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - README reformulado com identidade visual do PurrView, capturas reais e anônimas do Composer e do
   Viewer, visão geral dos recursos e caminhos mais claros para instalação e contribuição.
 
+### Fixed
+
+- A matriz da CI instala também os codecs e utilitários verificados pelo ciclo do bootstrap,
+  evitando falhas artificiais após o build e os testes já terem passado.
+
 ## [0.8.3] - 2026-09-03
 
 ### Changed

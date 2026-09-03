@@ -24,25 +24,27 @@ jobs:
               apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y
               build-essential cmake ninja-build pkg-config git qt6-base-dev qt6-declarative-dev
               qt6-image-formats-plugins libcups2-dev libxkbcommon-dev libexiv2-dev appstream
-              desktop-file-utils
+              desktop-file-utils xdg-utils kimageformat6-plugins
           - name: Debian 13
             container: debian:13-slim
             install: >-
               apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y
               build-essential cmake ninja-build pkg-config git qt6-base-dev qt6-declarative-dev
               qt6-image-formats-plugins libcups2-dev libxkbcommon-dev libexiv2-dev appstream
-              desktop-file-utils
+              desktop-file-utils xdg-utils kimageformat6-plugins
           - name: Fedora 44
             container: fedora:44
             install: >-
               dnf install -y gcc-c++ cmake ninja-build pkgconf-pkg-config git
               qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtimageformats exiv2-devel
-              cups-devel libxkbcommon-devel appstream desktop-file-utils
+              cups-devel libxkbcommon-devel appstream desktop-file-utils xdg-utils
+              kf6-kimageformats libavif
           - name: Arch Linux
             container: archlinux:base-devel
             install: >-
               pacman -Syu --noconfirm --needed cmake ninja pkgconf git qt6-base qt6-declarative
-              qt6-imageformats cups libxkbcommon exiv2 appstream desktop-file-utils
+              qt6-imageformats cups libxkbcommon exiv2 appstream desktop-file-utils xdg-utils
+              kimageformats libavif libheif
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
