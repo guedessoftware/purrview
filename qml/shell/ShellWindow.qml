@@ -16,6 +16,26 @@ ApplicationWindow {
     flags: Qt.Window | Qt.WindowTitleHint | Qt.WindowSystemMenuHint
            | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint
            | Qt.WindowCloseButtonHint
+    palette.window: UiTheme.backgroundPrimary
+    palette.windowText: UiTheme.textPrimary
+    palette.base: UiTheme.backgroundSecondary
+    palette.alternateBase: "#202331"
+    palette.toolTipBase: "#252839"
+    palette.toolTipText: UiTheme.textPrimary
+    palette.text: UiTheme.textPrimary
+    palette.button: "#292c3d"
+    palette.buttonText: UiTheme.textPrimary
+    palette.brightText: "#ffffff"
+    palette.highlight: UiTheme.brandPurple
+    palette.highlightedText: "#ffffff"
+    palette.link: UiTheme.brandPink
+    palette.linkVisited: "#c991ef"
+    palette.light: "#464a61"
+    palette.midlight: "#393d52"
+    palette.dark: "#0b0c11"
+    palette.mid: "#34384b"
+    palette.shadow: "#05060a"
+    palette.placeholderText: UiTheme.textMuted
     color: palette.window
     property string displayedSource: ""
     property bool maximizedBeforeFullScreen: false

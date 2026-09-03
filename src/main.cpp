@@ -3,6 +3,7 @@
 #include "platform/desktop/SingleInstanceService.h"
 #include "shell/ApplicationController.h"
 #include "shell/ModuleManager.h"
+#include "ui/ApplicationTheme.h"
 #include "ui/PagePreviewItem.h"
 #include "ui/ThumbnailImageProvider.h"
 #include "viewer/ViewerState.h"
@@ -15,6 +16,7 @@
 #include <QIcon>
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
+#include <QQuickStyle>
 #include <QSettings>
 #include <QSysInfo>
 #include <QTextStream>
@@ -103,7 +105,9 @@ int main(int argc, char* argv[]) {
         return commandLine.valid ? EXIT_SUCCESS : EXIT_FAILURE;
     }
 
+    QQuickStyle::setStyle(QStringLiteral("Fusion"));
     PurrViewApplication application(argc, argv);
+    application.setPalette(impage::ui::createPurrViewPalette());
     migrateLegacySettings();
     QGuiApplication::setDesktopFileName(QStringLiteral("io.github.impage.Impage"));
     application.setWindowIcon(

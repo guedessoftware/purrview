@@ -158,6 +158,8 @@ target_compile_options(impage_shell PRIVATE
 
 qt_add_executable(impage
     src/main.cpp
+    src/ui/ApplicationTheme.cpp
+    src/ui/ApplicationTheme.h
     src/ui/PagePreviewItem.cpp
     src/ui/PagePreviewItem.h
     src/ui/ThumbnailImageProvider.cpp
@@ -314,6 +316,18 @@ if(BUILD_TESTING)
     )
     target_link_libraries(impage_desktop_integration_tests PRIVATE impage_shell Qt6::Core Qt6::Network)
     add_test(NAME impage_desktop_integration_tests COMMAND impage_desktop_integration_tests)
+
+    add_executable(impage_theme_tests
+        tests/unit/ApplicationThemeTests.cpp
+        src/ui/ApplicationTheme.cpp
+        src/ui/ApplicationTheme.h
+    )
+    target_include_directories(impage_theme_tests PRIVATE src)
+    target_link_libraries(impage_theme_tests PRIVATE Qt6::Gui)
+    target_compile_options(impage_theme_tests PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic>
+    )
+    add_test(NAME impage_theme_tests COMMAND impage_theme_tests)
 
     find_program(IMPAGE_BASH_EXECUTABLE bash REQUIRED)
     add_test(NAME impage_bootstrap_tests

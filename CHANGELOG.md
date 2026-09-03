@@ -5,6 +5,21 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.5] - 2026-09-03
+
+### Changed
+
+- A aplicação agora define uma paleta escura completa e o estilo Fusion antes de carregar qualquer
+  controle, mantendo a identidade visual do PurrView em GNOME, KDE, RPM e Flatpak mesmo quando o
+  sistema hospedeiro usa tema claro.
+- A raiz QML também declara explicitamente as cores herdadas por menus, campos, botões, listas,
+  diálogos e áreas de conteúdo, cobrindo o comportamento do Qt Quick 6.4 usado pelo AlmaLinux 9.
+
+### Tests
+
+- Novo teste de paleta protege superfícies, textos, botões, seleção e estados desabilitados contra
+  regressões; o Composer também foi capturado e inspecionado dentro do container AlmaLinux 9.
+
 ## [0.8.4] - 2026-09-03
 
 ### Documentation
@@ -259,7 +274,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.4...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.5...HEAD
+[0.8.5]: https://github.com/guedessoftware/purrview/compare/v0.8.4...v0.8.5
 [0.8.4]: https://github.com/guedessoftware/purrview/compare/v0.8.3...v0.8.4
 [0.8.3]: https://github.com/guedessoftware/purrview/compare/v0.8.2...v0.8.3
 [0.8.2]: https://github.com/guedessoftware/purrview/compare/v0.8.1...v0.8.2
