@@ -5,6 +5,11 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+### Documentation
+
+- README reformulado com identidade visual do PurrView, capturas reais e anônimas do Composer e do
+  Viewer, visão geral dos recursos e caminhos mais claros para instalação e contribuição.
+
 ## [0.8.3] - 2026-09-03
 
 ### Changed
