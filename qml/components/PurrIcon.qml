@@ -139,6 +139,14 @@ Item {
                 line(10.5, 10, 10.5, 17)
                 line(13.5, 10, 13.5, 17)
                 break
+            case "duplicate":
+                ctx.strokeRect(7, 7, 13, 13)
+                ctx.beginPath()
+                ctx.moveTo(4, 16)
+                ctx.lineTo(4, 4)
+                ctx.lineTo(16, 4)
+                ctx.stroke()
+                break
             case "eye":
                 ctx.beginPath()
                 ctx.moveTo(3, 12)

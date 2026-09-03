@@ -55,6 +55,12 @@ cp "${PROJECT_ROOT}/resources/linux/impage-servicemenu.desktop" \
     "${IMPAGE_STAGE_ROOT}/share/kio/servicemenus/"
 impage_configure_desktop_launchers
 
+grep -Fqx 'Name=PurrView Print' \
+    "${IMPAGE_STAGE_ROOT}/share/applications/io.github.impage.Impage.desktop"
+grep -Fqx 'Name[pt_BR]=PurrView Impressão' \
+    "${IMPAGE_STAGE_ROOT}/share/applications/io.github.impage.Impage.desktop"
+grep -Fqx 'Name=PurrView' \
+    "${IMPAGE_STAGE_ROOT}/share/applications/io.github.impage.Impage.Viewer.desktop"
 grep -Fqx 'Exec=/home/tester/.local/opt/impage/bin/purrview %F' \
     "${IMPAGE_STAGE_ROOT}/share/applications/io.github.impage.Impage.desktop"
 grep -Fqx 'TryExec=/home/tester/.local/opt/impage/bin/purrview' \

@@ -1,8 +1,8 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=PurrView
-Name[pt_BR]=PurrView
+Name=PurrView Print
+Name[pt_BR]=PurrView Impressão
 Comment=View images and compose pages ready for printing
 Comment[pt_BR]=Visualize imagens e componha páginas prontas para impressão
 Exec=purrview %F

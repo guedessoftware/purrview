@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/guedessoftware/purrview/actions/workflows/ci.yml"><img src="https://github.com/guedessoftware/purrview/actions/workflows/ci.yml/badge.svg" alt="Native CI"></a>
-  <img src="https://img.shields.io/badge/versão-0.8.9-ff7f83?style=flat-square" alt="Versão 0.8.9">
+  <img src="https://img.shields.io/badge/versão-0.8.10-ff7f83?style=flat-square" alt="Versão 0.8.10">
   <img src="https://img.shields.io/badge/Qt-6.4%2B-8f6de1?style=flat-square&logo=qt&logoColor=white" alt="Qt 6.4 ou superior">
   <img src="https://img.shields.io/badge/C%2B%2B-20-4ecbd3?style=flat-square&logo=cplusplus&logoColor=white" alt="C++20">
   <a href="LICENSE"><img src="https://img.shields.io/badge/licença-GPLv3-f279a0?style=flat-square" alt="GNU GPLv3"></a>
@@ -86,12 +86,12 @@ O fluxo de release gera seis artefatos. Escolha o formato correspondente à sua 
 
 | Ambiente | Artefato | Instalação |
 |---|---|---|
-| Ubuntu, Mint, Zorin e Debian | `purrview_0.8.9_amd64.deb` | `sudo apt install ./purrview_0.8.9_amd64.deb` |
-| Fedora, AlmaLinux, openSUSE e derivados RPM | `purrview-0.8.9-1.x86_64.rpm` | `sudo dnf install ./purrview-0.8.9-1.x86_64.rpm` |
-| Arch, Garuda, EndeavourOS e Manjaro | `purrview-0.8.9-1-x86_64.pkg.tar.zst` | `sudo pacman -U ./purrview-0.8.9-1-x86_64.pkg.tar.zst` |
-| Linux com Flatpak | `PurrView-0.8.9-x86_64.flatpak` | `flatpak install --user ./PurrView-0.8.9-x86_64.flatpak` |
-| Instalação nativa assistida | `PurrView-0.8.9-bootstrap.tar.xz` | Execute `scripts/install-impage.sh --user` |
-| Compilação manual | `PurrView-0.8.9-source.tar.xz` | Consulte [docs/building.md](docs/building.md) |
+| Ubuntu, Mint, Zorin e Debian | `purrview_0.8.10_amd64.deb` | `sudo apt install ./purrview_0.8.10_amd64.deb` |
+| Fedora, AlmaLinux, openSUSE e derivados RPM | `purrview-0.8.10-1.x86_64.rpm` | `sudo dnf install ./purrview-0.8.10-1.x86_64.rpm` |
+| Arch, Garuda, EndeavourOS e Manjaro | `purrview-0.8.10-1-x86_64.pkg.tar.zst` | `sudo pacman -U ./purrview-0.8.10-1-x86_64.pkg.tar.zst` |
+| Linux com Flatpak | `PurrView-0.8.10-x86_64.flatpak` | `flatpak install --user ./PurrView-0.8.10-x86_64.flatpak` |
+| Instalação nativa assistida | `PurrView-0.8.10-bootstrap.tar.xz` | Execute `scripts/install-impage.sh --user` |
+| Compilação manual | `PurrView-0.8.10-source.tar.xz` | Consulte [docs/building.md](docs/building.md) |
 
 Na primeira instalação por Flatpak, configure o Flathub antes de abrir o bundle. Não é necessário
 instalar `flatpak-builder` para usar o pacote pronto:
@@ -99,7 +99,7 @@ instalar `flatpak-builder` para usar o pacote pronto:
 ```bash
 flatpak remote-add --user --if-not-exists flathub \
   https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user ./PurrView-0.8.9-x86_64.flatpak
+flatpak install --user ./PurrView-0.8.10-x86_64.flatpak
 flatpak run io.github.impage.Impage
 ```
 

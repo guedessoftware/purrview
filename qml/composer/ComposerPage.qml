@@ -235,6 +235,62 @@ Item {
         onActivated: quitAction.trigger()
     }
 
+    component HeaderActionButton: Button {
+        id: headerButton
+
+        property string iconName: ""
+        property bool accent: false
+        property real minimumButtonWidth: 0
+
+        Layout.alignment: Qt.AlignVCenter
+        implicitWidth: Math.max(minimumButtonWidth,
+                                contentItem.implicitWidth + leftPadding + rightPadding)
+        implicitHeight: 42
+        leftPadding: 18
+        rightPadding: 18
+        topPadding: 10
+        bottomPadding: 10
+        spacing: 9
+        hoverEnabled: true
+        font.weight: Font.DemiBold
+
+        contentItem: Item {
+            implicitWidth: headerContent.implicitWidth
+            implicitHeight: Math.max(20, headerContent.implicitHeight)
+
+            PurrIconLabel {
+                id: headerContent
+                anchors.centerIn: parent
+                iconName: headerButton.iconName
+                iconSize: 18
+                spacing: headerButton.spacing
+                text: headerButton.text
+                color: headerButton.enabled
+                       ? composerPage.themePalette.buttonText
+                       : composerPage.themePalette.placeholderText
+                font: headerButton.font
+            }
+        }
+
+        background: Rectangle {
+            radius: 8
+            color: headerButton.accent
+                   ? Qt.rgba(UiTheme.brandPurple.r, UiTheme.brandPurple.g,
+                             UiTheme.brandPurple.b,
+                             headerButton.down ? 0.25
+                                               : headerButton.hovered ? 0.18 : 0.11)
+                   : headerButton.down ? UiTheme.quietControlPressed
+                     : headerButton.hovered ? UiTheme.quietControlHover
+                                            : UiTheme.idleControlSurface
+            border.color: headerButton.accent
+                          ? UiTheme.brandPurple
+                          : headerButton.hovered ? UiTheme.brandBorder
+                                                 : UiTheme.insetBorder
+            border.width: 1
+            opacity: headerButton.enabled ? 1.0 : 0.55
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
@@ -326,6 +382,7 @@ Item {
             RowLayout {
                 spacing: 8
                 Layout.rightMargin: 16
+                Layout.alignment: Qt.AlignVCenter
 
                 Image {
                     Layout.preferredWidth: 48
@@ -346,61 +403,33 @@ Item {
                 }
             }
 
-            Button {
+            HeaderActionButton {
                 id: addImagesButton
                 action: addImagesAction
                 text: qsTr("Adicionar imagens…")
-                implicitWidth: 200
-                implicitHeight: 42
-                font.weight: Font.DemiBold
-                contentItem: PurrIconLabel {
-                    anchors.centerIn: parent
-                    iconName: "add-image"
-                    iconSize: 19
-                    text: addImagesButton.text
-                    color: composerPage.themePalette.buttonText
-                    font: addImagesButton.font
-                }
-                background: Rectangle {
-                    radius: 8
-                    color: addImagesButton.down
-                           ? Qt.rgba(UiTheme.brandPurple.r, UiTheme.brandPurple.g,
-                                     UiTheme.brandPurple.b, 0.30)
-                           : Qt.rgba(UiTheme.brandPurple.r, UiTheme.brandPurple.g,
-                                     UiTheme.brandPurple.b, 0.15)
-                    border.color: UiTheme.brandPurple
-                    border.width: 1
-                }
+                iconName: "add-image"
+                accent: true
+                minimumButtonWidth: 200
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Adicionar imagens (Ctrl+A ou Ctrl+O)")
             }
 
-            Button {
+            HeaderActionButton {
                 id: clearButton
                 action: clearAction
                 text: qsTr("Limpar")
-                implicitHeight: 42
-                contentItem: PurrIconLabel {
-                    anchors.centerIn: parent
-                    iconName: "trash"
-                    text: clearButton.text
-                    color: clearButton.enabled
-                           ? composerPage.themePalette.buttonText
-                           : composerPage.themePalette.placeholderText
-                    font: clearButton.font
-                }
+                iconName: "trash"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Limpar imagens (Ctrl+Shift+Delete)")
             }
 
             Rectangle {
                 Layout.preferredHeight: 42
-                Layout.preferredWidth: imageCountLabel.implicitWidth + 28
+                Layout.preferredWidth: imageCountLabel.implicitWidth + 36
+                Layout.alignment: Qt.AlignVCenter
                 radius: 8
-                color: Qt.rgba(composerPage.themePalette.button.r,
-                               composerPage.themePalette.button.g,
-                               composerPage.themePalette.button.b, 0.58)
-                border.color: composerPage.themePalette.mid
+                color: UiTheme.idleControlSurface
+                border.color: UiTheme.insetBorder
 
                 Label {
                     id: imageCountLabel
@@ -544,35 +573,28 @@ Item {
                 }
             }
 
-            Button {
+            HeaderActionButton {
                 action: duplicateImagesAction
                 visible: composerPage.controller.selectedImageCount > 0
+                iconName: "duplicate"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Duplicar selecionadas (Ctrl+D)")
             }
 
-            Button {
+            HeaderActionButton {
                 action: removeImagesAction
                 visible: composerPage.controller.selectedImageCount > 0
                 text: qsTr("Remover")
+                iconName: "trash"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Remover selecionadas da composição (Delete)")
             }
 
-            Button {
+            HeaderActionButton {
                 id: viewerButton
                 action: viewerAction
                 text: qsTr("Visualizar")
-                implicitHeight: 42
-                contentItem: PurrIconLabel {
-                    anchors.centerIn: parent
-                    iconName: "eye"
-                    text: viewerButton.text
-                    color: viewerButton.enabled
-                           ? composerPage.themePalette.buttonText
-                           : composerPage.themePalette.placeholderText
-                    font: viewerButton.font
-                }
+                iconName: "eye"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Voltar ao visualizador (Ctrl+Shift+V)")
             }
@@ -582,15 +604,26 @@ Item {
                 action: printAction
                 text: qsTr("Imprimir")
                 implicitHeight: 42
-                leftPadding: 20
-                rightPadding: 20
+                Layout.alignment: Qt.AlignVCenter
+                leftPadding: 18
+                rightPadding: 18
+                topPadding: 10
+                bottomPadding: 10
                 font.weight: Font.Bold
-                contentItem: PurrIconLabel {
-                    anchors.centerIn: parent
-                    iconName: "printer"
-                    text: printButton.text
-                    color: UiTheme.brightText
-                    font: printButton.font
+                contentItem: Item {
+                    implicitWidth: printContent.implicitWidth
+                    implicitHeight: Math.max(20, printContent.implicitHeight)
+
+                    PurrIconLabel {
+                        id: printContent
+                        anchors.centerIn: parent
+                        iconName: "printer"
+                        iconSize: 18
+                        spacing: 9
+                        text: printButton.text
+                        color: UiTheme.brightText
+                        font: printButton.font
+                    }
                 }
                 background: Rectangle {
                     radius: 8

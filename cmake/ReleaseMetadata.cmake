@@ -1,2 +1,2 @@
 set(IMPAGE_RELEASE_DATE "2026-09-03")
-set(IMPAGE_RELEASE_SUMMARY "Restore the Composer on Qt 6.6 and run QML safely under enforcing SELinux policies.")
+set(IMPAGE_RELEASE_SUMMARY "Polish Composer actions and distinguish the printing launcher from the image viewer.")

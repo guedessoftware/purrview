@@ -5,6 +5,21 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.10] - 2026-09-03
+
+### Changed
+
+- Os botões da barra superior do Composer agora compartilham altura, raio, estados visuais e
+  espaçamento interno, com ícones e textos centralizados nos temas claro e escuro.
+- A ação de adicionar imagens mantém um destaque suave e a impressão mantém o gradiente da marca,
+  enquanto as demais ações usam o mesmo estilo neutro.
+- O atalho do compositor passa a se chamar `PurrView Print` (`PurrView Impressão` em português),
+  distinguindo-o do atalho principal do visualizador.
+
+### Added
+
+- Ícone vetorial próprio para a ação de duplicar imagens selecionadas.
+
 ## [0.8.9] - 2026-09-03
 
 ### Fixed
@@ -330,7 +345,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.9...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.10...HEAD
+[0.8.10]: https://github.com/guedessoftware/purrview/compare/v0.8.9...v0.8.10
 [0.8.9]: https://github.com/guedessoftware/purrview/compare/v0.8.8...v0.8.9
 [0.8.8]: https://github.com/guedessoftware/purrview/compare/v0.8.7...v0.8.8
 [0.8.7]: https://github.com/guedessoftware/purrview/compare/v0.8.6...v0.8.7
