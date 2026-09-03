@@ -1,5 +1,3 @@
-pragma ComponentBehavior: Bound
-
 import QtQuick
 import QtQuick.Controls
 
@@ -19,7 +17,7 @@ ApplicationWindow {
            | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint
            | Qt.WindowCloseButtonHint
     color: palette.window
-    property var displayedComponent: null
+    property string displayedSource: ""
     property bool maximizedBeforeFullScreen: false
 
     function setViewerFullScreen(enabled) {
@@ -34,46 +32,40 @@ ApplicationWindow {
         }
     }
 
-    function currentComponent() {
+    function currentSource() {
         if (applicationController.modules.viewerActive)
-            return viewerComponent
+            return "ViewerPage.qml"
         if (applicationController.modules.composerActive)
-            return composerComponent
-        return null
+            return "ComposerPage.qml"
+        return ""
+    }
+
+    function loadCurrentModule() {
+        displayedSource = currentSource()
+        if (applicationController.modules.viewerActive) {
+            moduleLoader.setSource(displayedSource, {
+                "controller": applicationController.modules.viewerController,
+                "applicationController": applicationController,
+                "themePalette": Qt.binding(function() { return shellWindow.palette }),
+                "fullScreen": Qt.binding(function() {
+                    return shellWindow.visibility === Window.FullScreen
+                })
+            })
+        } else if (applicationController.modules.composerActive) {
+            moduleLoader.setSource(displayedSource, {
+                "controller": applicationController.modules.composerController,
+                "applicationController": applicationController,
+                "themePalette": Qt.binding(function() { return shellWindow.palette })
+            })
+        } else {
+            moduleLoader.source = ""
+        }
     }
 
     function showCurrentModule() {
-        if (displayedComponent === currentComponent())
+        if (displayedSource === currentSource())
             return
         moduleTransition.restart()
-    }
-
-    Component {
-        id: composerComponent
-
-        ComposerPage {
-            controller: shellWindow.applicationController.modules.composerController
-            applicationController: shellWindow.applicationController
-            themePalette: shellWindow.palette
-            onViewerRequested: shellWindow.applicationController.goBack()
-            onAboutRequested: aboutDialog.open()
-            onCloseRequested: shellWindow.close()
-        }
-    }
-
-    Component {
-        id: viewerComponent
-
-        ViewerPage {
-            controller: shellWindow.applicationController.modules.viewerController
-            applicationController: shellWindow.applicationController
-            themePalette: shellWindow.palette
-            fullScreen: shellWindow.visibility === Window.FullScreen
-            onFullScreenRequested: function(enabled) {
-                shellWindow.setViewerFullScreen(enabled)
-            }
-            onAboutRequested: aboutDialog.open()
-        }
     }
 
     Loader {
@@ -81,7 +73,16 @@ ApplicationWindow {
 
         anchors.fill: parent
         opacity: 1
-        sourceComponent: shellWindow.displayedComponent
+    }
+
+    Connections {
+        target: moduleLoader.item
+        ignoreUnknownSignals: true
+
+        function onViewerRequested() { shellWindow.applicationController.goBack() }
+        function onFullScreenRequested(enabled) { shellWindow.setViewerFullScreen(enabled) }
+        function onAboutRequested() { aboutDialog.open() }
+        function onCloseRequested() { shellWindow.close() }
     }
 
     SequentialAnimation {
@@ -96,7 +97,7 @@ ApplicationWindow {
             easing.type: Easing.OutQuad
         }
         ScriptAction {
-            script: shellWindow.displayedComponent = shellWindow.currentComponent()
+            script: shellWindow.loadCurrentModule()
         }
         NumberAnimation {
             target: moduleLoader
@@ -130,7 +131,9 @@ ApplicationWindow {
 
     Dialog {
         id: openErrorDialog
-        anchors.centerIn: parent
+        x: Math.round((shellWindow.width - width) / 2)
+        y: Math.round((shellWindow.height - height) / 2)
+        width: Math.min(520, shellWindow.width - 80)
         modal: true
         title: qsTr("Não foi possível abrir")
         standardButtons: Dialog.Ok
@@ -141,7 +144,6 @@ ApplicationWindow {
             wrapMode: Text.Wrap
             color: shellWindow.palette.windowText
             padding: 18
-            width: Math.min(520, shellWindow.width - 80)
         }
     }
 
@@ -151,7 +153,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        displayedComponent = currentComponent()
+        loadCurrentModule()
         if (applicationController.savedWindowMaximized)
             showMaximized()
         if (applicationController.lastOpenRequestError.length > 0) {

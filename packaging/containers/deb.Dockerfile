@@ -29,6 +29,8 @@ RUN apt-get update \
         qt6-declarative-dev \
         qt6-declarative-dev-tools \
         qt6-image-formats-plugins \
+        xauth \
+        xvfb \
     && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["/bin/bash", "/src/packaging/containers/build-deb.sh"]

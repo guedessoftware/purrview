@@ -61,6 +61,7 @@ modules:
         path: ../..
         skip:
           - .git
+          - .cache
           - .flatpak-builder
           - build
           - build-*

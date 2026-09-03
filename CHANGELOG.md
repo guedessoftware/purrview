@@ -5,6 +5,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.4] - 2026-09-03
+
 ### Documentation
 
 - README reformulado com identidade visual do PurrView, capturas reais e anônimas do Composer e do
@@ -12,6 +14,12 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ### Fixed
 
+- Viewer e Composer voltam a carregar corretamente no Qt 6.4 do Ubuntu 24.04; o shell não tenta
+  mais instanciar componentes QML `Bound` fora de seu contexto de criação.
+- Diálogos do shell e do Viewer deixam de produzir ciclos de `implicitWidth` nas versões mais
+  antigas do Qt declaradas como compatíveis.
+- A fonte local do Flatpak ignora o cache de empacotamento, evitando falhas de permissão causadas
+  por resíduos de containers anteriores.
 - A matriz da CI instala também os codecs e utilitários verificados pelo ciclo do bootstrap,
   evitando falhas artificiais após o build e os testes já terem passado.
 - As instruções do Flatpak agora configuram o Flathub explicitamente, distinguem a instalação do
@@ -251,7 +259,8 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.3...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.4...HEAD
+[0.8.4]: https://github.com/guedessoftware/purrview/compare/v0.8.3...v0.8.4
 [0.8.3]: https://github.com/guedessoftware/purrview/compare/v0.8.2...v0.8.3
 [0.8.2]: https://github.com/guedessoftware/purrview/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/guedessoftware/purrview/compare/v0.8.0...v0.8.1

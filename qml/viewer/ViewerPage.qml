@@ -625,7 +625,9 @@ Item {
     Dialog {
         id: trashConfirmationDialog
 
-        anchors.centerIn: parent
+        x: Math.round((viewerPage.width - width) / 2)
+        y: Math.round((viewerPage.height - height) / 2)
+        width: Math.min(520, viewerPage.width - 80)
         modal: true
         title: qsTr("Enviar para a lixeira?")
         standardButtons: Dialog.Cancel | Dialog.Ok
