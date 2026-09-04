@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/guedessoftware/purrview/actions/workflows/ci.yml"><img src="https://github.com/guedessoftware/purrview/actions/workflows/ci.yml/badge.svg" alt="Native CI"></a>
-  <img src="https://img.shields.io/badge/versão-0.8.12-ff7f83?style=flat-square" alt="Versão 0.8.12">
+  <a href="https://github.com/guedessoftware/purrview/releases/tag/v0.8.12"><img src="https://img.shields.io/badge/versão-0.8.12-ff7f83?style=flat-square" alt="Versão 0.8.12"></a>
   <img src="https://img.shields.io/badge/Qt-6.4%2B-8f6de1?style=flat-square&logo=qt&logoColor=white" alt="Qt 6.4 ou superior">
   <img src="https://img.shields.io/badge/C%2B%2B-20-4ecbd3?style=flat-square&logo=cplusplus&logoColor=white" alt="C++20">
   <a href="LICENSE"><img src="https://img.shields.io/badge/licença-GPLv3-f279a0?style=flat-square" alt="GNU GPLv3"></a>
@@ -82,16 +82,28 @@ Qt instalado não consegue decodificar.
 
 ## 📦 Instalação
 
-O fluxo de release gera seis artefatos. Escolha o formato correspondente à sua distribuição:
+<p align="center">
+  <a href="https://github.com/guedessoftware/purrview/releases/tag/v0.8.12"><img src="https://img.shields.io/badge/Baixar-PurrView%200.8.12-8f6de1?style=for-the-badge&logo=github&logoColor=white" alt="Baixar PurrView 0.8.12"></a>
+</p>
 
-| Ambiente | Artefato | Instalação |
+Escolha o pacote da sua distribuição, baixe pelo link e execute o comando correspondente no
+diretório em que o arquivo foi salvo:
+
+| Sistema | Download | Comando de instalação |
 |---|---|---|
-| Ubuntu, Mint, Zorin e Debian | `purrview_0.8.12_amd64.deb` | `sudo apt install ./purrview_0.8.12_amd64.deb` |
-| Fedora, AlmaLinux, openSUSE e derivados RPM | `purrview-0.8.12-1.x86_64.rpm` | `sudo dnf install ./purrview-0.8.12-1.x86_64.rpm` |
-| Arch, Garuda, EndeavourOS e Manjaro | `purrview-0.8.12-1-x86_64.pkg.tar.zst` | `sudo pacman -U ./purrview-0.8.12-1-x86_64.pkg.tar.zst` |
-| Linux com Flatpak | `PurrView-0.8.12-x86_64.flatpak` | `flatpak install --user ./PurrView-0.8.12-x86_64.flatpak` |
-| Instalação nativa assistida | `PurrView-0.8.12-bootstrap.tar.xz` | Execute `scripts/install-impage.sh --user` |
-| Compilação manual | `PurrView-0.8.12-source.tar.xz` | Consulte [docs/building.md](docs/building.md) |
+| Ubuntu, Mint, Zorin e Debian | [Baixar `.deb`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview_0.8.12_amd64.deb) | `sudo apt install ./purrview_0.8.12_amd64.deb` |
+| Fedora, AlmaLinux, Rocky e RHEL | [Baixar `.rpm`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview-0.8.12-1.x86_64.rpm) | `sudo dnf install ./purrview-0.8.12-1.x86_64.rpm` |
+| openSUSE | [Baixar `.rpm`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview-0.8.12-1.x86_64.rpm) | `sudo zypper install ./purrview-0.8.12-1.x86_64.rpm` |
+| Arch, Garuda, EndeavourOS e Manjaro | [Baixar pacote Arch](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview-0.8.12-1-x86_64.pkg.tar.zst) | `sudo pacman -U ./purrview-0.8.12-1-x86_64.pkg.tar.zst` |
+| Qualquer distribuição com Flatpak | [Baixar `.flatpak`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/PurrView-0.8.12-x86_64.flatpak) | `flatpak install --user ./PurrView-0.8.12-x86_64.flatpak` |
+| Instalação nativa assistida | [Baixar bootstrap](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/PurrView-0.8.12-bootstrap.tar.xz) | `tar -xf PurrView-0.8.12-bootstrap.tar.xz && cd PurrView-0.8.12-bootstrap && ./scripts/install-impage.sh --user` |
+| Compilação manual | [Baixar código-fonte](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/PurrView-0.8.12-source.tar.xz) | Consulte [Compilar e testar](#-compilar-e-testar) |
+
+Os hashes estão em [SHA256SUMS](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/SHA256SUMS). Depois de baixar o pacote e esse arquivo, confira a integridade com:
+
+```bash
+sha256sum -c SHA256SUMS --ignore-missing
+```
 
 Na primeira instalação por Flatpak, configure o Flathub antes de abrir o bundle. Não é necessário
 instalar `flatpak-builder` para usar o pacote pronto:
