@@ -12,7 +12,7 @@ cmake -S "${SOURCE_ROOT}" -B "${BUILD_ROOT}" -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTING=ON \
-    -DIMPAGE_WITH_EXIV2=OFF
+    -DPURRVIEW_WITH_EXIV2=OFF
 cmake --build "${BUILD_ROOT}" --parallel "$(nproc)"
 ctest --test-dir "${BUILD_ROOT}" --output-on-failure
 cpack --config "${BUILD_ROOT}/CPackConfig.cmake" -G DEB -B "${PACKAGE_ROOT}"
@@ -25,10 +25,12 @@ PACKAGE_PATH="${OUTPUT_ROOT}/$(basename "${BUILT_PACKAGE}")"
 chown --reference="${OUTPUT_ROOT}" "${PACKAGE_PATH}"
 dpkg-deb --info "${PACKAGE_PATH}" >/dev/null
 dpkg-deb --contents "${PACKAGE_PATH}" | grep -F './usr/bin/purrview' >/dev/null
+dpkg-deb --contents "${PACKAGE_PATH}" | grep -F './usr/bin/impage' >/dev/null
 
 apt-get update -qq
 apt-get install -y --no-install-recommends "${PACKAGE_PATH}"
 [[ "$(purrview --version)" == "PurrView ${VERSION_VALUE}" ]]
+[[ "$(impage --version)" == "PurrView ${VERSION_VALUE}" ]]
 
 smoke_test_qml() {
     local mode="$1"
@@ -61,7 +63,7 @@ smoke_test_qml viewer "${SOURCE_ROOT}/docs/images/purrview-viewer.png" \
     'First image visible'
 smoke_test_qml compose "${SOURCE_ROOT}/docs/images/purrview-composer.png" \
     'Shell loaded'
-desktop-file-validate /usr/share/applications/io.github.impage.Impage.desktop
-appstreamcli validate --no-net /usr/share/metainfo/io.github.impage.Impage.metainfo.xml
+desktop-file-validate /usr/share/applications/io.github.guedessoftware.PurrView.desktop
+appstreamcli validate --no-net /usr/share/metainfo/io.github.guedessoftware.PurrView.metainfo.xml
 
 printf 'DEB package validated on Ubuntu 24.04: %s\n' "${PACKAGE_PATH}"

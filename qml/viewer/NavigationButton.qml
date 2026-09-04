@@ -5,7 +5,8 @@ ToolButton {
     id: control
 
     required property var themePalette
-    property string accessibleName: text
+    required property string iconName
+    property string accessibleName: ""
 
     width: 48
     height: 48
@@ -14,13 +15,10 @@ ToolButton {
     ToolTip.visible: hovered
     ToolTip.text: accessibleName
 
-    contentItem: Label {
-        text: control.text
+    contentItem: PurrIcon {
+        name: control.iconName
         color: control.enabled ? UiTheme.navigationText : UiTheme.navigationDisabled
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        font.pixelSize: 30
-        font.weight: Font.Light
+        strokeWidth: 2.2
     }
 
     background: Rectangle {

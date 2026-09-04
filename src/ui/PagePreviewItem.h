@@ -5,7 +5,7 @@
 #include <QQuickPaintedItem>
 #include <QtQml/qqmlregistration.h>
 
-namespace impage::ui {
+namespace purrview::ui {
 
 class PagePreviewItem : public QQuickPaintedItem {
     Q_OBJECT
@@ -29,4 +29,4 @@ class PagePreviewItem : public QQuickPaintedItem {
     composer::ComposerController* controller_ = nullptr;
 };
 
-} // namespace impage::ui
+} // namespace purrview::ui

@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QString>
 
-namespace impage::desktop {
+namespace purrview::desktop {
 
 class SingleInstanceService final : public QObject {
     Q_OBJECT
@@ -25,7 +25,7 @@ class SingleInstanceService final : public QObject {
     [[nodiscard]] static QString defaultSocketPath();
 
   signals:
-    void requestReceived(const impage::desktop::OpenRequest& request);
+    void requestReceived(const purrview::desktop::OpenRequest& request);
     void protocolError(const QString& message);
 
   private:
@@ -39,4 +39,4 @@ class SingleInstanceService final : public QObject {
     bool primary_ = false;
 };
 
-} // namespace impage::desktop
+} // namespace purrview::desktop

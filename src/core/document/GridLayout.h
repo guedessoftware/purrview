@@ -1,6 +1,6 @@
 #pragma once
 
-namespace impage::core {
+namespace purrview::core {
 
 class GridLayout {
   public:
@@ -21,4 +21,4 @@ class GridLayout {
     double verticalSpacingMm_ = 4.0;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

@@ -402,7 +402,7 @@ Item {
                 Image {
                     Layout.preferredWidth: 48
                     Layout.preferredHeight: 48
-                    source: "qrc:/qt/qml/Impage/assets/purrview.svg"
+                    source: "qrc:/qt/qml/PurrView/assets/purrview.svg"
                     fillMode: Image.PreserveAspectFit
                     smooth: true
                     mipmap: true
@@ -796,7 +796,7 @@ Item {
 
                     Button {
                         action: previousPageAction
-                        text: qsTr("‹ Anterior")
+                        text: qsTr("Anterior")
                     }
                     Label {
                         text: qsTr("Página %1 de %2")
@@ -807,7 +807,7 @@ Item {
                     }
                     Button {
                         action: nextPageAction
-                        text: qsTr("Próxima ›")
+                        text: qsTr("Próxima")
                     }
                 }
             }
@@ -836,8 +836,9 @@ Item {
                         color: composerPage.themePalette.placeholderText
                         elide: Text.ElideRight
                     }
-                    Label {
-                        text: "│"
+                    Rectangle {
+                        Layout.preferredWidth: 1
+                        Layout.preferredHeight: 18
                         color: composerPage.themePalette.mid
                     }
                     Label {
@@ -845,8 +846,9 @@ Item {
                               ? qsTr("Paisagem") : qsTr("Retrato")
                         color: composerPage.themePalette.placeholderText
                     }
-                    Label {
-                        text: "│"
+                    Rectangle {
+                        Layout.preferredWidth: 1
+                        Layout.preferredHeight: 18
                         color: composerPage.themePalette.mid
                     }
                     Label {
@@ -859,14 +861,18 @@ Item {
                     Item { Layout.fillWidth: true }
 
                     Button {
-                        text: "−"
                         flat: true
                         implicitWidth: 38
+                        Accessible.name: qsTr("Diminuir visualização")
                         enabled: composerPage.previewZoom > 0.5
                         onClicked: composerPage.previewZoom = Math.max(
                                        0.5, composerPage.previewZoom - 0.1)
                         ToolTip.visible: hovered
                         ToolTip.text: qsTr("Diminuir visualização")
+                        contentItem: PurrIcon {
+                            name: "minus"
+                            color: composerPage.themePalette.buttonText
+                        }
                     }
                     Label {
                         Layout.preferredWidth: 48
@@ -876,22 +882,30 @@ Item {
                         font.weight: Font.DemiBold
                     }
                     Button {
-                        text: "+"
                         flat: true
                         implicitWidth: 38
+                        Accessible.name: qsTr("Ampliar visualização")
                         enabled: composerPage.previewZoom < 1.5
                         onClicked: composerPage.previewZoom = Math.min(
                                        1.5, composerPage.previewZoom + 0.1)
                         ToolTip.visible: hovered
                         ToolTip.text: qsTr("Ampliar visualização")
+                        contentItem: PurrIcon {
+                            name: "plus"
+                            color: composerPage.themePalette.buttonText
+                        }
                     }
                     Button {
-                        text: "⛶"
                         flat: true
                         implicitWidth: 42
+                        Accessible.name: qsTr("Ajustar página")
                         onClicked: composerPage.previewZoom = 1.0
                         ToolTip.visible: hovered
                         ToolTip.text: qsTr("Ajustar página")
+                        contentItem: PurrIcon {
+                            name: "fullscreen"
+                            color: composerPage.themePalette.buttonText
+                        }
                     }
                 }
             }

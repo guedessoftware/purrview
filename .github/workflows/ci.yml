@@ -5,7 +5,41 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
+  sanitizers:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: AddressSanitizer
+            preset: asan
+            test-environment: ASAN_OPTIONS=detect_leaks=1
+          - name: UndefinedBehaviorSanitizer
+            preset: ubsan
+            test-environment: UBSAN_OPTIONS=print_stacktrace=1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install dependencies
+        run: >-
+          sudo apt-get update && sudo apt-get install -y
+          cmake ninja-build pkg-config qt6-base-dev qt6-declarative-dev
+          qt6-image-formats-plugins libcups2-dev libxkbcommon-dev libexiv2-dev
+
+      - name: Configure
+        run: cmake --preset ${{ matrix.preset }}
+
+      - name: Build
+        run: cmake --build --preset ${{ matrix.preset }}
+
+      - name: Test
+        run: ${{ matrix.test-environment }} ctest --preset ${{ matrix.preset }}
+
   native:
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
@@ -46,7 +80,7 @@ jobs:
               qt6-imageformats cups libxkbcommon exiv2 appstream desktop-file-utils xdg-utils
               kimageformats libavif libheif
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install dependencies
         shell: bash
@@ -62,22 +96,23 @@ jobs:
         run: ctest --preset release
 
       - name: QML lint
-        run: cmake --build build/release --target impage_qmllint
+        run: cmake --build build/release --target purrview_qmllint
 
       - name: Validate release metadata
         shell: bash
         run: |
-          ./build/release/impage --version
-          appstreamcli validate --no-net build/release/generated/io.github.impage.Impage.metainfo.xml
-          desktop-file-validate resources/linux/io.github.impage.Impage.desktop
-          desktop-file-validate resources/linux/io.github.impage.Impage.Viewer.desktop
+          scripts/validate-release.sh
+          ./build/release/purrview --version
+          appstreamcli validate --no-net build/release/generated/io.github.guedessoftware.PurrView.metainfo.xml
+          desktop-file-validate resources/linux/io.github.guedessoftware.PurrView.desktop
+          desktop-file-validate resources/linux/io.github.guedessoftware.PurrView.Viewer.desktop
 
       - name: Headless QML smoke test
         shell: bash
         run: |
           set +e
           QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software \
-            timeout --signal=TERM 3s ./build/release/impage
+            timeout --signal=TERM 3s ./build/release/purrview
           status=$?
           set -e
           [[ "${status}" -eq 124 || "${status}" -eq 143 ]]
@@ -85,11 +120,12 @@ jobs:
       - name: Bootstrap lifecycle
         shell: bash
         run: |
-          bootstrap_home="${RUNNER_TEMP}/impage-bootstrap-home"
+          bootstrap_home="${RUNNER_TEMP}/purrview-bootstrap-home"
           mkdir -p "${bootstrap_home}"
-          HOME="${bootstrap_home}" scripts/install-impage.sh --check --non-interactive
-          HOME="${bootstrap_home}" scripts/install-impage.sh --user --non-interactive
+          HOME="${bootstrap_home}" scripts/install-purrview.sh --check --non-interactive
+          HOME="${bootstrap_home}" scripts/install-purrview.sh --user --non-interactive
+          HOME="${bootstrap_home}" "${bootstrap_home}/.local/bin/purrview" --version
           HOME="${bootstrap_home}" "${bootstrap_home}/.local/bin/impage" --version
-          HOME="${bootstrap_home}" scripts/install-impage.sh --user --upgrade --non-interactive
-          HOME="${bootstrap_home}" scripts/install-impage.sh --user --uninstall --non-interactive
-          test ! -e "${bootstrap_home}/.local/opt/impage"
+          HOME="${bootstrap_home}" scripts/install-purrview.sh --user --upgrade --non-interactive
+          HOME="${bootstrap_home}" scripts/install-purrview.sh --user --uninstall --non-interactive
+          test ! -e "${bootstrap_home}/.local/opt/purrview"

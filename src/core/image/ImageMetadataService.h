@@ -8,7 +8,7 @@
 #include <QStringList>
 #include <QThreadPool>
 
-namespace impage::core {
+namespace purrview::core {
 
 class ImageMetadataService : public QObject {
     Q_OBJECT
@@ -30,7 +30,7 @@ class ImageMetadataService : public QObject {
 
   signals:
     void metadataReady(quint64 requestId, const QString& path,
-                       const impage::core::ImageMetadata& metadata, bool cacheHit);
+                       const purrview::core::ImageMetadata& metadata, bool cacheHit);
     void metadataFailed(quint64 requestId, const QString& path, const QString& error);
 
   private:
@@ -54,4 +54,4 @@ class ImageMetadataService : public QObject {
     int cacheHitCount_ = 0;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

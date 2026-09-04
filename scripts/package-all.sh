@@ -8,6 +8,8 @@ OUTPUT_DIR="${SOURCE_ROOT}/dist/${VERSION_VALUE}"
 CONTAINER_ENGINE="${CONTAINER_ENGINE:-docker}"
 SKIP_HOST_BUILD=0
 REFRESH_IMAGES=0
+SIGN_CHECKSUMS=0
+GPG_KEY="${PURRVIEW_GPG_KEY:-}"
 FORMATS=(deb rpm arch flatpak)
 
 usage() {
@@ -22,6 +24,8 @@ Options:
   --output DIR         Artifact directory (default: dist/VERSION)
   --skip-host-build    Reuse the existing validated Release build
   --refresh-images     Pull newer revisions of the pinned container tags
+  --sign-checksums     Create SHA256SUMS.asc with the default GPG key
+  --gpg-key KEY_ID     Sign with KEY_ID (also enables --sign-checksums)
   --engine COMMAND     OCI engine (default: docker or CONTAINER_ENGINE)
   -h, --help           Show this help
 EOF
@@ -41,6 +45,13 @@ while (($# > 0)); do
         ;;
     --skip-host-build) SKIP_HOST_BUILD=1 ;;
     --refresh-images) REFRESH_IMAGES=1 ;;
+    --sign-checksums) SIGN_CHECKSUMS=1 ;;
+    --gpg-key)
+        shift
+        (($# > 0)) || { usage >&2; exit 2; }
+        GPG_KEY="$1"
+        SIGN_CHECKSUMS=1
+        ;;
     --engine)
         shift
         (($# > 0)) || { usage >&2; exit 2; }
@@ -66,7 +77,7 @@ for format in "${FORMATS[@]}"; do
     esac
 done
 
-release_arguments=(--output "${OUTPUT_DIR}")
+release_arguments=(--output "${OUTPUT_DIR}" --skip-flatpak)
 ((SKIP_HOST_BUILD == 0)) || release_arguments+=(--skip-build)
 "${SCRIPT_DIR}/release.sh" "${release_arguments[@]}"
 
@@ -147,9 +158,15 @@ done
 
 (
     cd "${OUTPUT_DIR}"
+    rm -f -- SHA256SUMS.asc
     printf '%s\n' "${expected[@]}" | LC_ALL=C sort | xargs sha256sum >SHA256SUMS
     sha256sum -c SHA256SUMS
 )
+if ((SIGN_CHECKSUMS)); then
+    signing_arguments=("${OUTPUT_DIR}/SHA256SUMS")
+    [[ -z "${GPG_KEY}" ]] || signing_arguments+=(--key "${GPG_KEY}")
+    "${SCRIPT_DIR}/sign-checksums.sh" "${signing_arguments[@]}"
+fi
 
 printf '\nAll requested PurrView %s packages are ready in %s\n' \
     "${VERSION_VALUE}" "${OUTPUT_DIR}"

@@ -51,7 +51,7 @@ Rectangle {
             Layout.preferredWidth: 30
             Layout.preferredHeight: 30
             visible: !root.compact
-            source: "qrc:/qt/qml/Impage/assets/purrview.svg"
+            source: "qrc:/qt/qml/PurrView/assets/purrview.svg"
             fillMode: Image.PreserveAspectFit
             smooth: true
             mipmap: true
@@ -114,7 +114,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "−"
+            iconName: "minus"
             tooltipText: qsTr("Diminuir zoom (-)")
             enabled: root.controller.imageCount > 0
             onClicked: root.controller.zoomOut()
@@ -130,7 +130,7 @@ Rectangle {
 
         ViewerToolButton {
             themePalette: root.themePalette
-            text: "+"
+            iconName: "plus"
             tooltipText: qsTr("Aumentar zoom (+)")
             enabled: root.controller.imageCount > 0
             onClicked: root.controller.zoomIn()

@@ -4,7 +4,7 @@
 #include <QString>
 #include <QUuid>
 
-namespace impage::core {
+namespace purrview::core {
 
 using ImageId = QUuid;
 
@@ -18,4 +18,4 @@ struct ImageEntry {
     bool valid = true;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

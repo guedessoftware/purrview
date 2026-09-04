@@ -5,7 +5,7 @@
 #include <QList>
 #include <QPointF>
 
-namespace impage::viewer {
+namespace purrview::viewer {
 
 struct ViewerNavigationState {
     core::ImageId currentImageId;
@@ -20,4 +20,4 @@ struct ViewerNavigationState {
     double filmstripContentX = 0.0;
 };
 
-} // namespace impage::viewer
+} // namespace purrview::viewer

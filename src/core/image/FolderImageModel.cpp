@@ -10,7 +10,7 @@
 
 #include <algorithm>
 
-namespace impage::core {
+namespace purrview::core {
 
 namespace {
 QString normalizedPath(const QString& path) {
@@ -78,10 +78,12 @@ FolderImageModel::FolderImageModel(ImageSession& session, ThumbnailCache& thumbn
     scanPool_.setExpiryTimeout(10'000);
     refreshTimer_.setSingleShot(true);
     refreshTimer_.setInterval(180);
+    refreshSelectionCache();
 
     connect(&session_, &ImageSession::currentImageChanged, this,
             &FolderImageModel::updateSessionCurrentRole);
     connect(&session_, &ImageSession::selectionChanged, this, [this] {
+        refreshSelectionCache();
         if (!items_.empty()) {
             emit dataChanged(index(0), index(count() - 1), {SelectedRole});
         }
@@ -138,7 +140,7 @@ QVariant FolderImageModel::data(const QModelIndex& modelIndex, int role) const {
     case ThumbnailUrlRole:
         return item.thumbnailKey.isEmpty()
                    ? QUrl()
-                   : QUrl(QStringLiteral("image://impage-thumbnail/%1").arg(item.thumbnailKey));
+                   : QUrl(QStringLiteral("image://purrview-thumbnail/%1").arg(item.thumbnailKey));
     case CurrentRole:
         return modelIndex.row() == currentIndex();
     case SelectedRole:
@@ -180,19 +182,16 @@ bool FolderImageModel::scanning() const {
 }
 
 int FolderImageModel::selectedCount() const {
-    return static_cast<int>(selectedPaths().size());
+    return static_cast<int>(std::count_if(items_.cbegin(), items_.cend(), [this](const auto& item) {
+        return selectedPaths_.contains(item.filePath);
+    }));
 }
 
 QStringList FolderImageModel::selectedPaths() const {
-    QSet<QString> selectedSessionPaths;
-    for (const ImageEntry& image : session_.images()) {
-        if (image.selected) {
-            selectedSessionPaths.insert(image.sourcePath);
-        }
-    }
     QStringList selected;
+    selected.reserve(selectedCount());
     for (const FolderItem& item : items_) {
-        if (selectedSessionPaths.contains(item.filePath)) {
+        if (selectedPaths_.contains(item.filePath)) {
             selected.push_back(item.filePath);
         }
     }
@@ -214,11 +213,8 @@ int FolderImageModel::indexOfPath(const QString& path) const {
     if (path.isEmpty()) {
         return -1;
     }
-    const QString target = normalizedPath(path);
-    const auto found =
-        std::find_if(items_.cbegin(), items_.cend(),
-                     [&target](const FolderItem& item) { return item.filePath == target; });
-    return found == items_.cend() ? -1 : static_cast<int>(std::distance(items_.cbegin(), found));
+    const auto found = pathIndex_.constFind(normalizedPath(path));
+    return found == pathIndex_.cend() ? -1 : found.value();
 }
 
 void FolderImageModel::openFromImage(const QString& imagePath) {
@@ -383,6 +379,7 @@ void FolderImageModel::applyScan(const QString& directoryPath, const QString& re
     beginResetModel();
     directoryPath_ = directoryPath;
     items_ = std::move(items);
+    rebuildPathIndex();
     endResetModel();
     emit countChanged();
     emit selectedCountChanged();
@@ -423,9 +420,25 @@ void FolderImageModel::updateWatcher() {
 }
 
 bool FolderImageModel::isPathSelected(const QString& path) const {
-    return std::any_of(
-        session_.images().cbegin(), session_.images().cend(),
-        [&path](const ImageEntry& image) { return image.selected && image.sourcePath == path; });
+    return selectedPaths_.contains(path);
 }
 
-} // namespace impage::core
+void FolderImageModel::rebuildPathIndex() {
+    pathIndex_.clear();
+    pathIndex_.reserve(count());
+    for (int itemIndex = 0; itemIndex < count(); ++itemIndex) {
+        pathIndex_.insert(items_[static_cast<std::size_t>(itemIndex)].filePath, itemIndex);
+    }
+}
+
+void FolderImageModel::refreshSelectionCache() {
+    selectedPaths_.clear();
+    selectedPaths_.reserve(session_.selectedCount());
+    for (const ImageEntry& image : session_.images()) {
+        if (image.selected) {
+            selectedPaths_.insert(normalizedPath(image.sourcePath));
+        }
+    }
+}
+
+} // namespace purrview::core

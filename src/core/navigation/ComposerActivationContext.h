@@ -5,7 +5,7 @@
 #include <QList>
 #include <QMetaType>
 
-namespace impage::core {
+namespace purrview::core {
 
 enum class ActivationSource { Viewer, DirectLaunch, FileOpen, FutureModule };
 
@@ -14,7 +14,7 @@ struct ComposerActivationContext {
     ActivationSource source = ActivationSource::DirectLaunch;
 };
 
-} // namespace impage::core
+} // namespace purrview::core
 
-Q_DECLARE_METATYPE(impage::core::ActivationSource)
-Q_DECLARE_METATYPE(impage::core::ComposerActivationContext)
+Q_DECLARE_METATYPE(purrview::core::ActivationSource)
+Q_DECLARE_METATYPE(purrview::core::ComposerActivationContext)

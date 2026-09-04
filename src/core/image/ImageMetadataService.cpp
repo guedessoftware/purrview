@@ -14,9 +14,9 @@
 
 #include <algorithm>
 
-Q_LOGGING_CATEGORY(logMetadata, "impage.metadata", QtInfoMsg)
+Q_LOGGING_CATEGORY(logMetadata, "purrview.metadata", QtInfoMsg)
 
-namespace impage::core {
+namespace purrview::core {
 
 namespace {
 QString colorSpaceName(const QColorSpace& colorSpace) {
@@ -257,4 +257,4 @@ void ImageMetadataService::insertCache(const QString& cacheKey, ImageMetadata me
     }
 }
 
-} // namespace impage::core
+} // namespace purrview::core

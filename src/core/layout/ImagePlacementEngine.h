@@ -5,7 +5,7 @@
 #include <QRectF>
 #include <QSizeF>
 
-namespace impage::core {
+namespace purrview::core {
 
 struct ImagePlacement {
     QRectF targetRect;
@@ -19,4 +19,4 @@ class ImagePlacementEngine {
                                            PlacementMode mode) const;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

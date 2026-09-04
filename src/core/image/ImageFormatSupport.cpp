@@ -3,15 +3,15 @@
 #include <QFileInfo>
 #include <QImageReader>
 
-namespace impage::core {
+namespace purrview::core {
 
 const QSet<QString>& supportedImageSuffixes() {
     static const QSet<QString> suffixes = [] {
         static const QSet<QString> allowed = {
-            QStringLiteral("png"),   QStringLiteral("jpg"),   QStringLiteral("jpeg"),
-            QStringLiteral("webp"),  QStringLiteral("bmp"),   QStringLiteral("gif"),
-            QStringLiteral("tif"),   QStringLiteral("tiff"),  QStringLiteral("avif"),
-            QStringLiteral("avifs"), QStringLiteral("heif"),  QStringLiteral("heic"),
+            QStringLiteral("png"),   QStringLiteral("jpg"),  QStringLiteral("jpeg"),
+            QStringLiteral("webp"),  QStringLiteral("bmp"),  QStringLiteral("gif"),
+            QStringLiteral("tif"),   QStringLiteral("tiff"), QStringLiteral("avif"),
+            QStringLiteral("avifs"), QStringLiteral("heif"), QStringLiteral("heic"),
             QStringLiteral("hif"),   QStringLiteral("icns")};
         QSet<QString> result;
         for (const QByteArray& format : QImageReader::supportedImageFormats()) {
@@ -39,4 +39,11 @@ bool isSupportedImageFile(const QString& path) {
     return !suffix.isEmpty() && supportedImageSuffixes().contains(suffix);
 }
 
-} // namespace impage::core
+bool isImageSizeWithinLimits(const QSize& size, qint64 maximumPixels) {
+    if (!size.isValid() || size.width() <= 0 || size.height() <= 0 || maximumPixels <= 0) {
+        return false;
+    }
+    return static_cast<qint64>(size.width()) <= maximumPixels / static_cast<qint64>(size.height());
+}
+
+} // namespace purrview::core

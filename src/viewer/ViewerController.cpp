@@ -8,15 +8,16 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QGuiApplication>
+#include <QHash>
 #include <QImageReader>
 #include <QLoggingCategory>
 #include <QSet>
 
 #include <algorithm>
 
-Q_LOGGING_CATEGORY(logViewerStartup, "impage.viewer.startup")
+Q_LOGGING_CATEGORY(logViewerStartup, "purrview.viewer.startup")
 
-namespace impage::viewer {
+namespace purrview::viewer {
 
 ViewerController::ViewerController(core::ImageSession& imageSession,
                                    core::ThumbnailCache& thumbnailCache,
@@ -191,15 +192,18 @@ QList<core::ImageId> ViewerController::printCandidateImages() const {
 
     QList<core::ImageId> ordered;
     QSet<core::ImageId> seen;
+    QHash<QString, core::ImageId> selectedByPath;
+    selectedByPath.reserve(imageSession_.selectedCount());
+    for (const core::ImageEntry& image : imageSession_.images()) {
+        if (image.selected && !selectedByPath.contains(image.sourcePath)) {
+            selectedByPath.insert(image.sourcePath, image.id);
+        }
+    }
     for (const QString& path : folderModel_.selectedPaths()) {
-        const auto selected =
-            std::find_if(imageSession_.images().cbegin(), imageSession_.images().cend(),
-                         [&path](const core::ImageEntry& image) {
-                             return image.selected && image.sourcePath == path;
-                         });
-        if (selected != imageSession_.images().cend() && !seen.contains(selected->id)) {
-            ordered.push_back(selected->id);
-            seen.insert(selected->id);
+        const auto selected = selectedByPath.constFind(path);
+        if (selected != selectedByPath.cend() && !seen.contains(selected.value())) {
+            ordered.push_back(selected.value());
+            seen.insert(selected.value());
         }
     }
     for (const core::ImageEntry& image : imageSession_.images()) {
@@ -299,22 +303,35 @@ void ViewerController::selectFolderRange(int index) {
         selectionAnchor_ >= 0 ? selectionAnchor_ : std::max(0, folderModel_.currentIndex());
     const int first = std::min(anchor, index);
     const int last = std::max(anchor, index);
+    QHash<QString, core::ImageId> idsByPath;
+    idsByPath.reserve(imageSession_.count() + last - first + 1);
+    for (const core::ImageEntry& image : imageSession_.images()) {
+        if (!idsByPath.contains(image.sourcePath)) {
+            idsByPath.insert(image.sourcePath, image.id);
+        }
+    }
     QStringList missingPaths;
     for (int itemIndex = first; itemIndex <= last; ++itemIndex) {
         const QString path = folderModel_.pathAt(itemIndex);
-        if (!sessionImageForPath(path).has_value()) {
+        if (!idsByPath.contains(path)) {
             missingPaths.push_back(path);
         }
     }
     const QList<core::ImageId> addedReferences =
         imageSession_.addImageReferences(missingPaths, false);
-    Q_UNUSED(addedReferences)
+    for (qsizetype addedIndex = 0; addedIndex < addedReferences.size(); ++addedIndex) {
+        const QString& path = missingPaths.at(addedIndex);
+        if (!idsByPath.contains(path)) {
+            idsByPath.insert(path, addedReferences.at(addedIndex));
+        }
+    }
 
     QList<core::ImageId> rangeIds;
+    rangeIds.reserve(last - first + 1);
     for (int itemIndex = first; itemIndex <= last; ++itemIndex) {
-        if (const auto imageId = sessionImageForPath(folderModel_.pathAt(itemIndex));
-            imageId.has_value()) {
-            rangeIds.push_back(*imageId);
+        const auto imageId = idsByPath.constFind(folderModel_.pathAt(itemIndex));
+        if (imageId != idsByPath.cend()) {
+            rangeIds.push_back(imageId.value());
         }
     }
     const bool rangeChanged = imageSession_.selectImages(rangeIds);
@@ -325,21 +342,33 @@ void ViewerController::selectFolderRange(int index) {
 void ViewerController::selectAllFolderImages() {
     QList<core::ImageId> imageIds;
     if (folderModel_.count() > 0) {
+        QHash<QString, core::ImageId> idsByPath;
+        idsByPath.reserve(imageSession_.count() + folderModel_.count());
+        for (const core::ImageEntry& image : imageSession_.images()) {
+            if (!idsByPath.contains(image.sourcePath)) {
+                idsByPath.insert(image.sourcePath, image.id);
+            }
+        }
         QStringList missingPaths;
         for (int index = 0; index < folderModel_.count(); ++index) {
             const QString path = folderModel_.pathAt(index);
-            if (!sessionImageForPath(path).has_value()) {
+            if (!idsByPath.contains(path)) {
                 missingPaths.push_back(path);
             }
         }
         const QList<core::ImageId> addedReferences =
             imageSession_.addImageReferences(missingPaths, false);
-        Q_UNUSED(addedReferences)
+        for (qsizetype addedIndex = 0; addedIndex < addedReferences.size(); ++addedIndex) {
+            const QString& path = missingPaths.at(addedIndex);
+            if (!idsByPath.contains(path)) {
+                idsByPath.insert(path, addedReferences.at(addedIndex));
+            }
+        }
         imageIds.reserve(folderModel_.count());
         for (int index = 0; index < folderModel_.count(); ++index) {
-            if (const auto imageId = sessionImageForPath(folderModel_.pathAt(index));
-                imageId.has_value()) {
-                imageIds.push_back(*imageId);
+            const auto imageId = idsByPath.constFind(folderModel_.pathAt(index));
+            if (imageId != idsByPath.cend()) {
+                imageIds.push_back(imageId.value());
             }
         }
         selectionAnchor_ = std::max(0, folderModel_.currentIndex());
@@ -659,4 +688,4 @@ void ViewerController::handleFolderScanCompleted(const QString& requestedPath, b
     Q_UNUSED(removed)
 }
 
-} // namespace impage::viewer
+} // namespace purrview::viewer

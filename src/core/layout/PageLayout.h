@@ -5,7 +5,7 @@
 
 #include <vector>
 
-namespace impage::core {
+namespace purrview::core {
 
 struct PageLayout {
     double pageWidthMm = 0.0;
@@ -18,4 +18,4 @@ struct PageLayout {
     }
 };
 
-} // namespace impage::core
+} // namespace purrview::core

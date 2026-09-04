@@ -10,7 +10,7 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
 set(CPACK_PACKAGE_DESCRIPTION
     "PurrView combines a fast image viewer with a page composer for arranging and printing photos.")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/guedessoftware/purrview")
-set(CPACK_PACKAGE_VERSION "${IMPAGE_VERSION_CORE}")
+set(CPACK_PACKAGE_VERSION "${PURRVIEW_VERSION_CORE}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_MONOLITHIC_INSTALL ON)
 set(CPACK_PACKAGING_INSTALL_PREFIX "/usr")

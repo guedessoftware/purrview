@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace impage::core {
+namespace purrview::core {
 
 double PageModel::widthMm() const {
     return orientation_ == Orientation::Portrait ? portraitWidthMm() : portraitHeightMm();
@@ -86,4 +86,4 @@ void PageModel::setMarginsMm(double top, double right, double bottom, double lef
     marginLeftMm_ = std::max(0.0, left);
 }
 
-} // namespace impage::core
+} // namespace purrview::core

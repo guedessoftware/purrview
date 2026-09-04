@@ -12,7 +12,7 @@ cmake -S "${SOURCE_ROOT}" -B "${BUILD_ROOT}" -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTING=ON \
-    -DIMPAGE_WITH_EXIV2=OFF
+    -DPURRVIEW_WITH_EXIV2=OFF
 cmake --build "${BUILD_ROOT}" --parallel "$(nproc)"
 ctest --test-dir "${BUILD_ROOT}" --output-on-failure
 cpack --config "${BUILD_ROOT}/CPackConfig.cmake" -G RPM -B "${PACKAGE_ROOT}"
@@ -25,9 +25,11 @@ PACKAGE_PATH="${OUTPUT_ROOT}/$(basename "${BUILT_PACKAGE}")"
 chown --reference="${OUTPUT_ROOT}" "${PACKAGE_PATH}"
 rpm -qip "${PACKAGE_PATH}" >/dev/null
 rpm -qlp "${PACKAGE_PATH}" | grep -F '/usr/bin/purrview' >/dev/null
+rpm -qlp "${PACKAGE_PATH}" | grep -F '/usr/bin/impage' >/dev/null
 
 dnf -y -q install "${PACKAGE_PATH}"
 [[ "$(purrview --version)" == "PurrView ${VERSION_VALUE}" ]]
+[[ "$(impage --version)" == "PurrView ${VERSION_VALUE}" ]]
 
 smoke_test_qml() {
     local mode="$1"
@@ -56,7 +58,7 @@ smoke_test_qml() {
 
 smoke_test_qml viewer "${SOURCE_ROOT}/docs/images/purrview-viewer.png"
 smoke_test_qml compose "${SOURCE_ROOT}/docs/images/purrview-composer.png"
-desktop-file-validate /usr/share/applications/io.github.impage.Impage.desktop
-appstreamcli validate --no-net /usr/share/metainfo/io.github.impage.Impage.metainfo.xml
+desktop-file-validate /usr/share/applications/io.github.guedessoftware.PurrView.desktop
+appstreamcli validate --no-net /usr/share/metainfo/io.github.guedessoftware.PurrView.metainfo.xml
 
 printf 'RPM package validated on AlmaLinux 9: %s\n' "${PACKAGE_PATH}"

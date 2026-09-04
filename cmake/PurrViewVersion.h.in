@@ -1,0 +1,3 @@
+#pragma once
+
+#define PURRVIEW_VERSION_STRING "@PURRVIEW_VERSION@"

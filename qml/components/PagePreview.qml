@@ -1,4 +1,4 @@
-import Impage 1.0
+import PurrView 1.0
 import QtQuick
 
 Item {
@@ -139,7 +139,7 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: Math.min(150, pageFrame.width * 0.34)
                 height: width
-                source: "qrc:/qt/qml/Impage/assets/purrview.svg"
+                source: "qrc:/qt/qml/PurrView/assets/purrview.svg"
                 fillMode: Image.PreserveAspectFit
                 opacity: 0.46
                 smooth: true

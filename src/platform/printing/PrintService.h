@@ -5,13 +5,12 @@
 
 #include <QObject>
 
-#include <future>
 #include <memory>
 
 class QPrinter;
 class QPrintDialog;
 
-namespace impage::platform {
+namespace purrview::platform {
 
 class PrintService : public QObject {
     Q_OBJECT
@@ -35,9 +34,8 @@ class PrintService : public QObject {
 
     core::PageRenderer& renderer_;
     core::DocumentModel pendingDocument_;
-    std::future<std::unique_ptr<QPrinter>> printerFuture_;
     std::unique_ptr<QPrinter> printer_;
     std::unique_ptr<QPrintDialog> dialog_;
 };
 
-} // namespace impage::platform
+} // namespace purrview::platform

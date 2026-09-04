@@ -78,16 +78,13 @@ Dialog {
 
                 Layout.preferredWidth: 34
                 Layout.preferredHeight: 34
-                text: "×"
                 Accessible.name: qsTr("Fechar")
                 onClicked: root.close()
 
-                contentItem: Label {
-                    text: closeButton.text
+                contentItem: PurrIcon {
+                    name: "close"
                     color: closeButton.hovered ? UiTheme.textPrimary : UiTheme.textSecondary
-                    font.pixelSize: 22
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    strokeWidth: 2
                 }
 
                 background: Rectangle {
@@ -138,7 +135,7 @@ Dialog {
                     Image {
                         anchors.fill: parent
                         anchors.margins: 5
-                        source: "qrc:/qt/qml/Impage/assets/purrview.svg"
+                        source: "qrc:/qt/qml/PurrView/assets/purrview.svg"
                         fillMode: Image.PreserveAspectFit
                         smooth: true
                         mipmap: true
@@ -231,7 +228,7 @@ Dialog {
 
                 Layout.fillWidth: true
                 Layout.preferredHeight: 44
-                text: qsTr("Abrir projeto no GitHub  ↗")
+                text: qsTr("Abrir projeto no GitHub")
                 font.pixelSize: 14
                 font.weight: Font.DemiBold
                 onClicked: root.openExternal(root.aboutInfo.projectUrl)

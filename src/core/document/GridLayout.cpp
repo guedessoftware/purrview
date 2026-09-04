@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace impage::core {
+namespace purrview::core {
 
 int GridLayout::rows() const {
     return rows_;
@@ -36,4 +36,4 @@ void GridLayout::setVerticalSpacingMm(double spacing) {
     verticalSpacingMm_ = std::max(0.0, spacing);
 }
 
-} // namespace impage::core
+} // namespace purrview::core

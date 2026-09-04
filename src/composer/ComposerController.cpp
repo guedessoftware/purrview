@@ -1,5 +1,7 @@
 #include "composer/ComposerController.h"
 
+#include "core/image/ImageFormatSupport.h"
+
 #include <QClipboard>
 #include <QFileInfo>
 #include <QGuiApplication>
@@ -14,9 +16,9 @@
 #include <cmath>
 #include <utility>
 
-Q_LOGGING_CATEGORY(logApp, "impage.app")
+Q_LOGGING_CATEGORY(logApp, "purrview.app")
 
-namespace impage::composer {
+namespace purrview::composer {
 
 namespace {
 bool fuzzyEqual(double first, double second) {
@@ -118,7 +120,7 @@ QVariantList ComposerController::imageThumbnails() const {
     return thumbnails;
 }
 int ComposerController::selectedImageCount() const {
-    return selectedImageIndexes_.size();
+    return static_cast<int>(selectedImageIndexes_.size());
 }
 int ComposerController::pageCount() const {
     return document_.pageCount();
@@ -310,6 +312,11 @@ void ComposerController::pasteImages() {
         emit errorOccurred(QStringLiteral("Não foi possível ler a imagem copiada."));
         return;
     }
+    if (!core::isImageSizeWithinLimits(image.size(), core::MaximumClipboardPixels)) {
+        emit errorOccurred(
+            QStringLiteral("A imagem copiada é grande demais para ser importada com segurança."));
+        return;
+    }
     if (!clipboardDirectory_.isValid()) {
         emit errorOccurred(QStringLiteral("Não foi possível preparar a imagem copiada."));
         return;
@@ -393,7 +400,7 @@ void ComposerController::duplicateSelectedImages() {
     for (int index = 0; index < imageIds.size(); ++index) {
         duplicatedIds.push_back(imageIds.at(index));
         if (selectedSet.contains(index)) {
-            duplicateIndexes.insert(duplicatedIds.size());
+            duplicateIndexes.insert(static_cast<int>(duplicatedIds.size()));
             duplicatedIds.push_back(imageIds.at(index));
         }
     }
@@ -625,4 +632,4 @@ void ComposerController::notifyDocumentChanged() {
     emit documentChanged();
 }
 
-} // namespace impage::composer
+} // namespace purrview::composer

@@ -9,7 +9,7 @@
 
 #include <utility>
 
-namespace impage::desktop {
+namespace purrview::desktop {
 namespace {
 
 QString modeName(OpenMode mode) {
@@ -55,6 +55,12 @@ QByteArray serializeOpenRequest(const OpenRequest& request) {
 }
 
 bool deserializeOpenRequest(const QByteArray& payload, OpenRequest* request, QString* error) {
+    if (request == nullptr) {
+        if (error != nullptr) {
+            *error = QStringLiteral("Destino da mensagem de abertura inválido.");
+        }
+        return false;
+    }
     QJsonParseError parseError;
     const QJsonDocument document = QJsonDocument::fromJson(payload, &parseError);
     if (parseError.error != QJsonParseError::NoError || !document.isObject()) {
@@ -81,14 +87,28 @@ bool deserializeOpenRequest(const QByteArray& payload, OpenRequest* request, QSt
         }
         return false;
     }
-    for (const QJsonValue& value : object.value(QStringLiteral("files")).toArray()) {
+    const QJsonArray files = object.value(QStringLiteral("files")).toArray();
+    if (files.size() > MaximumOpenRequestFiles) {
+        if (error != nullptr) {
+            *error = QStringLiteral("A mensagem contém arquivos demais.");
+        }
+        return false;
+    }
+    for (const auto value : files) {
         if (!value.isString()) {
             if (error != nullptr) {
                 *error = QStringLiteral("A lista de arquivos contém um item inválido.");
             }
             return false;
         }
-        decoded.files.push_back(value.toString());
+        const QString path = value.toString();
+        if (path.size() > MaximumOpenRequestPathLength) {
+            if (error != nullptr) {
+                *error = QStringLiteral("A mensagem contém um caminho longo demais.");
+            }
+            return false;
+        }
+        decoded.files.push_back(path);
     }
     decoded.activateWindow = object.value(QStringLiteral("activateWindow")).toBool(true);
     *request = std::move(decoded);
@@ -118,4 +138,4 @@ QVariantList fileUrls(const QStringList& paths) {
     return urls;
 }
 
-} // namespace impage::desktop
+} // namespace purrview::desktop

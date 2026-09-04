@@ -1,6 +1,6 @@
 #pragma once
 
-namespace impage::core {
+namespace purrview::core {
 
 class PageModel {
   public:
@@ -32,4 +32,4 @@ class PageModel {
     double marginRightMm_ = 10.0;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

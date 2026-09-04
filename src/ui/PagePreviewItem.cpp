@@ -2,7 +2,7 @@
 
 #include <QPainter>
 
-namespace impage::ui {
+namespace purrview::ui {
 
 PagePreviewItem::PagePreviewItem(QQuickItem* parent) : QQuickPaintedItem(parent) {
     setAntialiasing(true);
@@ -46,4 +46,4 @@ void PagePreviewItem::paint(QPainter* painter) {
     controller_->paintPreview(*painter, boundingRect());
 }
 
-} // namespace impage::ui
+} // namespace purrview::ui

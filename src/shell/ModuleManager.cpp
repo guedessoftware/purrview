@@ -5,9 +5,9 @@
 
 #include <exception>
 
-Q_LOGGING_CATEGORY(logNavigation, "impage.navigation")
+Q_LOGGING_CATEGORY(logNavigation, "purrview.navigation")
 
-namespace impage::shell {
+namespace purrview::shell {
 
 ModuleManager::ModuleManager(ApplicationContext& context, QObject* parent)
     : QObject(parent), context_(context) {}
@@ -226,4 +226,4 @@ void ModuleManager::setComposerState(ModuleState state) {
     }
 }
 
-} // namespace impage::shell
+} // namespace purrview::shell

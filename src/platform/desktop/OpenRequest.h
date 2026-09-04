@@ -5,7 +5,10 @@
 #include <QStringList>
 #include <QVariantList>
 
-namespace impage::desktop {
+namespace purrview::desktop {
+
+inline constexpr qsizetype MaximumOpenRequestFiles = 4096;
+inline constexpr qsizetype MaximumOpenRequestPathLength = qsizetype{32} * 1024;
 
 enum class OpenMode { Auto, Viewer, Composer };
 
@@ -22,6 +25,6 @@ struct OpenRequest {
                                                  const QString& workingDirectory);
 [[nodiscard]] QVariantList fileUrls(const QStringList& paths);
 
-} // namespace impage::desktop
+} // namespace purrview::desktop
 
-Q_DECLARE_METATYPE(impage::desktop::OpenRequest)
+Q_DECLARE_METATYPE(purrview::desktop::OpenRequest)

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Compatibility command retained for installations and scripts created before
+# PurrView became the technical project name.
+exec "$(dirname "$0")/purrview" "$@"

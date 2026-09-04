@@ -1,4 +1,4 @@
-# Impage — Guia de Desenvolvimento e Convenções para IA
+# PurrView — Guia de Desenvolvimento e Convenções para IA
 
 **Documento:** Development Guide
 **Versão:** 0.1
@@ -11,7 +11,7 @@
 
 ## 1. Objetivo deste documento
 
-Este documento define as regras de desenvolvimento do **Impage** e deve servir como referência para:
+Este documento define as regras de desenvolvimento do **PurrView** e deve servir como referência para:
 
 - desenvolvimento manual;
 - desenvolvimento assistido por IA / vibe coding;
@@ -31,7 +31,7 @@ Qualquer mudança estrutural relevante deve ser proposta e justificada antes de 
 
 ## 2. Visão do produto
 
-O Impage é uma aplicação Linux focada em tornar a impressão de imagens simples, visual e previsível.
+O PurrView é uma aplicação Linux focada em tornar a impressão de imagens simples, visual e previsível.
 
 O usuário deve conseguir:
 
@@ -155,7 +155,7 @@ Não introduzir qmake.
 
 # 5. Arquitetura
 
-A arquitetura lógica do Impage é:
+A arquitetura lógica do PurrView é:
 
 ```text
 QML / UI
@@ -239,7 +239,7 @@ Evitar acessar CUPS diretamente enquanto Qt PrintSupport atender às necessidade
 # 6. Estrutura inicial de diretórios
 
 ```text
-impage/
+purrview/
 ├── CMakeLists.txt
 ├── README.md
 ├── LICENSE
@@ -671,11 +671,11 @@ Utilizar `QLoggingCategory`.
 Categorias sugeridas:
 
 ```text
-impage.core
-impage.layout
-impage.image
-impage.print
-impage.ui
+purrview.core
+purrview.layout
+purrview.image
+purrview.print
+purrview.ui
 ```
 
 Não deixar `qDebug()` espalhado como mecanismo definitivo de observabilidade.
@@ -855,7 +855,7 @@ Esta seção deve ser usada como instrução para qualquer agente de programaç�
 Ao solicitar uma funcionalidade a uma IA, utilizar preferencialmente:
 
 ```text
-Projeto: Impage
+Projeto: PurrView
 Stack: C++20 + Qt 6 + QML + CMake
 Plataforma: Linux
 
@@ -946,7 +946,7 @@ Objetos visuais QML nunca devem ser manipulados diretamente por workers.
 
 O arquivo original não deve ser modificado.
 
-O Impage trabalha de forma não destrutiva.
+O PurrView trabalha de forma não destrutiva.
 
 Alterações como:
 
@@ -1070,7 +1070,7 @@ Uma tarefa só deve ser marcada como concluída quando:
 
 # 35. Filosofia final
 
-O Impage não pretende ser um editor gráfico completo.
+O PurrView não pretende ser um editor gráfico completo.
 
 Ele deve fazer uma coisa muito bem:
 
@@ -1080,4 +1080,4 @@ Toda funcionalidade nova deve ser avaliada pela pergunta:
 
 > **Isso melhora diretamente a experiência de composição e impressão?**
 
-Se a resposta for não, provavelmente não pertence ao núcleo do Impage.
+Se a resposta for não, provavelmente não pertence ao núcleo do PurrView.

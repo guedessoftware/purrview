@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     const QString source =
         saveImage(directory, QStringLiteral("large.png"), QSize(1000, 600), Qt::red);
 
-    impage::core::ThumbnailCache cache;
+    purrview::core::ThumbnailCache cache;
     QString firstKey;
     bool cacheHit = true;
     const QImage first = cache.thumbnailNow(source, &firstKey, &cacheHit);
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
     QTimer timeout;
     timeout.setSingleShot(true);
     QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
-    QObject::connect(&cache, &impage::core::ThumbnailCache::thumbnailReady, &loop,
+    QObject::connect(&cache, &purrview::core::ThumbnailCache::thumbnailReady, &loop,
                      [&](const QString& path, const QString&, const QSize&) {
                          if (path == asyncSource) {
                              asyncReady = true;

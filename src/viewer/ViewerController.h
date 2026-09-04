@@ -16,14 +16,14 @@
 
 #include <functional>
 
-namespace impage::viewer {
+namespace purrview::viewer {
 
 class ViewerController : public QObject {
     Q_OBJECT
-    Q_PROPERTY(impage::core::ImageSession* imageSession READ imageSession CONSTANT)
-    Q_PROPERTY(impage::viewer::ViewerState* state READ state CONSTANT)
-    Q_PROPERTY(impage::core::FolderImageModel* folderModel READ folderModel CONSTANT)
-    Q_PROPERTY(impage::core::ImageMetadataModel* metadata READ metadata CONSTANT)
+    Q_PROPERTY(purrview::core::ImageSession* imageSession READ imageSession CONSTANT)
+    Q_PROPERTY(purrview::viewer::ViewerState* state READ state CONSTANT)
+    Q_PROPERTY(purrview::core::FolderImageModel* folderModel READ folderModel CONSTANT)
+    Q_PROPERTY(purrview::core::ImageMetadataModel* metadata READ metadata CONSTANT)
     Q_PROPERTY(QUrl currentImageUrl READ currentImageUrl NOTIFY currentImageChanged)
     Q_PROPERTY(QString currentFileName READ currentFileName NOTIFY currentImageChanged)
     Q_PROPERTY(QString currentFilePath READ currentFilePath NOTIFY currentImageChanged)
@@ -118,7 +118,7 @@ class ViewerController : public QObject {
     void selectionChanged();
     void navigationSnapshotChanged();
     void captureVisualStateRequested();
-    void composerActivationRequested(const impage::core::ComposerActivationContext& context);
+    void composerActivationRequested(const purrview::core::ComposerActivationContext& context);
     void noticeRequested(const QString& message);
 
   private:
@@ -146,4 +146,4 @@ class ViewerController : public QObject {
     QElapsedTimer startupTimer_;
 };
 
-} // namespace impage::viewer
+} // namespace purrview::viewer

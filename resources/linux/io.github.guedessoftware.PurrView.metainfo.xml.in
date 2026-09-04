@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2026 PurrView contributors -->
 <component type="desktop-application">
-  <id>io.github.impage.Impage</id>
+  <id>io.github.guedessoftware.PurrView</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-only</project_license>
-  <developer id="com.guedessoftware">
+  <developer id="io.github.guedessoftware">
     <name>PurrView contributors</name>
   </developer>
   <name>PurrView</name>
@@ -15,9 +15,31 @@
     <p>PurrView combines a fast image viewer with a polished page composer for arranging photos before printing.</p>
     <p xml:lang="pt-BR">O PurrView reúne um visualizador de imagens e um compositor de páginas refinado para organizar fotos antes da impressão.</p>
   </description>
-  <launchable type="desktop-id">io.github.impage.Impage.desktop</launchable>
+  <launchable type="desktop-id">io.github.guedessoftware.PurrView.desktop</launchable>
   <url type="homepage">https://github.com/guedessoftware/purrview</url>
   <url type="bugtracker">https://github.com/guedessoftware/purrview/issues</url>
+  <screenshots>
+    <screenshot type="default">
+      <image type="source">https://raw.githubusercontent.com/guedessoftware/purrview/main/docs/images/purrview-composer.png</image>
+      <caption>Compose a printable page using the dark system theme</caption>
+      <caption xml:lang="pt-BR">Monte uma página para impressão usando o tema escuro do sistema</caption>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://raw.githubusercontent.com/guedessoftware/purrview/main/docs/images/purrview-viewer.png</image>
+      <caption>Browse a folder with the immersive image viewer</caption>
+      <caption xml:lang="pt-BR">Navegue por uma pasta com o visualizador imersivo</caption>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://raw.githubusercontent.com/guedessoftware/purrview/main/docs/images/purrview-composer-light.png</image>
+      <caption>Compose pages while following the light system theme</caption>
+      <caption xml:lang="pt-BR">Componha páginas acompanhando o tema claro do sistema</caption>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://raw.githubusercontent.com/guedessoftware/purrview/main/docs/images/purrview-viewer-light.png</image>
+      <caption>View images while following the light system theme</caption>
+      <caption xml:lang="pt-BR">Visualize imagens acompanhando o tema claro do sistema</caption>
+    </screenshot>
+  </screenshots>
   <provides>
     <binary>purrview</binary>
     <binary>impage</binary>
@@ -42,9 +64,9 @@
   </supports>
   <content_rating type="oars-1.1"/>
   <releases>
-    <release version="@IMPAGE_VERSION@" date="@IMPAGE_RELEASE_DATE@">
+    <release version="@PURRVIEW_VERSION@" date="@PURRVIEW_RELEASE_DATE@">
       <description>
-        <p>@IMPAGE_RELEASE_SUMMARY@</p>
+        <p>@PURRVIEW_RELEASE_SUMMARY@</p>
       </description>
     </release>
     <release version="0.8.2" date="2026-09-03">

@@ -1,6 +1,6 @@
-# Arquitetura do Impage
+# Arquitetura do PurrView
 
-O Impage possui um Shell mínimo responsável pela janela e pelo ciclo de vida dos módulos. O
+O PurrView possui um Shell mínimo responsável pela janela e pelo ciclo de vida dos módulos. O
 `shell::ApplicationController` expõe o `ModuleManager` ao QML; o gerenciador cria o backend do
 Composer somente quando ele é solicitado e preserva sua instância enquanto a aplicação estiver
 aberta.
@@ -63,6 +63,12 @@ são decodificadas de forma escalada em um `QThreadPool`, retornam ao modelo pel
 ficam em um `QCache` limitado a 128 MiB. A chave combina caminho, tamanho e data de modificação. O
 QML solicita somente os delegates visíveis e uma vizinhança da imagem atual; a imagem anterior e a
 próxima são pré-carregadas separadamente para navegação rápida.
+
+A imagem principal do Viewer é decodificada em níveis progressivos de resolução, acompanhando a
+tela e o zoom sem perder a resolução original no arquivo. A composição usa um cache LRU de imagens
+limitado a 192 MiB e solicita ao codec somente a resolução necessária ao preview ou ao dispositivo
+de impressão. Todas as entradas respeitam o teto global de decodificação de 256 MiB e 64
+megapixels; o clipboard possui o limite mais conservador de 32 megapixels.
 
 As ações de arquivo pertencem ao `ViewerController`. Abrir a pasta usa a integração de URL do Qt,
 copiar caminho usa o clipboard do sistema e remover usa exclusivamente `QFile::moveToTrash`, após

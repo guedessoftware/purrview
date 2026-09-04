@@ -14,11 +14,14 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   flatpak:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Flatpak builder
         run: |
@@ -30,22 +33,22 @@ jobs:
       - name: Build Flatpak
         run: |
           flatpak-builder --user --force-clean --repo=flatpak-repo \
-            build-flatpak packaging/flatpak/io.github.impage.Impage.yml
+            build-flatpak packaging/flatpak/io.github.guedessoftware.PurrView.yml
 
       - name: Validate metadata
         run: |
           appstreamcli validate --no-net \
-            build-flatpak/files/share/metainfo/io.github.impage.Impage.metainfo.xml
+            build-flatpak/files/share/metainfo/io.github.guedessoftware.PurrView.metainfo.xml
           desktop-file-validate \
-            build-flatpak/files/share/applications/io.github.impage.Impage.desktop
+            build-flatpak/files/share/applications/io.github.guedessoftware.PurrView.desktop
 
       - name: Create bundle
         run: |
           version="$(<VERSION)"
-          flatpak build-bundle flatpak-repo "Impage-${version}-x86_64.flatpak" \
-            io.github.impage.Impage
+          flatpak build-bundle flatpak-repo "PurrView-${version}-x86_64.flatpak" \
+            io.github.guedessoftware.PurrView
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: Impage-Flatpak
-          path: Impage-*.flatpak
+          name: PurrView-Flatpak
+          path: PurrView-*.flatpak

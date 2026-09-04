@@ -1,6 +1,6 @@
 #include "core/image/Exiv2MetadataBackend.h"
 
-#ifdef IMPAGE_HAS_EXIV2
+#ifdef PURRVIEW_HAS_EXIV2
 #include <exiv2/exiv2.hpp>
 
 #include <array>
@@ -10,9 +10,9 @@
 #include <string_view>
 #endif
 
-namespace impage::core {
+namespace purrview::core {
 
-#ifdef IMPAGE_HAS_EXIV2
+#ifdef PURRVIEW_HAS_EXIV2
 namespace {
 using ExifIterator = Exiv2::ExifData::const_iterator;
 
@@ -177,7 +177,7 @@ std::optional<double> gpsCoordinate(const Exiv2::ExifData& data, std::string_vie
 
 bool populateAdvancedMetadataWithExiv2(const QString& path, ImageMetadata& metadata,
                                        QString* warning) {
-#ifdef IMPAGE_HAS_EXIV2
+#ifdef PURRVIEW_HAS_EXIV2
     try {
         // useCurl=false guarantees that metadata parsing never performs a network request.
         Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(path.toStdString(), false);
@@ -268,4 +268,4 @@ bool populateAdvancedMetadataWithExiv2(const QString& path, ImageMetadata& metad
 #endif
 }
 
-} // namespace impage::core
+} // namespace purrview::core

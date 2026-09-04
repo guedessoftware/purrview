@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Public command for the PurrView brand. Keep the historical binary name as the
-# implementation detail so existing desktop integrations continue to upgrade cleanly.
-exec "$(dirname "$0")/impage" "$@"

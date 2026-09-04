@@ -62,11 +62,12 @@ Rectangle {
         visible: root.imageValid && root.imageThumbnailSource.toString().length === 0
     }
 
-    Label {
+    PurrIcon {
         anchors.centerIn: parent
-        text: "!"
+        width: 20
+        height: 20
+        name: "warning"
         color: UiTheme.danger
-        font.pixelSize: 20
         visible: root.imageThumbnailSource.toString().length === 0
                  && !root.imageValid
     }
@@ -82,12 +83,13 @@ Rectangle {
         color: UiTheme.brandPurple
         border.color: Qt.rgba(1, 1, 1, 0.85)
 
-        Label {
+        PurrIcon {
             anchors.centerIn: parent
-            text: "✓"
+            width: 11
+            height: 11
+            name: "check"
             color: root.themePalette.highlightedText
-            font.pixelSize: 11
-            font.weight: Font.Bold
+            strokeWidth: 2.4
         }
 
     }

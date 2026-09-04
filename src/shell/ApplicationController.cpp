@@ -4,7 +4,7 @@
 #include <QSettings>
 #include <QUrl>
 
-namespace impage::shell {
+namespace purrview::shell {
 
 ApplicationController::ApplicationController(QObject* parent)
     : QObject(parent), moduleManager_(context_), openRequestHandler_(moduleManager_) {
@@ -115,4 +115,4 @@ void ApplicationController::connectViewerTitle() {
     }
 }
 
-} // namespace impage::shell
+} // namespace purrview::shell

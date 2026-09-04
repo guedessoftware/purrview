@@ -2,9 +2,9 @@
 
 #include <QPalette>
 
-namespace impage::ui {
+namespace purrview::ui {
 
 [[nodiscard]] bool paletteIsDark(const QPalette& palette);
 [[nodiscard]] QPalette createPurrViewPalette(bool darkMode = true);
 
-} // namespace impage::ui
+} // namespace purrview::ui

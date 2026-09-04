@@ -1,6 +1,6 @@
 #include "core/layout/LayoutEngine.h"
 
-namespace impage::core {
+namespace purrview::core {
 
 PageLayout LayoutEngine::calculate(const DocumentModel& document) const {
     const PageModel& page = document.page();
@@ -41,4 +41,4 @@ PageLayout LayoutEngine::calculate(const DocumentModel& document) const {
     return result;
 }
 
-} // namespace impage::core
+} // namespace purrview::core

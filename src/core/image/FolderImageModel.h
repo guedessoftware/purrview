@@ -5,6 +5,8 @@
 
 #include <QAbstractListModel>
 #include <QFileSystemWatcher>
+#include <QHash>
+#include <QSet>
 #include <QSize>
 #include <QStringList>
 #include <QThreadPool>
@@ -13,7 +15,7 @@
 
 #include <vector>
 
-namespace impage::core {
+namespace purrview::core {
 
 class FolderImageModel : public QAbstractListModel {
     Q_OBJECT
@@ -89,11 +91,15 @@ class FolderImageModel : public QAbstractListModel {
                    int previousCurrentIndex, quint64 generation, std::vector<FolderItem> items);
     void updateSessionCurrentRole();
     void updateWatcher();
+    void rebuildPathIndex();
+    void refreshSelectionCache();
     [[nodiscard]] bool isPathSelected(const QString& path) const;
 
     ImageSession& session_;
     ThumbnailCache& thumbnailCache_;
     std::vector<FolderItem> items_;
+    QHash<QString, int> pathIndex_;
+    QSet<QString> selectedPaths_;
     QString directoryPath_;
     int lastCurrentIndex_ = -1;
     bool scanning_ = false;
@@ -104,4 +110,4 @@ class FolderImageModel : public QAbstractListModel {
     QTimer refreshTimer_;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

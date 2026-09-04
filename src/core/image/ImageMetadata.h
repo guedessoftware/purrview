@@ -8,7 +8,7 @@
 
 #include <optional>
 
-namespace impage::core {
+namespace purrview::core {
 
 struct CameraMetadata {
     QString manufacturer;
@@ -66,8 +66,8 @@ struct ImageMetadata {
                                          const QLocale& locale = QLocale());
 [[nodiscard]] QString orientationDescription(const ImageMetadata& metadata);
 
-} // namespace impage::core
+} // namespace purrview::core
 
-Q_DECLARE_METATYPE(impage::core::CameraMetadata)
-Q_DECLARE_METATYPE(impage::core::GpsMetadata)
-Q_DECLARE_METATYPE(impage::core::ImageMetadata)
+Q_DECLARE_METATYPE(purrview::core::CameraMetadata)
+Q_DECLARE_METATYPE(purrview::core::GpsMetadata)
+Q_DECLARE_METATYPE(purrview::core::ImageMetadata)

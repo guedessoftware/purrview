@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Window
 
 Item {
     id: root
@@ -25,6 +26,14 @@ Item {
     readonly property real contentCenterY: safeInsetTop + (viewport.height - safeInsetTop - safeInsetBottom) / 2
     readonly property real fitScale: Math.min(safeWidth / rotatedPixelWidth, safeHeight / rotatedPixelHeight)
     readonly property real effectiveScale: controller.state.fitMode ? fitScale : controller.state.zoomFactor
+    readonly property real decodeScale: {
+        const longestSide = Math.max(sourcePixelWidth, sourcePixelHeight);
+        const minimumScale = Math.min(1, 256 / longestSide);
+        const screenScale = Math.max(minimumScale, effectiveScale * Screen.devicePixelRatio);
+        return Math.min(1, Math.pow(2, Math.ceil(Math.log(screenScale) / Math.LN2)));
+    }
+    readonly property int decodePixelWidth: Math.max(1, Math.ceil(sourcePixelWidth * decodeScale))
+    readonly property int decodePixelHeight: Math.max(1, Math.ceil(sourcePixelHeight * decodeScale))
     readonly property real displayedWidth: rotatedPixelWidth * effectiveScale
     readonly property real displayedHeight: rotatedPixelHeight * effectiveScale
     readonly property bool canPan: displayedWidth > safeWidth + 0.5 || displayedHeight > safeHeight + 0.5
@@ -105,11 +114,14 @@ Item {
         Image {
             id: displayImage
 
+            property url lastReadySource: ""
+
             width: root.sourcePixelWidth
             height: root.sourcePixelHeight
             x: root.contentCenterX - width / 2 + root.panX
             y: root.contentCenterY - height / 2 + root.panY
             source: root.controller.currentImageUrl
+            sourceSize: Qt.size(root.decodePixelWidth, root.decodePixelHeight)
             rotation: root.controller.rotation
             scale: root.effectiveScale
             transformOrigin: Item.Center
@@ -121,12 +133,18 @@ Item {
             opacity: status === Image.Ready ? 1 : 0
             onStatusChanged: {
                 if (status === Image.Ready) {
+                    const changedImage = lastReadySource.toString() !== source.toString();
+                    lastReadySource = source;
                     root.controller.reportCurrentImageVisible();
                     root.controller.updateFitScale(root.fitScale);
-                    if (root.restoredPanPending)
-                        root.applyRestoredPan();
-                    else
-                        root.resetPan();
+                    if (changedImage) {
+                        if (root.restoredPanPending)
+                            root.applyRestoredPan();
+                        else
+                            root.resetPan();
+                    } else {
+                        root.clampPan();
+                    }
                 }
             }
 
@@ -207,7 +225,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             width: 104
             height: 104
-            source: "qrc:/qt/qml/Impage/assets/purrview.svg"
+            source: "qrc:/qt/qml/PurrView/assets/purrview.svg"
             fillMode: Image.PreserveAspectFit
             opacity: 0.72
             smooth: true

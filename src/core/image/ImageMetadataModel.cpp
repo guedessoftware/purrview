@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-namespace impage::core {
+namespace purrview::core {
 
 ImageMetadataModel::ImageMetadataModel(QObject* parent) : QObject(parent) {}
 
@@ -198,4 +198,4 @@ void ImageMetadataModel::clear() {
     setLoading(false);
 }
 
-} // namespace impage::core
+} // namespace purrview::core

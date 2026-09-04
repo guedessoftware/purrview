@@ -1,6 +1,6 @@
 #include "ui/ThumbnailImageProvider.h"
 
-namespace impage::ui {
+namespace purrview::ui {
 
 ThumbnailImageProvider::ThumbnailImageProvider(core::ThumbnailCache& cache)
     : QQuickImageProvider(QQuickImageProvider::Image,
@@ -20,4 +20,4 @@ QImage ThumbnailImageProvider::requestImage(const QString& id, QSize* size,
     return image;
 }
 
-} // namespace impage::ui
+} // namespace purrview::ui

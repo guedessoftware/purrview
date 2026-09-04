@@ -53,16 +53,13 @@ Rectangle {
             anchors.rightMargin: 10
             width: 38
             height: 38
-            text: "×"
             Accessible.name: qsTr("Fechar informações")
             onClicked: root.controller.toggleInfoPanel()
 
-            contentItem: Label {
-                text: closeButton.text
+            contentItem: PurrIcon {
+                name: "close"
                 color: UiTheme.textPrimary
-                font.pixelSize: 22
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                strokeWidth: 2
             }
 
             background: Rectangle {

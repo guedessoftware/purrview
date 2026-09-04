@@ -5,7 +5,7 @@
 #include <QString>
 #include <QStringList>
 
-namespace impage::desktop {
+namespace purrview::desktop {
 
 struct CommandLineResult {
     OpenRequest request;
@@ -18,4 +18,4 @@ struct CommandLineResult {
 [[nodiscard]] CommandLineResult parseCommandLine(const QStringList& arguments,
                                                  const QString& workingDirectory);
 
-} // namespace impage::desktop
+} // namespace purrview::desktop

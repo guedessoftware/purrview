@@ -1,7 +1,7 @@
 #include "core/image/ImageMetadataModel.h"
 #include "core/image/ImageMetadataService.h"
 
-#ifdef IMPAGE_HAS_EXIV2
+#ifdef PURRVIEW_HAS_EXIV2
 #include <exiv2/exiv2.hpp>
 #endif
 
@@ -34,7 +34,7 @@ QString createImage(const QTemporaryDir& directory, const QString& name, const Q
     return path;
 }
 
-#ifdef IMPAGE_HAS_EXIV2
+#ifdef PURRVIEW_HAS_EXIV2
 void addExifFixture(const QString& path) {
     Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(path.toStdString(), false);
     check(image != nullptr, "Exiv2 can open fixture for metadata writing");
@@ -84,52 +84,52 @@ int main(int argc, char* argv[]) {
     corrupt.write("not a JPEG");
     corrupt.close();
 
-    impage::core::ImageMetadataService service;
+    purrview::core::ImageMetadataService service;
     bool cacheHit = true;
-    const impage::core::ImageMetadata jpegMetadata = service.readMetadataNow(jpeg, &cacheHit);
+    const purrview::core::ImageMetadata jpegMetadata = service.readMetadataNow(jpeg, &cacheHit);
     check(!cacheHit && jpegMetadata.readable, "JPEG without EXIF has readable basic metadata");
     check(jpegMetadata.pixelSize == QSize(1200, 800), "JPEG dimensions are extracted");
     check(jpegMetadata.format == QStringLiteral("JPEG"), "actual JPEG format is friendly");
     check(jpegMetadata.fileSize > 0 && jpegMetadata.modifiedAt.isValid(),
           "file size and modification date are extracted");
 
-    const impage::core::ImageMetadata pngMetadata = service.readMetadataNow(png);
+    const purrview::core::ImageMetadata pngMetadata = service.readMetadataNow(png);
     check(pngMetadata.readable && pngMetadata.pixelSize == QSize(640, 480) &&
               pngMetadata.format == QStringLiteral("PNG"),
           "PNG basic metadata is supported");
-    const impage::core::ImageMetadata corruptMetadata = service.readMetadataNow(corruptPath);
+    const purrview::core::ImageMetadata corruptMetadata = service.readMetadataNow(corruptPath);
     check(!corruptMetadata.readable && !corruptMetadata.warning.isEmpty(),
           "corrupt image degrades to file metadata with a small warning");
-    const impage::core::ImageMetadata missing =
+    const purrview::core::ImageMetadata missing =
         service.readMetadataNow(directory.filePath(QStringLiteral("missing.jpg")));
     check(!missing.readable && !missing.warning.isEmpty(),
           "missing image returns a non-fatal metadata error");
 
-    check(impage::core::formatFileSize(845, QLocale::c()) == QStringLiteral("845 B"),
+    check(purrview::core::formatFileSize(845, QLocale::c()) == QStringLiteral("845 B"),
           "byte size formatting is human readable");
-    check(impage::core::formatFileSize(4'700'000, QLocale::c()).endsWith(QStringLiteral("MB")),
+    check(purrview::core::formatFileSize(4'700'000, QLocale::c()).endsWith(QStringLiteral("MB")),
           "megabyte size formatting uses a friendly unit");
-    check(impage::core::formatMegapixels(QSize(6000, 4000), QLocale::c()) ==
+    check(purrview::core::formatMegapixels(QSize(6000, 4000), QLocale::c()) ==
               QStringLiteral("24 MP"),
           "megapixels are calculated from dimensions");
-    check(impage::core::formatAperture(5.6, QLocale::c()) == QStringLiteral("f/5.6"),
+    check(purrview::core::formatAperture(5.6, QLocale::c()) == QStringLiteral("f/5.6"),
           "aperture uses photographic formatting");
     const QLocale brazilianPortuguese(QLocale::Portuguese, QLocale::Brazil);
-    check(impage::core::formatAperture(5.6, brazilianPortuguese) == QStringLiteral("f/5,6"),
+    check(purrview::core::formatAperture(5.6, brazilianPortuguese) == QStringLiteral("f/5,6"),
           "aperture respects the active locale decimal separator");
-    check(impage::core::formatExposureTime(1.0 / 320.0, QLocale::c()) == QStringLiteral("1/320 s"),
+    check(purrview::core::formatExposureTime(1.0 / 320.0, QLocale::c()) == QStringLiteral("1/320 s"),
           "short exposure uses reciprocal notation");
-    check(impage::core::formatExposureTime(2.0, QLocale::c()) == QStringLiteral("2 s"),
+    check(purrview::core::formatExposureTime(2.0, QLocale::c()) == QStringLiteral("2 s"),
           "long exposure uses seconds notation");
 
     const int loadsBeforeHit = service.loadCount();
-    const impage::core::ImageMetadata cached = service.readMetadataNow(jpeg, &cacheHit);
+    const purrview::core::ImageMetadata cached = service.readMetadataNow(jpeg, &cacheHit);
     check(cacheHit && cached.absolutePath == jpegMetadata.absolutePath &&
               service.loadCount() == loadsBeforeHit,
           "metadata cache hit avoids a second parse");
 
     service.invalidateFile(jpeg);
-    const impage::core::ImageMetadata explicitlyInvalidated =
+    const purrview::core::ImageMetadata explicitlyInvalidated =
         service.readMetadataNow(jpeg, &cacheHit);
     check(!cacheHit && explicitlyInvalidated.absolutePath == jpegMetadata.absolutePath,
           "metadata cache entry can be invalidated after a file operation");
@@ -138,15 +138,15 @@ int main(int argc, char* argv[]) {
     QImage changed(QSize(333, 222), QImage::Format_RGB32);
     changed.fill(Qt::green);
     check(changed.save(jpeg), "metadata source can change for invalidation test");
-    const impage::core::ImageMetadata invalidated = service.readMetadataNow(jpeg, &cacheHit);
+    const purrview::core::ImageMetadata invalidated = service.readMetadataNow(jpeg, &cacheHit);
     check(!cacheHit && invalidated.pixelSize == QSize(333, 222),
           "size or mtime change invalidates metadata cache");
 
-#ifdef IMPAGE_HAS_EXIV2
+#ifdef PURRVIEW_HAS_EXIV2
     const QString exifJpeg =
         createImage(directory, QStringLiteral("camera.jpg"), QSize(3000, 2000), Qt::yellow);
     addExifFixture(exifJpeg);
-    const impage::core::ImageMetadata exif = service.readMetadataNow(exifJpeg);
+    const purrview::core::ImageMetadata exif = service.readMetadataNow(exifJpeg);
     check(exif.advancedMetadataAvailable && exif.camera.manufacturer == QStringLiteral("Canon") &&
               exif.camera.model == QStringLiteral("EOS R6"),
           "camera make and model are extracted through optional Exiv2 backend");
@@ -166,7 +166,7 @@ int main(int argc, char* argv[]) {
 
     const QLocale originalLocale = QLocale();
     QLocale::setDefault(brazilianPortuguese);
-    impage::core::ImageMetadataModel presentation;
+    purrview::core::ImageMetadataModel presentation;
     presentation.setMetadata(exif);
     check(presentation.hasCameraSection() && presentation.hasGpsSection() &&
               presentation.cameraName() == QStringLiteral("Canon EOS R6") &&

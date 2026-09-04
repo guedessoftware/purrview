@@ -4,7 +4,7 @@
 
 #include <QObject>
 
-namespace impage::shell {
+namespace purrview::shell {
 
 class ModuleManager;
 
@@ -18,10 +18,10 @@ class OpenRequestHandler final : public QObject {
 
   signals:
     void errorOccurred(const QString& message);
-    void requestHandled(const impage::desktop::OpenRequest& request);
+    void requestHandled(const purrview::desktop::OpenRequest& request);
 
   private:
     ModuleManager& modules_;
 };
 
-} // namespace impage::shell
+} // namespace purrview::shell

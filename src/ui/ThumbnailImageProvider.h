@@ -4,7 +4,7 @@
 
 #include <QQuickImageProvider>
 
-namespace impage::ui {
+namespace purrview::ui {
 
 class ThumbnailImageProvider : public QQuickImageProvider {
   public:
@@ -17,4 +17,4 @@ class ThumbnailImageProvider : public QQuickImageProvider {
     core::ThumbnailCache& cache_;
 };
 
-} // namespace impage::ui
+} // namespace purrview::ui

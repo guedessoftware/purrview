@@ -9,7 +9,46 @@
 #include <QLockFile>
 #include <QStandardPaths>
 
-namespace impage::desktop {
+#if defined(Q_OS_UNIX)
+#include <unistd.h>
+#endif
+
+namespace {
+
+bool preparePrivateRuntimeDirectory(const QString& path) {
+    QFileInfo info(path);
+    if (info.exists()) {
+        if (!info.isDir() || info.isSymbolicLink()) {
+            return false;
+        }
+#if defined(Q_OS_UNIX)
+        if (info.ownerId() != static_cast<uint>(geteuid())) {
+            return false;
+        }
+#endif
+    } else if (!QDir().mkpath(path)) {
+        return false;
+    }
+
+    if (!QFile::setPermissions(path, QFileDevice::ReadOwner | QFileDevice::WriteOwner |
+                                         QFileDevice::ExeOwner)) {
+        return false;
+    }
+    info.refresh();
+    if (!info.exists() || !info.isDir() || info.isSymbolicLink()) {
+        return false;
+    }
+#if defined(Q_OS_UNIX)
+    if (info.ownerId() != static_cast<uint>(geteuid())) {
+        return false;
+    }
+#endif
+    return true;
+}
+
+} // namespace
+
+namespace purrview::desktop {
 
 SingleInstanceService::SingleInstanceService(QString socketPath, QObject* parent)
     : QObject(parent),
@@ -28,6 +67,10 @@ SingleInstanceService::~SingleInstanceService() {
 
 SingleInstanceService::StartResult SingleInstanceService::startOrForward(const OpenRequest& request,
                                                                          int timeoutMilliseconds) {
+    if (socketPath_.isEmpty()) {
+        errorString_ = QStringLiteral("Não foi possível preparar o diretório privado de execução.");
+        return StartResult::Error;
+    }
     if (primary_) {
         emit requestReceived(request);
         return StartResult::Primary;
@@ -74,19 +117,24 @@ QString SingleInstanceService::errorString() const {
 QString SingleInstanceService::defaultSocketPath() {
     QString runtimeDirectory = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
     if (runtimeDirectory.isEmpty()) {
+#if defined(Q_OS_UNIX)
+        const QByteArray userKey = QByteArray::number(static_cast<qulonglong>(geteuid()));
+#else
         const QByteArray userKey =
             QCryptographicHash::hash(
                 QStandardPaths::writableLocation(QStandardPaths::HomeLocation).toUtf8(),
                 QCryptographicHash::Sha256)
                 .toHex()
                 .first(12);
+#endif
         runtimeDirectory = QDir::temp().filePath(
-            QStringLiteral("impage-runtime-%1").arg(QString::fromLatin1(userKey)));
+            QStringLiteral("purrview-runtime-%1").arg(QString::fromLatin1(userKey)));
+        if (!preparePrivateRuntimeDirectory(runtimeDirectory)) {
+            return {};
+        }
     }
-    QDir().mkpath(runtimeDirectory);
-    QFile::setPermissions(runtimeDirectory,
-                          QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
-    return QDir(runtimeDirectory).filePath(QStringLiteral("io.github.impage.Impage.sock"));
+    return QDir(runtimeDirectory)
+        .filePath(QStringLiteral("io.github.guedessoftware.PurrView.sock"));
 }
 
 bool SingleInstanceService::forwardToPrimary(const OpenRequest& request, int timeoutMilliseconds) {
@@ -119,16 +167,17 @@ void SingleInstanceService::acceptConnections() {
 }
 
 void SingleInstanceService::readRequest(QLocalSocket* socket) {
-    QByteArray buffer = socket->property("impageBuffer").toByteArray();
+    constexpr qsizetype maximumMessageBytes = qsizetype{1024} * 1024;
+    QByteArray buffer = socket->property("purrviewBuffer").toByteArray();
     buffer += socket->readAll();
-    if (buffer.size() > 1024 * 1024) {
+    if (buffer.size() > maximumMessageBytes) {
         emit protocolError(QStringLiteral("Mensagem de abertura excedeu o limite permitido."));
         socket->disconnectFromServer();
         return;
     }
     const qsizetype newline = buffer.indexOf('\n');
     if (newline < 0) {
-        socket->setProperty("impageBuffer", buffer);
+        socket->setProperty("purrviewBuffer", buffer);
         return;
     }
 
@@ -142,4 +191,4 @@ void SingleInstanceService::readRequest(QLocalSocket* socket) {
     socket->disconnectFromServer();
 }
 
-} // namespace impage::desktop
+} // namespace purrview::desktop

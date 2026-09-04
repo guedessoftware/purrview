@@ -27,7 +27,7 @@ QString createImage(const QTemporaryDir& directory, const QString& name, const Q
 }
 
 void testEmptyAndAdding(const QStringList& paths) {
-    impage::core::ImageSession session;
+    purrview::core::ImageSession session;
     check(session.count() == 0, "empty session has zero images");
     check(session.currentIndex() == -1, "empty session has no current index");
     check(session.currentImage() == nullptr, "empty session has no current image");
@@ -39,22 +39,22 @@ void testEmptyAndAdding(const QStringList& paths) {
     check(session.currentImage() != nullptr && session.currentImage()->id == *firstId,
           "current image identifies first entry");
 
-    const QList<impage::core::ImageId> remainingIds = session.addImages({paths.at(1), paths.at(2)});
+    const QList<purrview::core::ImageId> remainingIds = session.addImages({paths.at(1), paths.at(2)});
     check(remainingIds.size() == 2, "multiple valid images are accepted");
     check(session.count() == 3, "multiple images increment session count");
     check(session.images().at(0).sourcePath == paths.at(0), "first image order is preserved");
     check(session.images().at(1).sourcePath == paths.at(1), "second image order is preserved");
     check(session.images().at(2).sourcePath == paths.at(2), "third image order is preserved");
-    check(session.data(session.index(1), impage::core::ImageSession::SourceRole).toUrl() ==
+    check(session.data(session.index(1), purrview::core::ImageSession::SourceRole).toUrl() ==
               QUrl::fromLocalFile(paths.at(1)),
           "QML source role exposes a local file URL");
 }
 
 void testCurrentImageAndRemoval(const QStringList& paths) {
-    impage::core::ImageSession session;
-    const QList<impage::core::ImageId> ids = session.addImages(paths.mid(0, 3));
+    purrview::core::ImageSession session;
+    const QList<purrview::core::ImageId> ids = session.addImages(paths.mid(0, 3));
     int currentSignalCount = 0;
-    QObject::connect(&session, &impage::core::ImageSession::currentImageChanged,
+    QObject::connect(&session, &purrview::core::ImageSession::currentImageChanged,
                      [&currentSignalCount] { ++currentSignalCount; });
 
     session.setCurrentIndex(2);
@@ -64,7 +64,7 @@ void testCurrentImageAndRemoval(const QStringList& paths) {
     session.setCurrentIndex(2);
     check(currentSignalCount == 1, "setting the same index emits no redundant signal");
 
-    const impage::core::ImageId stableCurrentId = session.currentImage()->id;
+    const purrview::core::ImageId stableCurrentId = session.currentImage()->id;
     check(session.removeImage(ids.at(0)), "image before current can be removed");
     check(session.currentIndex() == 1, "removing before current corrects its index");
     check(session.currentImage()->id == stableCurrentId,
@@ -82,10 +82,10 @@ void testCurrentImageAndRemoval(const QStringList& paths) {
 }
 
 void testSelection(const QStringList& paths) {
-    impage::core::ImageSession session;
-    const QList<impage::core::ImageId> ids = session.addImages(paths.mid(0, 3));
+    purrview::core::ImageSession session;
+    const QList<purrview::core::ImageId> ids = session.addImages(paths.mid(0, 3));
     int selectionSignalCount = 0;
-    QObject::connect(&session, &impage::core::ImageSession::selectionChanged,
+    QObject::connect(&session, &purrview::core::ImageSession::selectionChanged,
                      [&selectionSignalCount] { ++selectionSignalCount; });
 
     check(session.selectImage(ids.at(0)), "image can be selected");
@@ -109,7 +109,7 @@ void testSelection(const QStringList& paths) {
 }
 
 void testClearDuplicatesAndValidation(const QStringList& paths, const QTemporaryDir& directory) {
-    impage::core::ImageSession session;
+    purrview::core::ImageSession session;
     const auto first = session.addImage(paths.at(0));
     const auto duplicate = session.addImage(paths.at(0));
     check(first.has_value() && duplicate.has_value(), "duplicate paths are intentionally allowed");
@@ -139,7 +139,7 @@ void testClearDuplicatesAndValidation(const QStringList& paths, const QTemporary
     check(!session.setRotation(*first, 45), "unsupported rotation angle is rejected");
 
     int clearedSignals = 0;
-    QObject::connect(&session, &impage::core::ImageSession::sessionCleared,
+    QObject::connect(&session, &purrview::core::ImageSession::sessionCleared,
                      [&clearedSignals] { ++clearedSignals; });
     session.clear();
     check(session.count() == 0 && session.currentIndex() == -1,

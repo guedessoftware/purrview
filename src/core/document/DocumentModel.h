@@ -6,7 +6,7 @@
 
 #include <vector>
 
-namespace impage::core {
+namespace purrview::core {
 
 class DocumentModel {
   public:
@@ -30,4 +30,4 @@ class DocumentModel {
     PlacementMode placementMode_ = PlacementMode::Fit;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

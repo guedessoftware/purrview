@@ -7,12 +7,12 @@
 #include <QObject>
 #include <QVariantList>
 
-namespace impage::shell {
+namespace purrview::shell {
 
 class ApplicationController : public QObject {
     Q_OBJECT
-    Q_PROPERTY(impage::shell::ApplicationContext* context READ context CONSTANT)
-    Q_PROPERTY(impage::shell::ModuleManager* modules READ modules CONSTANT)
+    Q_PROPERTY(purrview::shell::ApplicationContext* context READ context CONSTANT)
+    Q_PROPERTY(purrview::shell::ModuleManager* modules READ modules CONSTANT)
     Q_PROPERTY(QString windowTitle READ windowTitle NOTIFY windowTitleChanged)
     Q_PROPERTY(int savedWindowWidth READ savedWindowWidth CONSTANT)
     Q_PROPERTY(int savedWindowHeight READ savedWindowHeight CONSTANT)
@@ -54,4 +54,4 @@ class ApplicationController : public QObject {
     QString lastOpenRequestError_;
 };
 
-} // namespace impage::shell
+} // namespace purrview::shell

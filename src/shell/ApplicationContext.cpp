@@ -1,6 +1,6 @@
 #include "shell/ApplicationContext.h"
 
-namespace impage::shell {
+namespace purrview::shell {
 
 ApplicationContext::ApplicationContext(QObject* parent) : QObject(parent) {}
 
@@ -20,4 +20,4 @@ core::ImageMetadataService* ApplicationContext::imageMetadataService() {
     return &imageMetadataService_;
 }
 
-} // namespace impage::shell
+} // namespace purrview::shell

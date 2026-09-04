@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace impage::viewer {
+namespace purrview::viewer {
 
 ViewerState::ViewerState(QObject* parent) : QObject(parent) {
     inactivityTimer_.setSingleShot(true);
@@ -226,4 +226,4 @@ void ViewerState::setZoom(ZoomMode mode, double factor) {
     emit zoomChanged();
 }
 
-} // namespace impage::viewer
+} // namespace purrview::viewer

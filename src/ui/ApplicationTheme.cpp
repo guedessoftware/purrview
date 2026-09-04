@@ -2,7 +2,7 @@
 
 #include <QColor>
 
-namespace impage::ui {
+namespace purrview::ui {
 
 bool paletteIsDark(const QPalette& palette) {
     const QColor window = palette.color(QPalette::Active, QPalette::Window);
@@ -49,4 +49,4 @@ QPalette createPurrViewPalette(bool darkMode) {
     return palette;
 }
 
-} // namespace impage::ui
+} // namespace purrview::ui

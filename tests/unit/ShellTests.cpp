@@ -23,17 +23,17 @@ void check(bool condition, const char* description) {
 
 int main(int argc, char* argv[]) {
     QApplication application(argc, argv);
-    impage::shell::ApplicationContext context;
-    impage::shell::ModuleManager modules(context);
+    purrview::shell::ApplicationContext context;
+    purrview::shell::ModuleManager modules(context);
 
-    check(modules.currentModule() == impage::shell::ModuleManager::Module::None,
+    check(modules.currentModule() == purrview::shell::ModuleManager::Module::None,
           "shell starts without an active module");
     check(modules.composerController() == nullptr,
           "composer backend is not constructed with the shell");
     check(modules.viewerController() == nullptr,
           "viewer backend is not constructed with the shell");
-    check(modules.viewerState() == impage::shell::ModuleManager::ModuleState::NotLoaded &&
-              modules.composerState() == impage::shell::ModuleManager::ModuleState::NotLoaded,
+    check(modules.viewerState() == purrview::shell::ModuleManager::ModuleState::NotLoaded &&
+              modules.composerState() == purrview::shell::ModuleManager::ModuleState::NotLoaded,
           "module lifecycle starts in NotLoaded state");
 
     QTemporaryDir directory;
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     source.fill(QColor(180, 80, 25));
     check(source.save(secondPath), "selected image fixture can be saved");
 
-    const QList<impage::core::ImageId> sessionIds =
+    const QList<purrview::core::ImageId> sessionIds =
         context.imageSession()->addImages({sourcePath, secondPath});
     check(context.imageSession()->selectImage(sessionIds.at(1)),
           "future module can prepare a shared selection");
@@ -56,12 +56,12 @@ int main(int argc, char* argv[]) {
     check(firstViewerController != nullptr, "viewer backend is created on demand");
     check(modules.composerController() == nullptr,
           "opening viewer does not construct composer backend");
-    check(modules.currentModule() == impage::shell::ModuleManager::Module::Viewer,
+    check(modules.currentModule() == purrview::shell::ModuleManager::Module::Viewer,
           "viewer becomes the active module");
     check(modules.viewerActive() && !modules.composerActive(),
           "shell exposes the active viewer state to QML");
-    check(modules.viewerState() == impage::shell::ModuleManager::ModuleState::Active &&
-              modules.composerState() == impage::shell::ModuleManager::ModuleState::NotLoaded &&
+    check(modules.viewerState() == purrview::shell::ModuleManager::ModuleState::Active &&
+              modules.composerState() == purrview::shell::ModuleManager::ModuleState::NotLoaded &&
               modules.composerLoadCount() == 0,
           "Viewer-only startup leaves Composer services genuinely unloaded");
     check(firstViewerController->currentImageUrl() == QUrl::fromLocalFile(sourcePath),
@@ -74,12 +74,12 @@ int main(int argc, char* argv[]) {
     firstViewerController->openComposer();
     auto* firstController = modules.composerController();
     check(firstController != nullptr, "composer backend is created on demand");
-    check(modules.currentModule() == impage::shell::ModuleManager::Module::Composer,
+    check(modules.currentModule() == purrview::shell::ModuleManager::Module::Composer,
           "composer becomes the active module");
     check(modules.composerActive() && !modules.viewerActive(),
           "shell exposes the active composer state to QML");
-    check(modules.viewerState() == impage::shell::ModuleManager::ModuleState::Inactive &&
-              modules.composerState() == impage::shell::ModuleManager::ModuleState::Active &&
+    check(modules.viewerState() == purrview::shell::ModuleManager::ModuleState::Inactive &&
+              modules.composerState() == purrview::shell::ModuleManager::ModuleState::Active &&
               modules.composerLoadCount() == 1 && modules.composerLoadDurationMs() >= 0 &&
               modules.composerActivationDurationMs() >= 0,
           "Composer loads once, becomes active and records transition metrics");
@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
     check(modules.goBack(), "back navigation returns from Composer to Viewer");
     check(modules.viewerController() == firstViewerController,
           "viewer backend is retained when returning from composer");
-    check(modules.currentModule() == impage::shell::ModuleManager::Module::Viewer,
+    check(modules.currentModule() == purrview::shell::ModuleManager::Module::Viewer,
           "shell can return to viewer in the same process");
     check(modules.viewerController()->currentImageUrl() == QUrl::fromLocalFile(sourcePath),
           "viewer current image survives module transitions");
@@ -127,29 +127,29 @@ int main(int argc, char* argv[]) {
     check(modules.composerLoadCount() == 1,
           "second activation reuses Composer without reinitializing its services");
 
-    impage::shell::ApplicationContext failureContext;
-    impage::shell::ModuleManager failureModules(failureContext);
-    const QList<impage::core::ImageId> failureImages =
+    purrview::shell::ApplicationContext failureContext;
+    purrview::shell::ModuleManager failureModules(failureContext);
+    const QList<purrview::core::ImageId> failureImages =
         failureContext.imageSession()->addImages({sourcePath});
     Q_UNUSED(failureImages)
     failureModules.showViewer();
-    failureModules.setComposerFactoryForTesting([](impage::core::ImageSession&) {
-        return std::unique_ptr<impage::composer::ComposerController>{};
+    failureModules.setComposerFactoryForTesting([](purrview::core::ImageSession&) {
+        return std::unique_ptr<purrview::composer::ComposerController>{};
     });
     failureModules.viewerController()->openComposer();
-    check(failureModules.currentModule() == impage::shell::ModuleManager::Module::Viewer &&
-              failureModules.composerState() == impage::shell::ModuleManager::ModuleState::Error &&
+    check(failureModules.currentModule() == purrview::shell::ModuleManager::Module::Viewer &&
+              failureModules.composerState() == purrview::shell::ModuleManager::ModuleState::Error &&
               failureModules.viewerController()->state()->errorString() ==
                   QStringLiteral("Não foi possível abrir o módulo de impressão."),
           "Composer load failure leaves Viewer active with a recoverable message");
 
-    impage::shell::ApplicationContext externalContext;
-    impage::shell::ModuleManager externalModules(externalContext);
+    purrview::shell::ApplicationContext externalContext;
+    purrview::shell::ModuleManager externalModules(externalContext);
     externalModules.showComposer({QUrl::fromLocalFile(sourcePath)});
     auto* preservedComposer = externalModules.composerController();
     const int preservedImageCount = preservedComposer->imageCount();
     externalModules.showViewer({QUrl::fromLocalFile(secondPath)});
-    check(externalModules.currentModule() == impage::shell::ModuleManager::Module::Viewer &&
+    check(externalModules.currentModule() == purrview::shell::ModuleManager::Module::Viewer &&
               externalModules.viewerController()->currentImageUrl() ==
                   QUrl::fromLocalFile(secondPath),
           "external Viewer request from Composer displays the requested first image");

@@ -11,7 +11,7 @@
 #include <functional>
 #include <memory>
 
-namespace impage::shell {
+namespace purrview::shell {
 
 class ModuleManager : public QObject {
     Q_OBJECT
@@ -25,9 +25,9 @@ class ModuleManager : public QObject {
     Q_PROPERTY(qint64 composerLoadDurationMs READ composerLoadDurationMs NOTIFY moduleStateChanged)
     Q_PROPERTY(qint64 composerActivationDurationMs READ composerActivationDurationMs NOTIFY
                    moduleStateChanged)
-    Q_PROPERTY(impage::composer::ComposerController* composerController READ composerController
+    Q_PROPERTY(purrview::composer::ComposerController* composerController READ composerController
                    NOTIFY composerControllerChanged)
-    Q_PROPERTY(impage::viewer::ViewerController* viewerController READ viewerController NOTIFY
+    Q_PROPERTY(purrview::viewer::ViewerController* viewerController READ viewerController NOTIFY
                    viewerControllerChanged)
 
   public:
@@ -87,4 +87,4 @@ class ModuleManager : public QObject {
     qint64 composerActivationDurationMs_ = 0;
 };
 
-} // namespace impage::shell
+} // namespace purrview::shell

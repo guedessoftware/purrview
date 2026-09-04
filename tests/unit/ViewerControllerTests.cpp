@@ -31,10 +31,10 @@ QString createImage(const QTemporaryDir& directory, const QString& name, const Q
     return path;
 }
 
-QString pathForId(const impage::core::ImageSession& session, const impage::core::ImageId& imageId) {
+QString pathForId(const purrview::core::ImageSession& session, const purrview::core::ImageId& imageId) {
     const auto image = std::find_if(
         session.images().cbegin(), session.images().cend(),
-        [&imageId](const impage::core::ImageEntry& candidate) { return candidate.id == imageId; });
+        [&imageId](const purrview::core::ImageEntry& candidate) { return candidate.id == imageId; });
     return image == session.images().cend() ? QString() : image->sourcePath;
 }
 
@@ -42,10 +42,10 @@ QString pathForId(const impage::core::ImageSession& session, const impage::core:
 
 int main(int argc, char* argv[]) {
     QCoreApplication application(argc, argv);
-    impage::core::ImageSession session;
-    impage::core::ThumbnailCache thumbnailCache;
-    impage::core::ImageMetadataService metadataService;
-    impage::viewer::ViewerController controller(session, thumbnailCache, metadataService);
+    purrview::core::ImageSession session;
+    purrview::core::ThumbnailCache thumbnailCache;
+    purrview::core::ImageMetadataService metadataService;
+    purrview::viewer::ViewerController controller(session, thumbnailCache, metadataService);
     controller.folderModel()->setWatchingEnabled(false);
 
     check(controller.imageCount() == 0, "viewer starts with an empty session");
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
         createImage(directory, QStringLiteral("landscape.jpg"), QSize(160, 90), Qt::red);
     const QString secondPath =
         createImage(directory, QStringLiteral("portrait.png"), QSize(90, 160), Qt::green);
-    const QList<impage::core::ImageId> ids = session.addImages({firstPath, secondPath});
+    const QList<purrview::core::ImageId> ids = session.addImages({firstPath, secondPath});
     check(controller.folderModel()->scanFromImageSynchronously(firstPath),
           "viewer discovers the current image folder");
 
@@ -125,23 +125,23 @@ int main(int argc, char* argv[]) {
     controller.rotateLeft();
     check(controller.rotation() == 270, "rotate left normalizes negative rotation");
 
-    check(controller.state()->zoomMode() == impage::viewer::ViewerState::ZoomMode::Fit,
+    check(controller.state()->zoomMode() == purrview::viewer::ViewerState::ZoomMode::Fit,
           "viewer opens in fit mode");
     check(controller.state()->fitMode(), "viewer exposes fit mode directly to QML");
     controller.updateFitScale(0.4);
     check(std::abs(controller.state()->zoomFactor() - 0.4) < 0.0001,
           "fit scale is tracked by viewer state");
     controller.zoomIn();
-    check(controller.state()->zoomMode() == impage::viewer::ViewerState::ZoomMode::Custom,
+    check(controller.state()->zoomMode() == purrview::viewer::ViewerState::ZoomMode::Custom,
           "zoom command changes mode to custom");
     check(std::abs(controller.state()->zoomFactor() - 0.5) < 0.0001,
           "zoom command uses a progressive multiplier");
     controller.actualSize();
-    check(controller.state()->zoomMode() == impage::viewer::ViewerState::ZoomMode::ActualSize &&
+    check(controller.state()->zoomMode() == purrview::viewer::ViewerState::ZoomMode::ActualSize &&
               std::abs(controller.state()->zoomFactor() - 1.0) < 0.0001,
           "actual size sets logical 100 percent zoom");
     controller.fitToWindow();
-    check(controller.state()->zoomMode() == impage::viewer::ViewerState::ZoomMode::Fit,
+    check(controller.state()->zoomMode() == purrview::viewer::ViewerState::ZoomMode::Fit,
           "fit command restores fit mode");
 
     controller.setCustomZoom(100.0);
@@ -153,19 +153,19 @@ int main(int argc, char* argv[]) {
 
     check(session.setCurrentImage(ids.at(1)), "session current image can change externally");
     check(controller.currentIndex() == 1 &&
-              controller.state()->zoomMode() == impage::viewer::ViewerState::ZoomMode::Fit,
+              controller.state()->zoomMode() == purrview::viewer::ViewerState::ZoomMode::Fit,
           "viewer reacts to external current image changes and resets to fit");
 
     int composerRequests = 0;
-    impage::core::ComposerActivationContext activationContext;
-    QObject::connect(&controller, &impage::viewer::ViewerController::composerActivationRequested,
+    purrview::core::ComposerActivationContext activationContext;
+    QObject::connect(&controller, &purrview::viewer::ViewerController::composerActivationRequested,
                      [&composerRequests, &activationContext](const auto& context) {
                          ++composerRequests;
                          activationContext = context;
                      });
     controller.openComposer();
     check(composerRequests == 1 && activationContext.imageIds == QList{ids.at(1)} &&
-              activationContext.source == impage::core::ActivationSource::Viewer,
+              activationContext.source == purrview::core::ActivationSource::Viewer,
           "viewer requests composer navigation with an explicit current-image contract");
 
     QTemporaryDir catalogDirectory;
@@ -182,12 +182,12 @@ int main(int argc, char* argv[]) {
     corrupt.write("not an image");
     corrupt.close();
 
-    impage::core::ImageSession catalogSession;
+    purrview::core::ImageSession catalogSession;
     const auto initialCatalogImage = catalogSession.addImage(photo2);
     check(initialCatalogImage.has_value(), "catalog session starts from one explicit image");
-    impage::core::ThumbnailCache catalogCache;
-    impage::core::ImageMetadataService catalogMetadataService;
-    impage::viewer::ViewerController catalogController(catalogSession, catalogCache,
+    purrview::core::ThumbnailCache catalogCache;
+    purrview::core::ImageMetadataService catalogMetadataService;
+    purrview::viewer::ViewerController catalogController(catalogSession, catalogCache,
                                                        catalogMetadataService);
     catalogController.folderModel()->setWatchingEnabled(false);
     check(catalogController.folderModel()->scanFromImageSynchronously(photo2),
@@ -220,7 +220,7 @@ int main(int argc, char* argv[]) {
     check(catalogSession.currentImage()->sourcePath == photo1 && catalogSession.count() == 3,
           "thumbnail activation updates the session current image without importing the folder");
     int catalogRotationSignals = 0;
-    QObject::connect(&catalogController, &impage::viewer::ViewerController::rotationChanged,
+    QObject::connect(&catalogController, &purrview::viewer::ViewerController::rotationChanged,
                      [&catalogRotationSignals] { ++catalogRotationSignals; });
     catalogController.rotateRight();
     check(catalogController.rotation() == 90 && catalogRotationSignals == 1,
@@ -232,7 +232,7 @@ int main(int argc, char* argv[]) {
     catalogController.selectFolderRange(photo1Index);
     check(catalogSession.selectedCount() == 3,
           "shift-style range selection follows the catalog order and anchor");
-    const QList<impage::core::ImageId> orderedCandidates = catalogController.printCandidateImages();
+    const QList<purrview::core::ImageId> orderedCandidates = catalogController.printCandidateImages();
     check(orderedCandidates.size() == 3 &&
               pathForId(catalogSession, orderedCandidates.at(0)) == photo1 &&
               pathForId(catalogSession, orderedCandidates.at(1)) == photo2 &&
@@ -334,10 +334,10 @@ int main(int argc, char* argv[]) {
 
     catalogController.toggleFolderSelection(catalogController.folderModel()->indexOfPath(photo1));
     check(QFile::remove(photo10), "a selected print candidate can disappear before activation");
-    impage::core::ComposerActivationContext filteredActivation;
+    purrview::core::ComposerActivationContext filteredActivation;
     int filteredActivationCount = 0;
     QObject::connect(&catalogController,
-                     &impage::viewer::ViewerController::composerActivationRequested,
+                     &purrview::viewer::ViewerController::composerActivationRequested,
                      [&filteredActivation, &filteredActivationCount](const auto& context) {
                          filteredActivation = context;
                          ++filteredActivationCount;
@@ -361,12 +361,12 @@ int main(int argc, char* argv[]) {
             largeFirstPath = path;
         }
     }
-    impage::core::ImageSession largeSession;
+    purrview::core::ImageSession largeSession;
     const auto largeInitialImage = largeSession.addImage(largeFirstPath);
     check(largeInitialImage.has_value(), "large collection starts from one decoded image");
-    impage::core::ThumbnailCache largeCache;
-    impage::core::ImageMetadataService largeMetadataService;
-    impage::viewer::ViewerController largeController(largeSession, largeCache,
+    purrview::core::ThumbnailCache largeCache;
+    purrview::core::ImageMetadataService largeMetadataService;
+    purrview::viewer::ViewerController largeController(largeSession, largeCache,
                                                      largeMetadataService);
     largeController.folderModel()->setWatchingEnabled(false);
     check(largeController.folderModel()->scanFromImageSynchronously(largeFirstPath),
@@ -374,7 +374,7 @@ int main(int argc, char* argv[]) {
     largeController.selectAllFolderImages();
     const int lightweightReferences = static_cast<int>(std::count_if(
         largeSession.images().cbegin(), largeSession.images().cend(),
-        [](const impage::core::ImageEntry& image) { return !image.pixelSize.isValid(); }));
+        [](const purrview::core::ImageEntry& image) { return !image.pixelSize.isValid(); }));
     check(largeSession.count() == largeCollectionSize &&
               largeController.selectedImageCount() == largeCollectionSize &&
               lightweightReferences == largeCollectionSize - 1,
@@ -391,11 +391,11 @@ int main(int argc, char* argv[]) {
         createImage(trashDirectory, QStringLiteral("trash-first.png"), QSize(32, 24), Qt::red);
     const QString trashSecond =
         createImage(trashDirectory, QStringLiteral("trash-second.png"), QSize(32, 24), Qt::blue);
-    impage::core::ImageSession trashSession;
+    purrview::core::ImageSession trashSession;
     check(trashSession.addImage(trashFirst).has_value(), "trash fixture starts in session");
-    impage::core::ThumbnailCache trashCache;
-    impage::core::ImageMetadataService trashMetadata;
-    impage::viewer::ViewerController trashController(trashSession, trashCache, trashMetadata);
+    purrview::core::ThumbnailCache trashCache;
+    purrview::core::ImageMetadataService trashMetadata;
+    purrview::viewer::ViewerController trashController(trashSession, trashCache, trashMetadata);
     trashController.folderModel()->setWatchingEnabled(false);
     check(trashController.folderModel()->scanFromImageSynchronously(trashFirst),
           "trash fixture folder is available");
@@ -407,7 +407,7 @@ int main(int argc, char* argv[]) {
         return QFile::rename(path, moved);
     });
     QString trashNotice;
-    QObject::connect(&trashController, &impage::viewer::ViewerController::noticeRequested,
+    QObject::connect(&trashController, &purrview::viewer::ViewerController::noticeRequested,
                      [&trashNotice](const QString& message) { trashNotice = message; });
     trashController.trashCurrentImage();
     check(!QFileInfo::exists(trashFirst) && trashSession.count() == 1 &&

@@ -1,6 +1,6 @@
 # ImageSession
 
-`ImageSession` é o contrato compartilhado de imagens do Impage. Ela é um `QAbstractListModel`
+`ImageSession` é o contrato compartilhado de imagens do PurrView. Ela é um `QAbstractListModel`
 pertencente ao `ApplicationContext` do Shell e deve ser manipulada na thread da interface.
 
 Cada `ImageEntry` mantém somente estado leve: `QUuid`, caminho absoluto, nome, dimensões, rotação

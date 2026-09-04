@@ -8,9 +8,9 @@
 
 #include <algorithm>
 
-Q_LOGGING_CATEGORY(logSession, "impage.session")
+Q_LOGGING_CATEGORY(logSession, "purrview.session")
 
-namespace impage::core {
+namespace purrview::core {
 
 ImageSession::ImageSession(QObject* parent) : QAbstractListModel(parent) {
     qCDebug(logSession) << "Image session created";
@@ -146,7 +146,7 @@ QList<ImageId> ImageSession::addImageReferences(const QStringList& paths, bool i
         if (inspectImages) {
             QImageReader reader(file.absoluteFilePath());
             reader.setAutoTransform(true);
-            valid = reader.canRead() && reader.size().isValid();
+            valid = reader.canRead() && isImageSizeWithinLimits(reader.size());
             if (valid) {
                 pixelSize = reader.size();
             }
@@ -424,6 +424,13 @@ std::optional<ImageEntry> ImageSession::validateImage(const QString& path, QStri
         }
         return std::nullopt;
     }
+    if (!isImageSizeWithinLimits(reader.size())) {
+        if (error != nullptr) {
+            *error = QStringLiteral("A imagem é grande demais para ser aberta com segurança: %1")
+                         .arg(file.fileName());
+        }
+        return std::nullopt;
+    }
 
     return ImageEntry{.id = QUuid::createUuid(),
                       .sourcePath = file.absoluteFilePath(),
@@ -480,4 +487,4 @@ void ImageSession::recomputeSourceFolder() {
     }
 }
 
-} // namespace impage::core
+} // namespace purrview::core

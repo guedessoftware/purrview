@@ -26,13 +26,13 @@ void check(bool condition, const char* description) {
 
 int main(int argc, char* argv[]) {
     QApplication application(argc, argv);
-    impage::core::ImageSession imageSession;
-    impage::composer::ComposerController controller(imageSession);
+    purrview::core::ImageSession imageSession;
+    purrview::composer::ComposerController controller(imageSession);
 
     check(controller.rows() == 1 && controller.columns() == 1,
           "a new composition defaults to a 1x1 grid");
     int presetUpdates = 0;
-    QObject::connect(&controller, &impage::composer::ComposerController::documentChanged,
+    QObject::connect(&controller, &purrview::composer::ComposerController::documentChanged,
                      [&presetUpdates] { ++presetUpdates; });
     controller.setGridPreset(2, 3);
     check(controller.rows() == 2 && controller.columns() == 3,
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
           "composer imports are stored in the shared session");
 
     int rotationUpdates = 0;
-    QObject::connect(&controller, &impage::composer::ComposerController::documentChanged,
+    QObject::connect(&controller, &purrview::composer::ComposerController::documentChanged,
                      [&rotationUpdates] { ++rotationUpdates; });
     check(imageSession.setRotation(imageSession.images().front().id, 90),
           "session image can be rotated by the viewer");
@@ -102,9 +102,9 @@ int main(int argc, char* argv[]) {
     check(controller.imageCount() == 3,
           "selection alone does not silently replace an active composer document");
 
-    impage::core::ComposerActivationContext viewerActivation{
+    purrview::core::ComposerActivationContext viewerActivation{
         .imageIds = {imageSession.images().at(1).id},
-        .source = impage::core::ActivationSource::Viewer};
+        .source = purrview::core::ActivationSource::Viewer};
     controller.activate(viewerActivation);
     check(controller.imageCount() == 1,
           "explicit Viewer activation replaces the document image set");

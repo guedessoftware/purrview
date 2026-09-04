@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/guedessoftware/purrview/actions/workflows/ci.yml"><img src="https://github.com/guedessoftware/purrview/actions/workflows/ci.yml/badge.svg" alt="Native CI"></a>
-  <a href="https://github.com/guedessoftware/purrview/releases/tag/v0.8.12"><img src="https://img.shields.io/badge/versão-0.8.12-ff7f83?style=flat-square" alt="Versão 0.8.12"></a>
+  <a href="https://github.com/guedessoftware/purrview/releases/tag/v0.8.14"><img src="https://img.shields.io/badge/versão-0.8.14-ff7f83?style=flat-square" alt="Versão 0.8.14"></a>
   <img src="https://img.shields.io/badge/Qt-6.4%2B-8f6de1?style=flat-square&logo=qt&logoColor=white" alt="Qt 6.4 ou superior">
   <img src="https://img.shields.io/badge/C%2B%2B-20-4ecbd3?style=flat-square&logo=cplusplus&logoColor=white" alt="C++20">
   <a href="LICENSE"><img src="https://img.shields.io/badge/licença-GPLv3-f279a0?style=flat-square" alt="GNU GPLv3"></a>
@@ -48,6 +48,9 @@ Composer e voltar sem perder a imagem atual, a seleção ou os ajustes da compos
 - Interface escura com identidade visual PurrView e controles translúcidos sobre a imagem.
 - Abertura por botão, linha de comando, arrastar e soltar, área de transferência e menu do Dolphin.
 - Miniaturas progressivas com cache LRU limitado para manter pastas grandes responsivas.
+- Decodificação adaptada à tela e ao zoom para reduzir memória sem perder qualidade de impressão.
+- Limites seguros para imagens e área de transferência, protegendo o processo contra arquivos
+  excessivamente grandes ou malformados.
 - Grades de `1 × 1` a `3 × 4`, além de quantidade personalizada de linhas e colunas.
 - Papéis, orientação, margens, espaçamentos e modos **Fit**, **Fill** e **Stretch**.
 - Novas páginas criadas automaticamente quando a grade atual fica completa.
@@ -100,7 +103,7 @@ Qt instalado não consegue decodificar.
 ## 📦 Instalação
 
 <p align="center">
-  <a href="https://github.com/guedessoftware/purrview/releases/tag/v0.8.12"><img src="https://img.shields.io/badge/Baixar-PurrView%200.8.12-8f6de1?style=for-the-badge&logo=github&logoColor=white" alt="Baixar PurrView 0.8.12"></a>
+  <a href="https://github.com/guedessoftware/purrview/releases/tag/v0.8.14"><img src="https://img.shields.io/badge/Baixar-PurrView%200.8.14-8f6de1?style=for-the-badge&logo=github&logoColor=white" alt="Baixar PurrView 0.8.14"></a>
 </p>
 
 Escolha o pacote da sua distribuição, baixe pelo link e execute o comando correspondente no
@@ -108,15 +111,15 @@ diretório em que o arquivo foi salvo:
 
 | Sistema | Download | Comando de instalação |
 |---|---|---|
-| Ubuntu, Mint, Zorin e Debian | [Baixar `.deb`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview_0.8.12_amd64.deb) | `sudo apt install ./purrview_0.8.12_amd64.deb` |
-| Fedora, AlmaLinux, Rocky e RHEL | [Baixar `.rpm`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview-0.8.12-1.x86_64.rpm) | `sudo dnf install ./purrview-0.8.12-1.x86_64.rpm` |
-| openSUSE | [Baixar `.rpm`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview-0.8.12-1.x86_64.rpm) | `sudo zypper install ./purrview-0.8.12-1.x86_64.rpm` |
-| Arch, Garuda, EndeavourOS e Manjaro | [Baixar pacote Arch](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/purrview-0.8.12-1-x86_64.pkg.tar.zst) | `sudo pacman -U ./purrview-0.8.12-1-x86_64.pkg.tar.zst` |
-| Qualquer distribuição com Flatpak | [Baixar `.flatpak`](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/PurrView-0.8.12-x86_64.flatpak) | `flatpak install --user ./PurrView-0.8.12-x86_64.flatpak` |
-| Instalação nativa assistida | [Baixar bootstrap](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/PurrView-0.8.12-bootstrap.tar.xz) | `tar -xf PurrView-0.8.12-bootstrap.tar.xz && cd PurrView-0.8.12-bootstrap && ./scripts/install-impage.sh --user` |
-| Compilação manual | [Baixar código-fonte](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/PurrView-0.8.12-source.tar.xz) | Consulte [Compilar e testar](#-compilar-e-testar) |
+| Ubuntu, Mint, Zorin e Debian | [Baixar `.deb`](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/purrview_0.8.14_amd64.deb) | `sudo apt install ./purrview_0.8.14_amd64.deb` |
+| Fedora, AlmaLinux, Rocky e RHEL | [Baixar `.rpm`](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/purrview-0.8.14-1.x86_64.rpm) | `sudo dnf install ./purrview-0.8.14-1.x86_64.rpm` |
+| openSUSE | [Baixar `.rpm`](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/purrview-0.8.14-1.x86_64.rpm) | `sudo zypper install ./purrview-0.8.14-1.x86_64.rpm` |
+| Arch, Garuda, EndeavourOS e Manjaro | [Baixar pacote Arch](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/purrview-0.8.14-1-x86_64.pkg.tar.zst) | `sudo pacman -U ./purrview-0.8.14-1-x86_64.pkg.tar.zst` |
+| Qualquer distribuição com Flatpak | [Baixar `.flatpak`](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/PurrView-0.8.14-x86_64.flatpak) | `flatpak install --user ./PurrView-0.8.14-x86_64.flatpak` |
+| Instalação nativa assistida | [Baixar bootstrap](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/PurrView-0.8.14-bootstrap.tar.xz) | `tar -xf PurrView-0.8.14-bootstrap.tar.xz && cd PurrView-0.8.14-bootstrap && ./scripts/install-purrview.sh --user` |
+| Compilação manual | [Baixar código-fonte](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/PurrView-0.8.14-source.tar.xz) | Consulte [Compilar e testar](#-compilar-e-testar) |
 
-Os hashes estão em [SHA256SUMS](https://github.com/guedessoftware/purrview/releases/download/v0.8.12/SHA256SUMS). Depois de baixar o pacote e esse arquivo, confira a integridade com:
+Os hashes estão em [SHA256SUMS](https://github.com/guedessoftware/purrview/releases/download/v0.8.14/SHA256SUMS). Depois de baixar o pacote e esse arquivo, confira a integridade com:
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
@@ -128,22 +131,25 @@ instalar `flatpak-builder` para usar o pacote pronto:
 ```bash
 flatpak remote-add --user --if-not-exists flathub \
   https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user ./PurrView-0.8.12-x86_64.flatpak
-flatpak run io.github.impage.Impage
+flatpak install --user ./PurrView-0.8.14-x86_64.flatpak
+flatpak run io.github.guedessoftware.PurrView
 ```
+
+O bundle 0.8.14 usa o App ID `io.github.guedessoftware.PurrView`. Instalações Flatpak anteriores
+usam outro identificador; veja a [estratégia de migração](docs/identity-migration.md).
 
 Para uma instalação nativa por usuário diretamente do código-fonte:
 
 ```bash
-scripts/install-impage.sh --check
-scripts/install-impage.sh --user
+scripts/install-purrview.sh --check
+scripts/install-purrview.sh --user
 ```
 
 Execute o instalador como usuário normal, sem `sudo`. Ele solicitará privilégios somente se alguma
 dependência do sistema estiver ausente. Para tornar o Viewer padrão nos formatos compatíveis:
 
 ```bash
-scripts/install-impage.sh --user --set-default-viewer
+scripts/install-purrview.sh --user --set-default-viewer
 ```
 
 Mais detalhes e instruções de atualização estão em [docs/installation.md](docs/installation.md).
@@ -168,6 +174,9 @@ Envie arquivos diretamente ao Composer:
 ```bash
 purrview --compose foto1.jpg foto2.png
 ```
+
+O comando histórico `impage` continua encaminhando argumentos para `purrview`, apenas para
+compatibilidade com scripts antigos.
 
 Também é possível arrastar arquivos para a janela, colar com `Ctrl+V` ou selecionar várias imagens
 no Dolphin e usar **Montar no PurrView** no menu de contexto.
@@ -217,7 +226,7 @@ cd purrview
 cmake --preset release
 cmake --build --preset release
 ctest --preset release --output-on-failure
-./build/release/impage
+./build/release/purrview
 ```
 
 Para compilar deliberadamente sem Exiv2:
@@ -225,7 +234,7 @@ Para compilar deliberadamente sem Exiv2:
 ```bash
 cmake -S . -B build/no-exiv -G Ninja \
   -DCMAKE_BUILD_TYPE=Release \
-  -DIMPAGE_WITH_EXIV2=OFF
+  -DPURRVIEW_WITH_EXIV2=OFF
 ```
 
 ## 🧪 Qualidade e pacotes reproduzíveis
@@ -245,6 +254,8 @@ scripts/package-all.sh
 O empacotador usa containers de Ubuntu 24.04, AlmaLinux 9 e Arch Linux, além do SDK KDE 6.10 para o
 Flatpak. Cada pacote é compilado, testado, instalado e inspecionado antes de receber seu hash
 SHA-256. Veja a matriz completa em [docs/packaging.md](docs/packaging.md).
+As preparações que ainda exigem publicação manual estão descritas em
+[docs/flathub.md](docs/flathub.md) e [docs/aur.md](docs/aur.md).
 
 ## 🧩 Arquitetura
 

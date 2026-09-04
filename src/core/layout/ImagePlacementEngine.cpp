@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace impage::core {
+namespace purrview::core {
 
 ImagePlacement ImagePlacementEngine::calculate(const QSizeF& imageSize, const QRectF& cellRect,
                                                PlacementMode mode) const {
@@ -40,4 +40,4 @@ ImagePlacement ImagePlacementEngine::calculate(const QSizeF& imageSize, const QR
     return result;
 }
 
-} // namespace impage::core
+} // namespace purrview::core

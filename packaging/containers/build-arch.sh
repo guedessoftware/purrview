@@ -31,9 +31,11 @@ chown --reference="${OUTPUT_ROOT}" "${PACKAGE_PATH}"
 
 pacman -U --noconfirm "${PACKAGE_PATH}"
 [[ "$(purrview --version)" == "PurrView ${VERSION_VALUE}" ]]
+[[ "$(impage --version)" == "PurrView ${VERSION_VALUE}" ]]
 pacman -Q purrview | grep -Fx "purrview ${VERSION_VALUE}-1" >/dev/null
 test -x /usr/bin/purrview
-desktop-file-validate /usr/share/applications/io.github.impage.Impage.desktop
-appstreamcli validate --no-net /usr/share/metainfo/io.github.impage.Impage.metainfo.xml
+test -x /usr/bin/impage
+desktop-file-validate /usr/share/applications/io.github.guedessoftware.PurrView.desktop
+appstreamcli validate --no-net /usr/share/metainfo/io.github.guedessoftware.PurrView.metainfo.xml
 
 printf 'Arch package validated: %s\n' "${PACKAGE_PATH}"

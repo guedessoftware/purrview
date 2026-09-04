@@ -1,4 +1,4 @@
-#include "ImpageVersion.h"
+#include "PurrViewVersion.h"
 #include "platform/desktop/CommandLineParser.h"
 #include "platform/desktop/OpenRequest.h"
 #include "platform/desktop/SingleInstanceService.h"
@@ -38,7 +38,7 @@ void drainEventsUntil(const std::function<bool()>& completed) {
 int main(int argc, char* argv[]) {
     QCoreApplication application(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("PurrView"));
-    QCoreApplication::setApplicationVersion(QString::fromLatin1(IMPAGE_VERSION_STRING));
+    QCoreApplication::setApplicationVersion(QString::fromLatin1(PURRVIEW_VERSION_STRING));
 
     QTemporaryDir directory;
     check(directory.isValid(), "temporary integration directory is available");
@@ -50,90 +50,107 @@ int main(int argc, char* argv[]) {
     }
 
     const auto defaultResult =
-        impage::desktop::parseCommandLine({QStringLiteral("purrview")}, directory.path());
-    check(defaultResult.valid && defaultResult.request.mode == impage::desktop::OpenMode::Auto &&
+        purrview::desktop::parseCommandLine({QStringLiteral("purrview")}, directory.path());
+    check(defaultResult.valid && defaultResult.request.mode == purrview::desktop::OpenMode::Auto &&
               defaultResult.request.files.isEmpty(),
           "CLI without files selects automatic Composer startup");
 
-    const auto viewerResult = impage::desktop::parseCommandLine(
+    const auto viewerResult = purrview::desktop::parseCommandLine(
         {QStringLiteral("purrview"), QStringLiteral("--viewer"), QFileInfo(firstPath).fileName(),
          QUrl::fromLocalFile(secondPath).toString()},
         directory.path());
-    check(viewerResult.valid && viewerResult.request.mode == impage::desktop::OpenMode::Viewer &&
+    check(viewerResult.valid && viewerResult.request.mode == purrview::desktop::OpenMode::Viewer &&
               viewerResult.request.files == QStringList{firstPath, secondPath},
           "CLI normalizes relative and file URL arguments while preserving order");
 
-    const auto composeResult = impage::desktop::parseCommandLine(
+    const auto composeResult = purrview::desktop::parseCommandLine(
         {QStringLiteral("purrview"), QStringLiteral("--compose"), firstPath}, directory.path());
-    check(composeResult.valid && composeResult.request.mode == impage::desktop::OpenMode::Composer,
+    check(composeResult.valid &&
+              composeResult.request.mode == purrview::desktop::OpenMode::Composer,
           "CLI recognizes explicit Composer mode");
 
-    const auto conflictResult = impage::desktop::parseCommandLine(
+    const auto conflictResult = purrview::desktop::parseCommandLine(
         {QStringLiteral("purrview"), QStringLiteral("--viewer"), QStringLiteral("--compose")},
         directory.path());
     check(!conflictResult.valid, "CLI rejects conflicting modes");
 
-    const auto helpResult = impage::desktop::parseCommandLine(
-        {QStringLiteral("/opt/impage/bin/purrview"), QStringLiteral("--help")}, directory.path());
+    const auto helpResult = purrview::desktop::parseCommandLine(
+        {QStringLiteral("/opt/purrview/bin/purrview"), QStringLiteral("--help")}, directory.path());
     check(helpResult.valid && helpResult.showHelp &&
               helpResult.output.startsWith(QStringLiteral("Usage: purrview ")),
           "CLI help has a useful executable name without a GUI application instance");
 
-    const auto versionResult = impage::desktop::parseCommandLine(
+    const auto versionResult = purrview::desktop::parseCommandLine(
         {QStringLiteral("purrview"), QStringLiteral("--version")}, directory.path());
     check(versionResult.valid && versionResult.showVersion &&
-              versionResult.output == QStringLiteral("PurrView %1\n").arg(IMPAGE_VERSION_STRING),
+              versionResult.output == QStringLiteral("PurrView %1\n").arg(PURRVIEW_VERSION_STRING),
           "CLI version is available without initializing the GUI");
 
-    impage::desktop::OpenRequest encoded{.mode = impage::desktop::OpenMode::Viewer,
-                                         .files = {firstPath, secondPath},
-                                         .activateWindow = true};
-    impage::desktop::OpenRequest decoded;
+    purrview::desktop::OpenRequest encoded{.mode = purrview::desktop::OpenMode::Viewer,
+                                           .files = {firstPath, secondPath},
+                                           .activateWindow = true};
+    purrview::desktop::OpenRequest decoded;
     QString protocolError;
-    check(impage::desktop::deserializeOpenRequest(impage::desktop::serializeOpenRequest(encoded),
-                                                  &decoded, &protocolError) &&
+    check(purrview::desktop::deserializeOpenRequest(
+              purrview::desktop::serializeOpenRequest(encoded), &decoded, &protocolError) &&
               decoded.mode == encoded.mode && decoded.files == encoded.files &&
               decoded.activateWindow,
           "OpenRequest JSON protocol round-trips Unicode paths");
-    check(!impage::desktop::deserializeOpenRequest(QByteArrayLiteral("not-json"), &decoded,
-                                                   &protocolError),
+    check(!purrview::desktop::deserializeOpenRequest(QByteArrayLiteral("not-json"), &decoded,
+                                                     &protocolError),
           "OpenRequest protocol rejects malformed payloads");
+    purrview::desktop::OpenRequest tooManyFiles;
+    tooManyFiles.files.fill(QStringLiteral("image.png"),
+                            purrview::desktop::MaximumOpenRequestFiles + 1);
+    check(!purrview::desktop::deserializeOpenRequest(
+              purrview::desktop::serializeOpenRequest(tooManyFiles), &decoded, &protocolError),
+          "OpenRequest protocol rejects excessive file counts");
+    purrview::desktop::OpenRequest longPath;
+    longPath.files = {
+        QString(purrview::desktop::MaximumOpenRequestPathLength + 1, QLatin1Char('a'))};
+    check(!purrview::desktop::deserializeOpenRequest(
+              purrview::desktop::serializeOpenRequest(longPath), &decoded, &protocolError),
+          "OpenRequest protocol rejects excessive path lengths");
+    check(!purrview::desktop::deserializeOpenRequest(
+              purrview::desktop::serializeOpenRequest(encoded), nullptr, &protocolError),
+          "OpenRequest protocol rejects a missing destination safely");
 
     const QString socketPath = directory.filePath(QStringLiteral("single-instance.sock"));
-    impage::desktop::SingleInstanceService primary(socketPath);
+    purrview::desktop::SingleInstanceService primary(socketPath);
     check(primary.startOrForward({}) ==
-              impage::desktop::SingleInstanceService::StartResult::Primary,
+              purrview::desktop::SingleInstanceService::StartResult::Primary,
           "first process becomes primary instance");
-    QList<impage::desktop::OpenRequest> received;
-    QObject::connect(&primary, &impage::desktop::SingleInstanceService::requestReceived,
+    QList<purrview::desktop::OpenRequest> received;
+    QObject::connect(&primary, &purrview::desktop::SingleInstanceService::requestReceived,
                      &application,
                      [&received](const auto& request) { received.push_back(request); });
 
-    impage::desktop::SingleInstanceService secondary(socketPath);
+    purrview::desktop::SingleInstanceService secondary(socketPath);
     check(secondary.startOrForward(encoded) ==
-              impage::desktop::SingleInstanceService::StartResult::Forwarded,
+              purrview::desktop::SingleInstanceService::StartResult::Forwarded,
           "second process forwards its request");
     drainEventsUntil([&received] { return received.size() == 1; });
     check(received.size() == 1 && received.constFirst().files == encoded.files,
           "primary receives the forwarded request");
 
-    impage::desktop::SingleInstanceService third(socketPath);
-    const impage::desktop::OpenRequest composeRequest{.mode = impage::desktop::OpenMode::Composer,
-                                                      .files = {secondPath}};
+    purrview::desktop::SingleInstanceService third(socketPath);
+    const purrview::desktop::OpenRequest composeRequest{
+        .mode = purrview::desktop::OpenMode::Composer, .files = {secondPath}};
     check(third.startOrForward(composeRequest) ==
-              impage::desktop::SingleInstanceService::StartResult::Forwarded,
+              purrview::desktop::SingleInstanceService::StartResult::Forwarded,
           "a later process is forwarded sequentially");
     drainEventsUntil([&received] { return received.size() == 2; });
-    check(received.size() == 2 && received.constLast().mode == impage::desktop::OpenMode::Composer,
+    check(received.size() == 2 &&
+              received.constLast().mode == purrview::desktop::OpenMode::Composer,
           "primary handles sequential requests in order");
 
     const QString staleSocketPath = directory.filePath(QStringLiteral("stale.sock"));
     QFile stale(staleSocketPath);
     check(stale.open(QIODevice::WriteOnly), "stale socket fixture can be created");
     stale.close();
-    impage::desktop::SingleInstanceService staleRecovery(staleSocketPath);
+    purrview::desktop::SingleInstanceService staleRecovery(staleSocketPath);
     check(staleRecovery.startOrForward({}) ==
-              impage::desktop::SingleInstanceService::StartResult::Primary,
+              purrview::desktop::SingleInstanceService::StartResult::Primary,
           "stale socket is removed and startup recovers");
 
     return failures == 0 ? 0 : 1;

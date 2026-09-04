@@ -29,9 +29,9 @@ QString createImage(const QTemporaryDir& directory, const QString& name, const Q
     return path;
 }
 
-int indexForName(const impage::core::FolderImageModel& model, const QString& name) {
+int indexForName(const purrview::core::FolderImageModel& model, const QString& name) {
     for (int row = 0; row < model.count(); ++row) {
-        if (model.data(model.index(row), impage::core::FolderImageModel::FileNameRole).toString() ==
+        if (model.data(model.index(row), purrview::core::FolderImageModel::FileNameRole).toString() ==
             name) {
             return row;
         }
@@ -43,9 +43,9 @@ int indexForName(const impage::core::FolderImageModel& model, const QString& nam
 
 int main(int argc, char* argv[]) {
     QCoreApplication application(argc, argv);
-    impage::core::ImageSession session;
-    impage::core::ThumbnailCache cache;
-    impage::core::FolderImageModel model(session, cache);
+    purrview::core::ImageSession session;
+    purrview::core::ThumbnailCache cache;
+    purrview::core::FolderImageModel model(session, cache);
     model.setWatchingEnabled(false);
 
     QTemporaryDir emptyDirectory;
@@ -81,10 +81,10 @@ int main(int argc, char* argv[]) {
     check(model.currentIndex() == secondIndex,
           "folder current index is derived from the shared session");
     check(
-        model.data(model.index(secondIndex), impage::core::FolderImageModel::CurrentRole).toBool(),
+        model.data(model.index(secondIndex), purrview::core::FolderImageModel::CurrentRole).toBool(),
         "current role marks the session image");
     check(
-        !model.data(model.index(firstIndex), impage::core::FolderImageModel::CurrentRole).toBool(),
+        !model.data(model.index(firstIndex), purrview::core::FolderImageModel::CurrentRole).toBool(),
         "non-current item is not marked current");
 
     const auto tenthId = session.addImage(tenth);
@@ -93,11 +93,11 @@ int main(int argc, char* argv[]) {
     check(model.currentIndex() == tenthIndex, "external current change updates folder index");
     check(session.selectImage(*tenthId), "catalog session item can be selected");
     check(
-        model.data(model.index(tenthIndex), impage::core::FolderImageModel::SelectedRole).toBool(),
+        model.data(model.index(tenthIndex), purrview::core::FolderImageModel::SelectedRole).toBool(),
         "selected role mirrors ImageSession selection");
 
-    check(impage::core::isSupportedImageFile(first), "runtime-supported PNG is recognized");
-    check(!impage::core::isSupportedImageFile(textFile.fileName()),
+    check(purrview::core::isSupportedImageFile(first), "runtime-supported PNG is recognized");
+    check(!purrview::core::isSupportedImageFile(textFile.fileName()),
           "unsupported extension is rejected centrally");
     QSet<QString> runtimeFormats;
     for (const QByteArray& format : QImageReader::supportedImageFormats()) {
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     for (const QString& format : {QStringLiteral("avif"), QStringLiteral("heif"),
                                   QStringLiteral("heic"), QStringLiteral("icns")}) {
         if (runtimeFormats.contains(format)) {
-            check(impage::core::supportedImageSuffixes().contains(format),
+            check(purrview::core::supportedImageSuffixes().contains(format),
                   "new runtime image codec is enabled by the central format policy");
         }
     }
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
         QImageReader reader(codecPath);
         check(reader.canRead() && !reader.read().isNull(),
               "new image codec can decode a real test fixture");
-        check(impage::core::isSupportedImageFile(codecPath),
+        check(purrview::core::isSupportedImageFile(codecPath),
               "real codec fixture is accepted by the application policy");
     }
     check(model.sourceAt(firstIndex).isLocalFile(), "catalog exposes local source URLs");

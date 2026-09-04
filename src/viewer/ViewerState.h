@@ -4,7 +4,7 @@
 #include <QString>
 #include <QTimer>
 
-namespace impage::viewer {
+namespace purrview::viewer {
 
 class ViewerState : public QObject {
     Q_OBJECT
@@ -94,4 +94,4 @@ class ViewerState : public QObject {
     QTimer inactivityTimer_;
 };
 
-} // namespace impage::viewer
+} // namespace purrview::viewer

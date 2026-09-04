@@ -12,9 +12,9 @@
 
 #include <exception>
 
-Q_LOGGING_CATEGORY(logPrint, "impage.print")
+Q_LOGGING_CATEGORY(logPrint, "purrview.print")
 
-namespace impage::platform {
+namespace purrview::platform {
 
 namespace {
 QPageSize pageSizeFor(const core::PageModel& page) {
@@ -38,9 +38,7 @@ QPageSize pageSizeFor(const core::PageModel& page) {
 } // namespace
 
 PrintService::PrintService(core::PageRenderer& renderer, QObject* parent)
-    : QObject(parent), renderer_(renderer), printerFuture_(std::async(std::launch::async, [] {
-          return std::make_unique<QPrinter>(QPrinter::HighResolution);
-      })) {}
+    : QObject(parent), renderer_(renderer) {}
 
 PrintService::~PrintService() = default;
 
@@ -72,7 +70,9 @@ void PrintService::openPrintDialog(const core::DocumentModel& document) {
 
 void PrintService::ensurePrinter() {
     if (!printer_) {
-        printer_ = printerFuture_.get();
+        // Construct and use the platform print backend on the GUI thread. This
+        // avoids eagerly initializing CUPS for users who only view images.
+        printer_ = std::make_unique<QPrinter>(QPrinter::HighResolution);
     }
 }
 
@@ -127,4 +127,4 @@ void PrintService::renderPendingDocument() {
     emit printFinished();
 }
 
-} // namespace impage::platform
+} // namespace purrview::platform

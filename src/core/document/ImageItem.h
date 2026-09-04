@@ -3,7 +3,7 @@
 #include <QSize>
 #include <QString>
 
-namespace impage::core {
+namespace purrview::core {
 
 enum class PlacementMode { Fit, Fill, Stretch };
 
@@ -14,4 +14,4 @@ struct ImageItem {
     int rotationDegrees = 0;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

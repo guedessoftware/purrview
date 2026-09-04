@@ -1,4 +1,5 @@
-#include "ImpageVersion.h"
+#include "PurrViewVersion.h"
+#include "core/image/ImageFormatSupport.h"
 #include "platform/desktop/CommandLineParser.h"
 #include "platform/desktop/SingleInstanceService.h"
 #include "shell/ApplicationController.h"
@@ -15,6 +16,7 @@
 #include <QFileOpenEvent>
 #include <QGuiApplication>
 #include <QIcon>
+#include <QImageReader>
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
@@ -28,7 +30,7 @@
 #include <functional>
 #include <utility>
 
-Q_LOGGING_CATEGORY(logStartup, "impage.startup")
+Q_LOGGING_CATEGORY(logStartup, "purrview.startup")
 
 namespace {
 
@@ -101,10 +103,11 @@ int main(int argc, char* argv[]) {
     QElapsedTimer startupTimer;
     startupTimer.start();
     configureRestrictedQmlRuntime();
+    QImageReader::setAllocationLimit(purrview::core::MaximumImageAllocationMiB);
     QCoreApplication::setApplicationName(QStringLiteral("PurrView"));
     QCoreApplication::setOrganizationName(QStringLiteral("PurrView"));
-    QCoreApplication::setOrganizationDomain(QStringLiteral("io.github.impage"));
-    QCoreApplication::setApplicationVersion(QString::fromLatin1(IMPAGE_VERSION_STRING));
+    QCoreApplication::setOrganizationDomain(QStringLiteral("io.github.guedessoftware"));
+    QCoreApplication::setApplicationVersion(QString::fromLatin1(PURRVIEW_VERSION_STRING));
 
     QStringList arguments;
     arguments.reserve(argc);
@@ -112,8 +115,8 @@ int main(int argc, char* argv[]) {
         arguments.push_back(QString::fromLocal8Bit(argv[index]));
     }
 
-    const impage::desktop::CommandLineResult commandLine =
-        impage::desktop::parseCommandLine(arguments, QDir::currentPath());
+    const purrview::desktop::CommandLineResult commandLine =
+        purrview::desktop::parseCommandLine(arguments, QDir::currentPath());
     if (!commandLine.valid || commandLine.showHelp || commandLine.showVersion) {
         QTextStream stream(commandLine.valid ? stdout : stderr);
         stream << commandLine.output;
@@ -122,55 +125,55 @@ int main(int argc, char* argv[]) {
 
     QQuickStyle::setStyle(QStringLiteral("Fusion"));
     PurrViewApplication application(argc, argv);
-    bool darkMode = impage::ui::paletteIsDark(application.palette());
+    bool darkMode = purrview::ui::paletteIsDark(application.palette());
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     const Qt::ColorScheme systemScheme = application.styleHints()->colorScheme();
     if (systemScheme != Qt::ColorScheme::Unknown) {
         darkMode = systemScheme == Qt::ColorScheme::Dark;
     }
 #endif
-    application.setPalette(impage::ui::createPurrViewPalette(darkMode));
+    application.setPalette(purrview::ui::createPurrViewPalette(darkMode));
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     QObject::connect(application.styleHints(), &QStyleHints::colorSchemeChanged, &application,
                      [&application](Qt::ColorScheme scheme) {
                          if (scheme != Qt::ColorScheme::Unknown) {
-                             application.setPalette(impage::ui::createPurrViewPalette(
+                             application.setPalette(purrview::ui::createPurrViewPalette(
                                  scheme == Qt::ColorScheme::Dark));
                          }
                      });
 #endif
     migrateLegacySettings();
-    QGuiApplication::setDesktopFileName(QStringLiteral("io.github.impage.Impage"));
+    QGuiApplication::setDesktopFileName(QStringLiteral("io.github.guedessoftware.PurrView"));
     application.setWindowIcon(
-        QIcon(QStringLiteral(":/qt/qml/Impage/assets/purrview-window.png")));
+        QIcon(QStringLiteral(":/qt/qml/PurrView/assets/purrview-window.png")));
 
-    impage::desktop::SingleInstanceService singleInstance;
+    purrview::desktop::SingleInstanceService singleInstance;
     const auto instanceResult = singleInstance.startOrForward(commandLine.request);
-    if (instanceResult == impage::desktop::SingleInstanceService::StartResult::Forwarded) {
+    if (instanceResult == purrview::desktop::SingleInstanceService::StartResult::Forwarded) {
         return EXIT_SUCCESS;
     }
-    if (instanceResult == impage::desktop::SingleInstanceService::StartResult::Error) {
+    if (instanceResult == purrview::desktop::SingleInstanceService::StartResult::Error) {
         QTextStream(stderr) << QStringLiteral("PurrView: %1\n").arg(singleInstance.errorString());
         return EXIT_FAILURE;
     }
 
-    qmlRegisterUncreatableType<impage::shell::ModuleManager>(
-        "Impage", 1, 0, "ModuleManager", QStringLiteral("Managed by the PurrView shell"));
-    qmlRegisterUncreatableType<impage::viewer::ViewerState>(
-        "Impage", 1, 0, "ViewerState", QStringLiteral("Managed by ViewerController"));
-    qmlRegisterType<impage::ui::PagePreviewItem>("Impage", 1, 0, "PagePreviewItem");
+    qmlRegisterUncreatableType<purrview::shell::ModuleManager>(
+        "PurrView", 1, 0, "ModuleManager", QStringLiteral("Managed by the PurrView shell"));
+    qmlRegisterUncreatableType<purrview::viewer::ViewerState>(
+        "PurrView", 1, 0, "ViewerState", QStringLiteral("Managed by ViewerController"));
+    qmlRegisterType<purrview::ui::PagePreviewItem>("PurrView", 1, 0, "PagePreviewItem");
 
-    impage::shell::ApplicationController shellController;
-    QObject::connect(&singleInstance, &impage::desktop::SingleInstanceService::requestReceived,
+    purrview::shell::ApplicationController shellController;
+    QObject::connect(&singleInstance, &purrview::desktop::SingleInstanceService::requestReceived,
                      &shellController,
-                     [&shellController](const impage::desktop::OpenRequest& request) {
+                     [&shellController](const purrview::desktop::OpenRequest& request) {
                          (void)shellController.handleOpenRequest(request);
                      });
-    QObject::connect(&singleInstance, &impage::desktop::SingleInstanceService::protocolError,
+    QObject::connect(&singleInstance, &purrview::desktop::SingleInstanceService::protocolError,
                      &application, [](const QString& error) { qWarning().noquote() << error; });
     application.setFileOpenHandler([&shellController](const QString& file) {
         (void)shellController.handleOpenRequest(
-            {.mode = impage::desktop::OpenMode::Auto, .files = {file}});
+            {.mode = purrview::desktop::OpenMode::Auto, .files = {file}});
     });
     if (!shellController.handleOpenRequest(commandLine.request)) {
         shellController.openComposer();
@@ -179,8 +182,8 @@ int main(int argc, char* argv[]) {
 
     QQmlApplicationEngine engine;
     engine.addImageProvider(
-        QStringLiteral("impage-thumbnail"),
-        new impage::ui::ThumbnailImageProvider(*shellController.context()->thumbnailCache()));
+        QStringLiteral("purrview-thumbnail"),
+        new purrview::ui::ThumbnailImageProvider(*shellController.context()->thumbnailCache()));
     const QVariantMap aboutInfo{
         {QStringLiteral("applicationVersion"), QCoreApplication::applicationVersion()},
         {QStringLiteral("qtVersion"), QString::fromLatin1(qVersion())},
@@ -196,7 +199,7 @@ int main(int argc, char* argv[]) {
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &application,
         [] { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
-    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/Impage/ShellWindow.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/PurrView/ShellWindow.qml")));
     qCInfo(logStartup) << "Shell loaded in" << startupTimer.elapsed() << "ms";
 
     return application.exec();

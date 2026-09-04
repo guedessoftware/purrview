@@ -5,7 +5,7 @@
 #include <array>
 #include <cmath>
 
-namespace impage::core {
+namespace purrview::core {
 
 namespace {
 QString decimalText(double value, int precision, const QLocale& locale) {
@@ -138,4 +138,4 @@ QString orientationDescription(const ImageMetadata& metadata) {
     return width > height ? QStringLiteral("Paisagem") : QStringLiteral("Retrato");
 }
 
-} // namespace impage::core
+} // namespace purrview::core

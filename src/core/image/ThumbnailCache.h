@@ -11,7 +11,7 @@
 
 #include <atomic>
 
-namespace impage::core {
+namespace purrview::core {
 
 class ThumbnailCache : public QObject {
     Q_OBJECT
@@ -26,11 +26,11 @@ class ThumbnailCache : public QObject {
     [[nodiscard]] QString cacheKeyForFile(const QString& path) const;
     [[nodiscard]] bool contains(const QString& cacheKey) const;
     [[nodiscard]] QImage imageForKey(const QString& cacheKey) const;
-    [[nodiscard]] int maximumCostBytes() const;
-    [[nodiscard]] int currentCostBytes() const;
+    [[nodiscard]] qsizetype maximumCostBytes() const;
+    [[nodiscard]] qsizetype currentCostBytes() const;
     [[nodiscard]] int generationCount() const;
 
-    void setMaximumCostBytes(int bytes);
+    void setMaximumCostBytes(qsizetype bytes);
     void clear();
     [[nodiscard]] QString requestThumbnail(const QString& path,
                                            int maximumSide = DefaultMaximumSide);
@@ -49,7 +49,8 @@ class ThumbnailCache : public QObject {
     };
 
     [[nodiscard]] static GeneratedThumbnail generateThumbnail(const QString& path, int maximumSide);
-    void finishRequest(const QString& path, const QString& cacheKey, GeneratedThumbnail thumbnail);
+    void finishRequest(const QString& path, const QString& cacheKey,
+                       const GeneratedThumbnail& thumbnail);
     void insert(const QString& cacheKey, const QImage& image);
 
     mutable QMutex cacheMutex_;
@@ -59,4 +60,4 @@ class ThumbnailCache : public QObject {
     std::atomic_int generationCount_ = 0;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

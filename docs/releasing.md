@@ -16,7 +16,7 @@ não faz push e não publica no Flathub.
 9. Confirmar que `scripts/package-all.sh` terminou sem erros.
 10. Verificar cada arquivo com `SHA256SUMS`.
 11. Revisar limitações e changelog manualmente.
-12. Criar, somente após aprovação explícita, `git tag -a vX.Y.Z -m "PurrView X.Y.Z"`.
+12. Criar, somente após aprovação explícita, uma tag anotada ou assinada.
 13. Publicar artefatos e, quando aprovado, atualizar o manifesto Flathub para a tag/checksum.
 14. Criar uma nova seção `[Unreleased]` vazia para o próximo ciclo.
 
@@ -31,6 +31,25 @@ O script completo gera em `dist/X.Y.Z/`:
 - `purrview-X.Y.Z-1-x86_64.pkg.tar.zst`;
 - `PurrView-X.Y.Z-x86_64.flatpak`;
 - `SHA256SUMS`.
+
+Quando houver uma chave GPG configurada, gere também a assinatura destacada:
+
+```bash
+scripts/package-all.sh --sign-checksums
+# ou escolha a chave explicitamente
+scripts/package-all.sh --gpg-key ID_DA_CHAVE
+gpg --verify dist/X.Y.Z/SHA256SUMS.asc dist/X.Y.Z/SHA256SUMS
+```
+
+Para assinar a tag da release:
+
+```bash
+git tag -s vX.Y.Z -m "PurrView X.Y.Z"
+git tag -v vX.Y.Z
+```
+
+Sem uma chave disponível, use uma tag anotada com `git tag -a`. O projeto nunca cria chaves,
+armazena material privado ou torna assinatura obrigatória para builds locais.
 
 Arquivos tar usam ordem, proprietário e data controlados por `SOURCE_DATE_EPOCH`. Builds são
 interrompidos se Git existir e a árvore estiver suja. Sem Git, a limitação é informada e nenhuma tag

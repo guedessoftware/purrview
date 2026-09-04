@@ -4,7 +4,7 @@
 
 #include <QObject>
 
-namespace impage::core {
+namespace purrview::core {
 
 class ImageMetadataModel : public QObject {
     Q_OBJECT
@@ -86,4 +86,4 @@ class ImageMetadataModel : public QObject {
     bool loading_ = false;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

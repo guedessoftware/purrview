@@ -6,7 +6,7 @@
 #include <QFileInfo>
 #include <QRegularExpression>
 
-namespace impage::desktop {
+namespace purrview::desktop {
 
 namespace {
 
@@ -73,4 +73,4 @@ CommandLineResult parseCommandLine(const QStringList& arguments, const QString& 
     return result;
 }
 
-} // namespace impage::desktop
+} // namespace purrview::desktop

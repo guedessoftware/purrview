@@ -6,9 +6,9 @@
 #include <QFileInfo>
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(logOpenRequest, "impage.openrequest")
+Q_LOGGING_CATEGORY(logOpenRequest, "purrview.openrequest")
 
-namespace impage::shell {
+namespace purrview::shell {
 
 OpenRequestHandler::OpenRequestHandler(ModuleManager& modules, QObject* parent)
     : QObject(parent), modules_(modules) {}
@@ -55,4 +55,4 @@ bool OpenRequestHandler::handle(const desktop::OpenRequest& request) {
     return opened;
 }
 
-} // namespace impage::shell
+} // namespace purrview::shell

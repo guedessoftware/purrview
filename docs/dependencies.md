@@ -17,7 +17,7 @@ O mínimo Qt 6.4 permite produzir o DEB no Ubuntu 24.04 sem incorporar um Qt pri
 QML usadas pela aplicação permanecem compatíveis com essa baseline. O bootstrap não compila Qt
 automaticamente.
 
-`IMPAGE_WITH_EXIV2=AUTO` usa Exiv2 quando compatível, `ON` exige a dependência e `OFF` produz o
+`PURRVIEW_WITH_EXIV2=AUTO` usa Exiv2 quando compatível, `ON` exige a dependência e `OFF` produz o
 backend básico do Qt. A ausência de Exiv2 nunca impede Viewer, Composer ou impressão.
 
 ## Pacotes por família

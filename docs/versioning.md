@@ -10,6 +10,10 @@ O PurrView usa [Semantic Versioning](https://semver.org/) no formato `MAJOR.MINO
 O arquivo `VERSION` é a fonte oficial. CMake, binário, AppStream e scripts de release leem esse
 arquivo. Toda alteração relevante entra primeiro em `[Unreleased]` no `CHANGELOG.md`.
 
+Durante a fase pré-1.0, a série `0.8.x` permanece como ciclo atual. A futura `0.9.0` inicia
+estabilização e feature freeze; `0.9.x` recebe correções, e `1.0.0` será a primeira versão estável
+pública. A preparação do repositório não altera `VERSION` automaticamente.
+
 Commits devem usar um prefixo estável quando o projeto estiver sob Git: `feat:`, `fix:`, `perf:`,
 `refactor:`, `docs:`, `build:` ou `ci:`. Releases oficiais recebem tags anotadas `vX.Y.Z`, criadas
 somente após revisão explícita; scripts locais nunca fazem push ou tag automaticamente.

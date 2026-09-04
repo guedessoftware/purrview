@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <utility>
 
-namespace impage::composer {
+namespace purrview::composer {
 
 ComposerSessionAdapter::ComposerSessionAdapter(core::ImageSession& session,
                                                core::DocumentModel& document, QObject* parent)
@@ -80,4 +80,4 @@ void ComposerSessionAdapter::synchronize() {
     emit documentImagesChanged();
 }
 
-} // namespace impage::composer
+} // namespace purrview::composer

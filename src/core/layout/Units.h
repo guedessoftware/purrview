@@ -1,6 +1,6 @@
 #pragma once
 
-namespace impage::core::units {
+namespace purrview::core::units {
 
 inline constexpr double MillimetersPerInch = 25.4;
 
@@ -12,4 +12,4 @@ inline constexpr double MillimetersPerInch = 25.4;
     return pixels * MillimetersPerInch / dpi;
 }
 
-} // namespace impage::core::units
+} // namespace purrview::core::units

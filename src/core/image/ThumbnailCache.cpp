@@ -1,5 +1,7 @@
 #include "core/image/ThumbnailCache.h"
 
+#include "core/image/ImageFormatSupport.h"
+
 #include <QCryptographicHash>
 #include <QFileInfo>
 #include <QImageReader>
@@ -8,9 +10,8 @@
 #include <QThread>
 
 #include <algorithm>
-#include <limits>
 
-namespace impage::core {
+namespace purrview::core {
 
 ThumbnailCache::ThumbnailCache(QObject* parent) : QObject(parent) {
     cache_.setMaxCost(DefaultMaximumCostBytes);
@@ -46,12 +47,12 @@ QImage ThumbnailCache::imageForKey(const QString& cacheKey) const {
     return image == nullptr ? QImage() : *image;
 }
 
-int ThumbnailCache::maximumCostBytes() const {
+qsizetype ThumbnailCache::maximumCostBytes() const {
     QMutexLocker lock(&cacheMutex_);
     return cache_.maxCost();
 }
 
-int ThumbnailCache::currentCostBytes() const {
+qsizetype ThumbnailCache::currentCostBytes() const {
     QMutexLocker lock(&cacheMutex_);
     return cache_.totalCost();
 }
@@ -60,9 +61,9 @@ int ThumbnailCache::generationCount() const {
     return generationCount_.load();
 }
 
-void ThumbnailCache::setMaximumCostBytes(int bytes) {
+void ThumbnailCache::setMaximumCostBytes(qsizetype bytes) {
     QMutexLocker lock(&cacheMutex_);
-    cache_.setMaxCost(std::max(1, bytes));
+    cache_.setMaxCost(std::max<qsizetype>(1, bytes));
 }
 
 void ThumbnailCache::clear() {
@@ -83,7 +84,7 @@ QString ThumbnailCache::requestThumbnail(const QString& path, int maximumSide) {
         QMetaObject::invokeMethod(
             this,
             [this, path, cacheKey, thumbnail = std::move(thumbnail)]() mutable {
-                finishRequest(path, cacheKey, std::move(thumbnail));
+                finishRequest(path, cacheKey, thumbnail);
             },
             Qt::QueuedConnection);
     });
@@ -96,7 +97,7 @@ QImage ThumbnailCache::thumbnailNow(const QString& path, QString* cacheKey, bool
     if (cacheKey != nullptr) {
         *cacheKey = key;
     }
-    const QImage cached = imageForKey(key);
+    QImage cached = imageForKey(key);
     if (!cached.isNull()) {
         if (cacheHit != nullptr) {
             *cacheHit = true;
@@ -123,7 +124,7 @@ ThumbnailCache::GeneratedThumbnail ThumbnailCache::generateThumbnail(const QStri
     QImageReader reader(path);
     reader.setAutoTransform(true);
     const QSize sourceSize = reader.size();
-    if (!reader.canRead() || !sourceSize.isValid()) {
+    if (!reader.canRead() || !isImageSizeWithinLimits(sourceSize)) {
         return {};
     }
 
@@ -142,7 +143,7 @@ ThumbnailCache::GeneratedThumbnail ThumbnailCache::generateThumbnail(const QStri
 }
 
 void ThumbnailCache::finishRequest(const QString& path, const QString& cacheKey,
-                                   GeneratedThumbnail thumbnail) {
+                                   const GeneratedThumbnail& thumbnail) {
     pendingKeys_.remove(cacheKey);
     if (cacheKeyForFile(path) != cacheKey || thumbnail.image.isNull()) {
         emit thumbnailFailed(path, cacheKey);
@@ -155,11 +156,9 @@ void ThumbnailCache::finishRequest(const QString& path, const QString& cacheKey,
 }
 
 void ThumbnailCache::insert(const QString& cacheKey, const QImage& image) {
-    const qsizetype byteCount = image.sizeInBytes();
-    const int cost = static_cast<int>(std::clamp<qsizetype>(
-        byteCount, 1, static_cast<qsizetype>(std::numeric_limits<int>::max())));
+    const qsizetype cost = std::max<qsizetype>(1, image.sizeInBytes());
     QMutexLocker lock(&cacheMutex_);
     cache_.insert(cacheKey, new QImage(image), cost);
 }
 
-} // namespace impage::core
+} // namespace purrview::core

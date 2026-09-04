@@ -1,4 +1,4 @@
-import Impage 1.0
+import PurrView 1.0
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -221,7 +221,7 @@ Item {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: 18
-        text: "‹"
+        iconName: "chevron-left"
         accessibleName: qsTr("Imagem anterior")
         themePalette: viewerPage.themePalette
         visible: viewerPage.controller.folderModel.count > 1
@@ -240,7 +240,7 @@ Item {
         anchors.right: canvasArea.right
         anchors.verticalCenter: parent.verticalCenter
         anchors.rightMargin: 18
-        text: "›"
+        iconName: "chevron-right"
         accessibleName: qsTr("Próxima imagem")
         themePalette: viewerPage.themePalette
         visible: viewerPage.controller.folderModel.count > 1

@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace impage::core {
+namespace purrview::core {
 
 PageModel& DocumentModel::page() {
     return page_;
@@ -56,4 +56,4 @@ void DocumentModel::setPlacementMode(PlacementMode mode) {
     }
 }
 
-} // namespace impage::core
+} // namespace purrview::core

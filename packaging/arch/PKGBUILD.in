@@ -19,7 +19,7 @@ build() {
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DBUILD_TESTING=ON \
-        -DIMPAGE_WITH_EXIV2=ON
+        -DPURRVIEW_WITH_EXIV2=ON
     cmake --build build
 }
 

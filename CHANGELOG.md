@@ -5,6 +5,45 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 
 ## [Unreleased]
 
+## [0.8.14] - 2026-09-04
+
+### Performance
+
+- O Viewer passa a decodificar imagens progressivamente conforme a tela e o nível de zoom, sem
+  manter a resolução integral quando ela não é necessária.
+- O renderizador de composição usa decodificação proporcional ao destino e cache LRU limitado a
+  192 MiB; buscas e seleções em pastas grandes agora usam índices por caminho.
+- O backend de impressão deixa de inicializar o CUPS durante a abertura do aplicativo e passa a ser
+  criado somente quando o usuário solicita a impressão.
+
+### Security
+
+- A decodificação de imagens tem limite global de 256 MiB e 64 megapixels, e imagens coladas têm
+  limite próprio de 32 megapixels.
+- O protocolo da instância única limita quantidade e comprimento dos caminhos, e seu fallback em
+  diretório temporário valida tipo, proprietário e permissões.
+- Builds Release recebem stack protector, FORTIFY, PIE e RELRO completo quando suportados; CI passa
+  a executar AddressSanitizer e UndefinedBehaviorSanitizer.
+
+## [0.8.13] - 2026-09-04
+
+### Changed
+
+- Consolidated PurrView as the technical identity: the native binary, CMake targets, QML module,
+  logs, desktop integration and Flatpak now use `purrview` and
+  `io.github.guedessoftware.PurrView`.
+- Kept `impage` and `scripts/install-impage.sh` as small compatibility launchers, with automatic
+  migration support for legacy bootstrap installations and settings.
+- Expanded AppStream with current dark and light screenshots and added preparation guides for
+  Flathub, AUR and downstream packagers.
+
+### Release engineering
+
+- Added optional detached GPG signing for `SHA256SUMS`, without storing keys or requiring signing
+  for normal builds.
+- Added identity regression checks while preserving Qt 6.4+, SELinux enforcing support and all
+  existing package formats.
+
 ## [0.8.12] - 2026-09-03
 
 ### Fixed
@@ -366,7 +405,9 @@ Todas as alterações relevantes do PurrView (anteriormente Impage) são registr
 - Cache LRU de miniaturas limitado a 128 MiB e cache de metadados limitado a 256 entradas.
 - Composer permanece sob demanda quando a aplicação inicia diretamente no Viewer.
 
-[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.12...HEAD
+[Unreleased]: https://github.com/guedessoftware/purrview/compare/v0.8.14...HEAD
+[0.8.14]: https://github.com/guedessoftware/purrview/compare/v0.8.13...v0.8.14
+[0.8.13]: https://github.com/guedessoftware/purrview/compare/v0.8.12...v0.8.13
 [0.8.12]: https://github.com/guedessoftware/purrview/compare/v0.8.11...v0.8.12
 [0.8.11]: https://github.com/guedessoftware/purrview/compare/v0.8.10...v0.8.11
 [0.8.10]: https://github.com/guedessoftware/purrview/compare/v0.8.9...v0.8.10

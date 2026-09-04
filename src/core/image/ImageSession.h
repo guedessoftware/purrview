@@ -8,7 +8,7 @@
 #include <optional>
 #include <vector>
 
-namespace impage::core {
+namespace purrview::core {
 
 // ImageSession is intentionally confined to the application's UI thread.
 class ImageSession : public QAbstractListModel {
@@ -95,4 +95,4 @@ class ImageSession : public QAbstractListModel {
     QString sourceFolderPath_;
 };
 
-} // namespace impage::core
+} // namespace purrview::core

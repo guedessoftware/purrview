@@ -6,7 +6,7 @@
 #include <QList>
 #include <QObject>
 
-namespace impage::composer {
+namespace purrview::composer {
 
 class ComposerSessionAdapter : public QObject {
     Q_OBJECT
@@ -32,4 +32,4 @@ class ComposerSessionAdapter : public QObject {
     bool usesExplicitImages_ = false;
 };
 
-} // namespace impage::composer
+} // namespace purrview::composer

@@ -51,6 +51,58 @@ Item {
             }
 
             switch (root.name) {
+            case "plus":
+                line(12, 5, 12, 19)
+                line(5, 12, 19, 12)
+                break
+            case "minus":
+                line(5, 12, 19, 12)
+                break
+            case "close":
+                line(6, 6, 18, 18)
+                line(18, 6, 6, 18)
+                break
+            case "check":
+                ctx.beginPath()
+                ctx.moveTo(5, 12.5)
+                ctx.lineTo(10, 17)
+                ctx.lineTo(19, 7)
+                ctx.stroke()
+                break
+            case "chevron-left":
+                ctx.beginPath()
+                ctx.moveTo(15, 5)
+                ctx.lineTo(8, 12)
+                ctx.lineTo(15, 19)
+                ctx.stroke()
+                break
+            case "chevron-right":
+                ctx.beginPath()
+                ctx.moveTo(9, 5)
+                ctx.lineTo(16, 12)
+                ctx.lineTo(9, 19)
+                ctx.stroke()
+                break
+            case "fullscreen":
+                line(4, 9, 4, 4)
+                line(4, 4, 9, 4)
+                line(15, 4, 20, 4)
+                line(20, 4, 20, 9)
+                line(20, 15, 20, 20)
+                line(20, 20, 15, 20)
+                line(9, 20, 4, 20)
+                line(4, 20, 4, 15)
+                break
+            case "warning":
+                ctx.beginPath()
+                ctx.moveTo(12, 3)
+                ctx.lineTo(22, 20)
+                ctx.lineTo(2, 20)
+                ctx.closePath()
+                ctx.stroke()
+                line(12, 8, 12, 14)
+                circle(12, 17, 1, true)
+                break
             case "printer":
                 ctx.strokeRect(7, 3, 10, 6)
                 ctx.strokeRect(4, 8, 16, 9)

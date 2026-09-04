@@ -15,7 +15,7 @@
 #include <QTemporaryDir>
 #include <QVariantList>
 
-namespace impage::composer {
+namespace purrview::composer {
 
 class ComposerController : public QObject {
     Q_OBJECT
@@ -41,7 +41,7 @@ class ComposerController : public QObject {
     Q_PROPERTY(QString layoutError READ layoutError NOTIFY documentChanged)
     Q_PROPERTY(bool printDialogLoading READ printDialogLoading NOTIFY printDialogLoadingChanged)
     Q_PROPERTY(bool canPasteImages READ canPasteImages NOTIFY clipboardChanged)
-    Q_PROPERTY(impage::core::ImageSession* imageSession READ imageSession CONSTANT)
+    Q_PROPERTY(purrview::core::ImageSession* imageSession READ imageSession CONSTANT)
     Q_PROPERTY(double pageWidthMm READ pageWidthMm NOTIFY documentChanged)
     Q_PROPERTY(double pageHeightMm READ pageHeightMm NOTIFY documentChanged)
 
@@ -138,4 +138,4 @@ class ComposerController : public QObject {
     quint64 clipboardImageCounter_ = 0;
 };
 
-} // namespace impage::composer
+} // namespace purrview::composer

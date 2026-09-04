@@ -12,16 +12,18 @@ flatpak-builder --force-clean --disable-rofiles-fuse \
     --state-dir="${WORK_ROOT}/state" \
     --repo="${WORK_ROOT}/repo" \
     "${WORK_ROOT}/build" \
-    "${SOURCE_ROOT}/packaging/flatpak/io.github.impage.Impage.yml"
+    "${SOURCE_ROOT}/packaging/flatpak/io.github.guedessoftware.PurrView.yml"
 flatpak build "${WORK_ROOT}/build" /app/bin/purrview --version \
+    | grep -Fqx "PurrView ${VERSION_VALUE}"
+flatpak build "${WORK_ROOT}/build" /app/bin/impage --version \
     | grep -Fqx "PurrView ${VERSION_VALUE}"
 flatpak build-bundle \
     --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
-    "${WORK_ROOT}/repo" "${BUNDLE_PATH}" io.github.impage.Impage
+    "${WORK_ROOT}/repo" "${BUNDLE_PATH}" io.github.guedessoftware.PurrView
 ostree init --repo="${WORK_ROOT}/verify-repo" --mode=archive-z2
 flatpak build-import-bundle "${WORK_ROOT}/verify-repo" "${BUNDLE_PATH}"
 ostree refs --repo="${WORK_ROOT}/verify-repo" \
-    | grep -Fqx 'app/io.github.impage.Impage/x86_64/master'
+    | grep -Fqx 'app/io.github.guedessoftware.PurrView/x86_64/master'
 chown --reference="${OUTPUT_ROOT}" "${BUNDLE_PATH}"
 
 printf 'Flatpak bundle validated with KDE runtime 6.10: %s\n' "${BUNDLE_PATH}"

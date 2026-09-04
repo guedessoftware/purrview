@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-impage_detect_distribution() {
-    local os_release="${IMPAGE_OS_RELEASE_FILE:-/etc/os-release}"
-    [[ -r "${os_release}" ]] || impage_die "Cannot read ${os_release}."
+purrview_detect_distribution() {
+    local os_release="${PURRVIEW_OS_RELEASE_FILE:-/etc/os-release}"
+    [[ -r "${os_release}" ]] || purrview_die "Cannot read ${os_release}."
 
     local ID=""
     local ID_LIKE=""
@@ -12,30 +12,30 @@ impage_detect_distribution() {
     # shellcheck disable=SC1090
     source "${os_release}"
 
-    IMPAGE_DISTRO_ID="${ID,,}"
-    IMPAGE_DISTRO_LIKE="${ID_LIKE,,}"
-    IMPAGE_DISTRO_VERSION="${VERSION_ID:-unknown}"
-    IMPAGE_DISTRO_NAME="${PRETTY_NAME:-${ID} ${VERSION_ID:-}}"
+    PURRVIEW_DISTRO_ID="${ID,,}"
+    PURRVIEW_DISTRO_LIKE="${ID_LIKE,,}"
+    PURRVIEW_DISTRO_VERSION="${VERSION_ID:-unknown}"
+    PURRVIEW_DISTRO_NAME="${PRETTY_NAME:-${ID} ${VERSION_ID:-}}"
 
-    case " ${IMPAGE_DISTRO_ID} ${IMPAGE_DISTRO_LIKE} " in
-    *" ubuntu "*) IMPAGE_DISTRO_FAMILY="ubuntu" ;;
-    *" debian "*) IMPAGE_DISTRO_FAMILY="debian" ;;
-    *" fedora "* | *" rhel "*) IMPAGE_DISTRO_FAMILY="fedora" ;;
-    *" arch "*) IMPAGE_DISTRO_FAMILY="arch" ;;
-    *) impage_die "Unsupported distribution: ${IMPAGE_DISTRO_NAME}." ;;
+    case " ${PURRVIEW_DISTRO_ID} ${PURRVIEW_DISTRO_LIKE} " in
+    *" ubuntu "*) PURRVIEW_DISTRO_FAMILY="ubuntu" ;;
+    *" debian "*) PURRVIEW_DISTRO_FAMILY="debian" ;;
+    *" fedora "* | *" rhel "*) PURRVIEW_DISTRO_FAMILY="fedora" ;;
+    *" arch "*) PURRVIEW_DISTRO_FAMILY="arch" ;;
+    *) purrview_die "Unsupported distribution: ${PURRVIEW_DISTRO_NAME}." ;;
     esac
-    export IMPAGE_DISTRO_ID IMPAGE_DISTRO_LIKE IMPAGE_DISTRO_VERSION
-    export IMPAGE_DISTRO_NAME IMPAGE_DISTRO_FAMILY
+    export PURRVIEW_DISTRO_ID PURRVIEW_DISTRO_LIKE PURRVIEW_DISTRO_VERSION
+    export PURRVIEW_DISTRO_NAME PURRVIEW_DISTRO_FAMILY
 }
 
-impage_detect_architecture() {
-    IMPAGE_ARCHITECTURE="${IMPAGE_ARCH_OVERRIDE:-$(uname -m)}"
-    case "${IMPAGE_ARCHITECTURE}" in
+purrview_detect_architecture() {
+    PURRVIEW_ARCHITECTURE="${PURRVIEW_ARCH_OVERRIDE:-$(uname -m)}"
+    case "${PURRVIEW_ARCHITECTURE}" in
     x86_64) ;;
     aarch64 | arm64)
-        impage_die "aarch64 is recognized but has not been validated yet."
+        purrview_die "aarch64 is recognized but has not been validated yet."
         ;;
-    *) impage_die "Unsupported architecture: ${IMPAGE_ARCHITECTURE}." ;;
+    *) purrview_die "Unsupported architecture: ${PURRVIEW_ARCHITECTURE}." ;;
     esac
-    export IMPAGE_ARCHITECTURE
+    export PURRVIEW_ARCHITECTURE
 }

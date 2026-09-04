@@ -6,13 +6,13 @@
 
 #include <QObject>
 
-namespace impage::shell {
+namespace purrview::shell {
 
 class ApplicationContext : public QObject {
     Q_OBJECT
-    Q_PROPERTY(impage::core::ImageSession* imageSession READ imageSession CONSTANT)
-    Q_PROPERTY(impage::core::ThumbnailCache* thumbnailCache READ thumbnailCache CONSTANT)
-    Q_PROPERTY(impage::core::ImageMetadataService* imageMetadataService READ imageMetadataService
+    Q_PROPERTY(purrview::core::ImageSession* imageSession READ imageSession CONSTANT)
+    Q_PROPERTY(purrview::core::ThumbnailCache* thumbnailCache READ thumbnailCache CONSTANT)
+    Q_PROPERTY(purrview::core::ImageMetadataService* imageMetadataService READ imageMetadataService
                    CONSTANT)
 
   public:
@@ -29,4 +29,4 @@ class ApplicationContext : public QObject {
     core::ImageMetadataService imageMetadataService_;
 };
 
-} // namespace impage::shell
+} // namespace purrview::shell

@@ -45,12 +45,19 @@ scripts/package-all.sh --refresh-images
 
 # Reutilizar um build Release do host que já foi validado
 scripts/package-all.sh --skip-host-build
+
+# Assinar opcionalmente o arquivo final de checksums
+scripts/package-all.sh --sign-checksums
+scripts/package-all.sh --gpg-key ID_DA_CHAVE
 ```
 
 O Flatpak precisa de `--privileged` para o isolamento interno do `flatpak-builder`. O estado das
 dependências fica em `${XDG_CACHE_HOME:-~/.cache}/purrview/packaging/flatpak-kde-6.10`, fora da
 árvore-fonte, enquanto todos os artefatos finais ficam em `dist/VERSÃO/`. Nenhum comando cria tag,
 envia commits ou publica pacotes.
+
+A assinatura gera `SHA256SUMS.asc` usando exclusivamente o chaveiro GnuPG do mantenedor. Nenhuma
+chave ou segredo é armazenado no projeto, e a assinatura não é exigida em builds comuns.
 
 ## Estrutura
 

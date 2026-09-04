@@ -21,8 +21,8 @@ flatpak remote-add --user --if-not-exists flathub \
 flatpak install --user -y flathub org.kde.Sdk//6.10 org.kde.Platform//6.10
 cd /caminho/para/purrview
 flatpak-builder --user --install --force-clean \
-  build-flatpak packaging/flatpak/io.github.impage.Impage.yml
-flatpak run io.github.impage.Impage
+  build-flatpak packaging/flatpak/io.github.guedessoftware.PurrView.yml
+flatpak run io.github.guedessoftware.PurrView
 ```
 
 Para instalar o bundle pronto não use `flatpak-builder`:
@@ -33,8 +33,12 @@ flatpak remote-add --user --if-not-exists flathub \
 flatpak install --user ./PurrView-X.Y.Z-x86_64.flatpak
 ```
 
-Antes de enviar ao Flathub, substitua a fonte local `dir` por um arquivo da tag oficial com SHA-256.
-O script de release rejeita divergência entre a versão/Exiv2 do manifesto e a política central.
+O manifesto local usa `type: dir` deliberadamente. Para uma futura submissão, use o modelo
+`io.github.guedessoftware.PurrView.flathub.yml.in`, substituindo a versão e o SHA-256 somente depois
+que o source tarball estiver publicado. O processo completo está em `docs/flathub.md`.
+
+Bundles anteriores à migração técnica usam `io.github.impage.Impage` e são tratados como outro
+aplicativo pelo Flatpak. Consulte `docs/identity-migration.md` antes de substituir uma instalação.
 
 ## Impressão
 
