@@ -27,7 +27,7 @@
 
 ---
 
-![Composer do PurrView organizando imagens em uma página A4](docs/images/purrview-composer.png)
+![Composer do PurrView em tema escuro organizando uma grade de imagens em uma página A4](docs/images/purrview-composer.png)
 
 ## ✨ Visão geral
 
@@ -57,11 +57,28 @@ Composer e voltar sem perder a imagem atual, a seleção ou os ajustes da compos
 
 ## 🖼️ Viewer
 
-![Viewer do PurrView com controles e filmstrip sobre a imagem](docs/images/purrview-viewer.png)
+![Viewer do PurrView em tema escuro com controles e filmstrip sobre a imagem](docs/images/purrview-viewer.png)
 
 A toolbar flutuante oferece Fit, tamanho real, zoom, rotação, informações e impressão. O filmstrip
 surge ao navegar ou aproximar o ponteiro da borda inferior e se recolhe suavemente quando não está
 em uso, preservando a experiência imersiva.
+
+## 🌓 Integração com o tema do sistema
+
+O tema escuro preserva a identidade visual original do PurrView. Quando o sistema utiliza o tema
+claro, Viewer e Composer acompanham automaticamente suas cores, mantendo contraste, hierarquia e
+legibilidade.
+
+<table>
+  <tr>
+    <th>Viewer em tema claro</th>
+    <th>Composer em tema claro</th>
+  </tr>
+  <tr>
+    <td><img src="docs/images/purrview-viewer-light.png" alt="Viewer do PurrView acompanhando o tema claro do sistema"></td>
+    <td><img src="docs/images/purrview-composer-light.png" alt="Composer do PurrView acompanhando o tema claro do sistema"></td>
+  </tr>
+</table>
 
 ## 📷 Formatos suportados
 
